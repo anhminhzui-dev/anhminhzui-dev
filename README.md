@@ -41,6 +41,11 @@ Receipts: every run prints or writes the evidence behind its verdict, not the ve
 
 Hash-pinned decks: in policy-deck and rollout-sentinel the reference deck a score is checked against is frozen by hash and admission fails if it moves; the other repositories record a hash in their receipts so a change is visible after the fact.
 
+### Papers and write-ups
+
+- Technical report, September 2026: [Gnomon: Architecture and Operational Evidence for an IELTS Writing Feedback Engine](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) (17 pages; a systems-and-evidence report, no accuracy claim).
+- Write-up: [A destructive-git refusal gate built from a live incident](writeups/2026-09-07-destructive-git-refusal-gate.md).
+
 ### Boundaries
 
 Every repository above is source-available and evaluation-only, never open source. Every fixture in every one of them is synthetic data invented for that repository, never a real student, essay or institution.
