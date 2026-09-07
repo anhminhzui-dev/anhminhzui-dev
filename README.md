@@ -43,7 +43,7 @@ Hash-pinned decks: in policy-deck and rollout-sentinel the reference deck a scor
 
 ### Papers and write-ups
 
-- Technical report, September 2026: [Gnomon: Architecture and Operational Evidence for an IELTS Writing Feedback Engine](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) (17 pages; a systems-and-evidence report, no accuracy claim).
+- Technical report, September 2026: [Gnomon: Architecture and Operational Evidence for an IELTS Writing Feedback Engine](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) (19 pages; a systems-and-evidence report, no accuracy claim).
 - Write-up: [A destructive-git refusal gate built from a live incident](writeups/2026-09-07-destructive-git-refusal-gate.md).
 
 ### Boundaries
