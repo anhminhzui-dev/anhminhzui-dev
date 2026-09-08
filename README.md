@@ -4,7 +4,9 @@
 
 **AI Evaluation Engineer | Data pipelines, multimodal fine-tuning and inspectable AI systems**
 
-[Download my CV](Vo_Ba_Hoang_Minh_CV.pdf) · Remote from Ho Chi Minh City, Vietnam
+[CV (PDF)](Vo_Ba_Hoang_Minh_CV.pdf) · [Research paper (PDF)](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) · [Engineering write-up](writeups/2026-09-07-destructive-git-refusal-gate.md)
+
+Based in Ho Chi Minh City, Vietnam · Available for remote roles and onsite/hybrid work in Vietnam
 
 I turn vague model-quality requirements into reproducible checks, traceable data and specific failure cases.
 
@@ -72,6 +74,11 @@ Recorded interface walkthrough with synthetic content and demo identities, illus
 
 - Technical report, September 2026: [Beyond Score Prediction: Evidence-First Reasoning for Writing Assessment](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf). Compiled knowledge, data engineering, evidence identity, training systems and scoped historical observations.
 - Write-up: [A destructive-git refusal gate built from a live incident](writeups/2026-09-07-destructive-git-refusal-gate.md).
+
+### Contributions and work in progress
+
+- **[EleutherAI lm-evaluation-harness: DummyLM tests](https://github.com/EleutherAI/lm-evaluation-harness/pull/4115)** — submitted upstream contribution; open and not merged as of 8 September 2026. The pull request exposes the proposed tests and review history.
+- **[RelayGate](https://github.com/anhminhzui-dev/relay-gate)** — hackathon project in progress: a local command-policy demo with mock escalation. Code is public; a completed submission, live-provider demonstration and judging result are not yet recorded.
 
 ### Reproduction and scope
 
