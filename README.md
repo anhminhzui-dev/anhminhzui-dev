@@ -4,6 +4,8 @@
 
 **AI Evaluation Engineer | Data pipelines, multimodal fine-tuning and inspectable AI systems**
 
+[Download my CV](Vo_Ba_Hoang_Minh_CV.pdf) · Remote from Ho Chi Minh City, Vietnam
+
 I turn vague model-quality requirements into reproducible checks, traceable data and specific failure cases.
 
 I founded Gnomon, a writing-assessment research project, and direct its architecture, evaluation design and acceptance review. Claude and Codex assist implementation. My focus is the engineering behind a result: what evidence supports it, where it can fail and how another developer can check it.
