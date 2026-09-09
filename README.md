@@ -45,7 +45,7 @@ Gnomon is a connected assessment-research system: the data layer selects usable 
 | **Compiled assessment knowledge** | Validated rubric specifications become a content-versioned runtime bank, shared by prompt construction and scoring, with dimensions, graded groups and task overlays. |
 | **Evidence identity** | Resolves permitted short anchors to exact response spans; validates relation endpoints and memberships; retains multiple item views without duplicate scoring credit. |
 | **Constrained judgement** | Shared item verification and scoring, missing-evidence states, limiting dimensions, caps, scale transformations and abstention; optional calibration and correction branches. |
-| **Correction-data engineering** | Selects verifier-passing attempts, binds critiques to candidates and repairs, requires positive reward change and preserves first-pass anchors before forming new SFT targets. |
+| **Correction-data engineering** | Selects verifier-passing attempts, binds critiques to candidates and repairs, requires positive reward change and preserves first-pass anchors; critic records require separate admission before training. |
 | **Measurement research** | Conditional PCM/normalised trait targets, ranking-aware loss, gated Rasch/graded-response calibration and source/scale diagnostics. |
 | **Training systems** | Completion-focused weighting, alternative curriculum/length-group ordering, chunked vocabulary-loss computation and separate input/non-padding/target-token accounting. |
 | **Human operation** | Teacher review, release, learner access and challenge interfaces; learner-facing communication is evaluated separately from internal evidence mechanics. |
