@@ -6,7 +6,7 @@
 
 [CV (PDF)](Vo_Ba_Hoang_Minh_CV.pdf) · [Research paper (PDF)](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) · [Engineering write-up](writeups/2026-09-07-destructive-git-refusal-gate.md)
 
-Based in Ho Chi Minh City, Vietnam · Available for remote roles and onsite/hybrid work in Vietnam
+Based in Ho Chi Minh City, Vietnam · Available for international remote roles and HCMC onsite/hybrid work
 
 I turn vague model-quality requirements into reproducible checks, traceable data and specific failure cases.
 
@@ -33,7 +33,7 @@ Start with **failclosed-eval** for evaluation infrastructure or **policy-deck** 
 
 Test counts are the 7 September 2026 checked-commit snapshot, not a hiring score. The policy decks are synthetic and partly rule-aware; classifier performance is not sandbox security. The public-data admission example measures validation, not model accuracy, and keeps the essay corpus outside Git.
 
-### Research: engineering the evidence behind AI judgement
+### Research: constructing evidence-grounded language judgments
 
 Gnomon is a connected assessment-research system: the data layer selects usable material, a compiled rubric defines what to inspect, models propose observations, and verification and scoring construct a traceable result. The work includes the infrastructure around that chain—not just the final prompt.
 
@@ -52,7 +52,7 @@ The development record includes **101,175 corpus records across 47 source labels
 
 Earlier encoder work also includes configurable ModernBERT low-rank adapters, weight merging and a DirectML-compatible optimiser. The report distinguishes those historical implementations from the current extraction path.
 
-**[Beyond Score Prediction: Evidence-First Reasoning for Writing Assessment](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf)** explains the mechanisms with five vector figures, an executed scoring replay and scoped historical observations. It is an independent architecture/implementation report, not peer reviewed. Current-engine accuracy, comparative teaching benefit and production scale need separate empirical evidence. Private datasets, prompts and scoring recipes are not published.
+**[Constructing Language Judgments: Rubric Distillation and Evidence-Grounded Reasoning](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf)** connects compiled rubrics, structured reasoning supervision, evidence-verifying execution harnesses and resource-aware multimodal adaptation. Five vector figures, an executed scoring replay and scoped historical observations explain how judgments are constructed from verified observations. IELTS is the implemented application. This is an independent systems report, revision 14, not peer reviewed; current-engine accuracy and cross-domain transfer require separate evaluation. Private datasets, prompts and scoring recipes are not published.
 
 ### Demo
 
@@ -72,7 +72,7 @@ Recorded interface walkthrough with synthetic content and demo identities, illus
 
 ### Papers and write-ups
 
-- Technical report, September 2026: [Beyond Score Prediction: Evidence-First Reasoning for Writing Assessment](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf). Compiled knowledge, data engineering, evidence identity, training systems and scoped historical observations.
+- Technical report, September 2026: [Constructing Language Judgments: Rubric Distillation and Evidence-Grounded Reasoning](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf). Rubric compilation, structured supervision, evidence identity, judgment construction and training systems.
 - Write-up: [A destructive-git refusal gate built from a live incident](writeups/2026-09-07-destructive-git-refusal-gate.md).
 
 ### Contributions and work in progress
