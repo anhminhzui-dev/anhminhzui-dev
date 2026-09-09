@@ -6,6 +6,8 @@
 
 [CV (PDF)](Vo_Ba_Hoang_Minh_CV.pdf) · [Research paper (PDF)](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) · [Engineering write-up](writeups/2026-09-07-destructive-git-refusal-gate.md)
 
+**Explore:** [Projects](#seven-focused-tools) · [Gnomon research](#research-constructing-evidence-grounded-language-judgments) · [Contributions](#contributions-and-work-in-progress) · [Creative portfolio](https://minh_hoang.artstation.com/) · [Contact](#contact)
+
 Based in Ho Chi Minh City, Vietnam · Available for international remote roles and HCMC onsite/hybrid work
 
 I turn vague model-quality requirements into reproducible checks, traceable data and specific failure cases.
