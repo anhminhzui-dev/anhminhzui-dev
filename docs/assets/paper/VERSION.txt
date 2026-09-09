@@ -1,0 +1,6 @@
+@paper-design/shaders 0.0.80
+Source: https://unpkg.com/@paper-design/shaders@0.0.80/
+Apache-2.0. LICENSE and NOTICE retained alongside the five consumed modules.
+Only ShaderMount, its vertex/util/sizing dependencies and Liquid Metal are vendored.
+No React, Three.js, external CDN request or application framework is required at runtime.
+Source maps are development-only and are not included.
