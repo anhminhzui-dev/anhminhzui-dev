@@ -49,7 +49,7 @@
   </div>
   <div class="hero-visual">
     <div class="hero-stage" id="hero-stage">
-      <img class="hero-fallback" src="assets/leaf-poster.svg" alt="" aria-hidden="true" width="720" height="720">
+      <img class="hero-fallback" src="assets/gradient-poster.png" alt="" aria-hidden="true" width="960" height="998">
       <div id="hero-scene" aria-hidden="true"></div>
     </div>
     <button id="motion-toggle" type="button" class="motion-toggle" aria-pressed="false" hidden>Pause motion</button>
@@ -106,19 +106,20 @@
     </ol>
   </div>
   <div class="case-visual">
-    <div class="device-frame device-frame-fade">
-      <picture>
-        <source srcset="assets/gnomon/landing_hero.webp" type="image/webp">
-        <img src="assets/gnomon/landing_hero.png" alt="Gnomon landing page" loading="lazy" width="1440" height="370">
-      </picture>
+    <div class="product-frame">
+      <div class="product-frame-bar" aria-hidden="true">
+        <span class="product-frame-dot"></span><span class="product-frame-dot"></span><span class="product-frame-dot"></span>
+        <span class="product-frame-url">gnomon kanon</span>
+      </div>
+      <div class="product-frame-scroll" tabindex="0" role="group" aria-label="Scrollable product walkthrough">
+        <picture>
+          <source srcset="assets/gnomon/product-walkthrough.webp" type="image/webp">
+          <img src="assets/gnomon/product-walkthrough.png" alt="Scrollable walkthrough of the Gnomon Kanon product, top to bottom: the landing page, the sign-in portal, the teacher desk, the assessment workbench, the student workspace, and a student's released report with its scores masked." loading="lazy" width="1178" height="3988">
+        </picture>
+      </div>
     </div>
+    <p class="product-frame-hint">Scroll the product &#8595;</p>
     <p class="scope">Live product screens, synthetic content and demo identities.</p>
-    <div class="door-strip">
-      <figure><picture><source srcset="assets/gnomon/portal.webp" type="image/webp"><img src="assets/gnomon/portal.png" alt="Gnomon portal screen" loading="lazy"></picture><figcaption>Portal</figcaption></figure>
-      <figure><picture><source srcset="assets/gnomon/teacher_desk.webp" type="image/webp"><img src="assets/gnomon/teacher_desk.png" alt="Gnomon teacher desk screen" loading="lazy"></picture><figcaption>Teacher desk</figcaption></figure>
-      <figure><picture><source srcset="assets/gnomon/workbench.webp" type="image/webp"><img src="assets/gnomon/workbench.png" alt="Gnomon workbench screen" loading="lazy"></picture><figcaption>Workbench</figcaption></figure>
-      <figure><picture><source srcset="assets/gnomon/student_workspace.webp" type="image/webp"><img src="assets/gnomon/student_workspace.png" alt="Gnomon student workspace screen" loading="lazy"></picture><figcaption>Student workspace</figcaption></figure>
-    </div>
   </div>
   </div>
 </section>
