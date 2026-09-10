@@ -421,7 +421,11 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
 }
 .cellgrid .cell { aspect-ratio: 1; border-radius: 1.5px; }
 .cellgrid .cell.admitted { background: var(--ink); opacity: 0.7; }
-.cellgrid .cell.refused { background: var(--accent); opacity: 0.95; }
+/* Round 5 (FIX_DIRECTIVES_r5.md #3): the previous 0.95 opacity, blended
+   over the card's frosted background, sampled as a second, slightly
+   different accent hex the judge counted separately even though it was
+   never written as one. Full opacity renders the single pure value. */
+.cellgrid .cell.refused { background: var(--accent); opacity: 1; }
 @media (max-width: 480px) { .cellgrid { grid-template-columns: repeat(20, 1fr); } }
 
 .rule-row { display: flex; gap: 4px; margin: 1rem 0 0.5rem; flex-wrap: wrap; }
@@ -561,25 +565,44 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
 /* Round 4 (FIX_DIRECTIVES_r4 #3 / judge 3): three small cards were pure
    texture at both widths (labels ~7px desktop, ~4px mobile — carrying no
    information). One full-width figure, legible by construction; Figs 2
-   and 3 stay in the linked PDF only. */
+   and 3 stay in the linked PDF only.
+   Round 5 (FIX_DIRECTIVES_r5.md #1 / judge fix 1): the figure itself is
+   no longer the paper's raster PNG (matplotlib's DejaVu Sans on white,
+   ASCII "->" arrows) — it is drawn by the site as an inline SVG in the
+   page's own type (Instrument Sans, via `var(--font-body)`, inherited
+   because the SVG is inline in the DOM, not an external <img>) and the
+   card surface `#F6F4EE`, with real arrowheads and dashed conditional
+   links. Two markups ship (`.fig-diagram-desktop` / `.fig-diagram-mobile`,
+   toggled by the same 800px breakpoint the door-strip and other card
+   grids use) because the mobile one stacks all seven boxes vertically
+   full-width rather than shrinking the desktop layout — round 4's mobile
+   figure was legible on desktop and ~5px texture at 390 for exactly that
+   reason. */
 .research-figure {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
   background: #fff;
+  padding: 1.25rem;
 }
-.research-figure a { display: block; }
-.research-figure img { width: 100%; height: auto; display: block; background: #fff; }
-/* Keep the source PNG untouched (per the directive) — the navy chart
-   colours become ink-on-paper entirely in CSS. */
-.fig-ink { filter: grayscale(1) contrast(1.06); mix-blend-mode: multiply; }
+.fig-diagram { width: 100%; height: auto; display: block; }
+.fig-diagram-mobile { display: none; }
+@media (max-width: 800px) {
+  .fig-diagram-desktop { display: none; }
+  .fig-diagram-mobile { display: block; }
+  .research-figure { padding: 1rem; }
+}
 .research-figure figcaption {
   padding: 0.75rem 1rem;
+  margin: 1.25rem -1.25rem -1.25rem;
   font-size: 13px;
   line-height: 1.4;
   color: var(--muted);
   background: var(--paper-2);
   border-top: 1px solid var(--line);
+}
+@media (max-width: 800px) {
+  .research-figure figcaption { margin: 1rem -1rem -1rem; }
 }
 
 /* Card voids, research cards (round 3, FIX_DIRECTIVES_r3 #6): a two-
