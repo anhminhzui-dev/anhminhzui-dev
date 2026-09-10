@@ -25,8 +25,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="preload" href="fonts/instrument-sans-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/fraunces-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <script type="module" crossorigin src="/anhminhzui-dev/assets/index-Dg2EvJfB.js"></script>
-  <link rel="stylesheet" crossorigin href="/anhminhzui-dev/assets/index-CF1jDruI.css">
+  <script type="module" crossorigin src="/anhminhzui-dev/assets/index-D7bx9i1M.js"></script>
+  <link rel="stylesheet" crossorigin href="/anhminhzui-dev/assets/index-_wDD1L72.css">
 </head>
 <body>
 <div class="noise-overlay" aria-hidden="true"></div>
@@ -56,13 +56,15 @@
 <main id="main" tabindex="-1">
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero-copy">
-    <h1 id="hero-title">Minh Vo</h1>
-    <p class="hero-role">AI Engineer</p>
-    <p class="intro"><span class="reveal-line">From a model's reasoning</span><br><span class="reveal-line reveal-line-2">to a system people can use.</span></p>
-    <p class="hero-description">I build the data, evaluation and product workflows behind applied language models.</p>
-    <p class="location">Ho Chi Minh City, UTC+7. Open to international remote or Ho Chi Minh City onsite and hybrid roles.</p>
-    <div class="actions hero-links"><a class="button" href="Vo_Ba_Hoang_Minh_CV.pdf">Read my CV</a><a class="button secondary" href="#work">See the work</a><a class="text-link" href="mailto:minhhoang250803@gmail.com">Email Minh</a></div>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <h1 id="hero-title"><span class="reveal-line">From a model's reasoning</span><br><span class="reveal-line reveal-line-2">to a system <u>people can use</u></span></h1>
+    </div>
+    <div class="hero-aside">
+      <p class="hero-lede">I'm Minh Vo, an AI engineer in Ho Chi Minh City. I build the data, evaluation and product workflows behind applied language models, and I ship them to paying users.</p>
+      <p class="location">Open to remote roles worldwide, and to Ho Chi Minh City onsite or hybrid.</p>
+      <div class="actions hero-links"><a class="button" href="Vo_Ba_Hoang_Minh_CV.pdf">Read my CV</a><a class="button secondary" href="#work">See the work</a></div>
+    </div>
   </div>
   <div class="hero-visual">
     <div class="hero-stage" id="hero-stage">
@@ -75,10 +77,10 @@
 
 <section id="work" aria-labelledby="work-title">
   <div class="section-inner">
-  <div class="section-heading"><h2 id="work-title">Selected engineering.</h2><p>Product work and reproducible technical samples.</p></div>
+  <div class="section-heading"><h2 id="work-title">Selected engineering</h2><p>Product work and reproducible technical samples.</p></div>
 
   <div class="evidence-row">
-    <article class="evidence-tile glass tilt-card">
+    <article class="evidence-tile release-card">
       <h3>Evaluation input quality</h3><p class="project-subtitle">failclosed-eval</p>
       <p>Checks missing images, label leakage and duplicate evidence before an evaluation accepts its inputs.</p>
       <p><strong>My contribution:</strong> Directed evaluation of missing-image, leakage and duplicate-input handling.</p>
@@ -86,9 +88,10 @@
       <p class="legend"><span><span class="swatch admitted"></span>375 admitted</span><span><span class="swatch refused"></span>125 refused</span></p>
       <p><strong>375 valid inputs admitted; 125 deliberately malformed inputs rejected</strong> in a controlled 500-payload ELLIPSE-based test.</p>
       <p class="scope">Measures input admission, not model accuracy.</p>
-      <a class="text-link" href="https://github.com/anhminhzui-dev/failclosed-eval">Inspect code and reproduction</a>
+      <dl class="meta-rows"><div><dt>Tests</dt><dd>239, CI passing</dd></div><div><dt>Category</dt><dd>Evaluation input admission</dd></div></dl>
+      <a class="button ink" href="https://github.com/anhminhzui-dev/failclosed-eval">Inspect the code</a>
     </article>
-    <article class="evidence-tile glass tilt-card">
+    <article class="evidence-tile release-card">
       <h3>Agent command policies</h3><p class="project-subtitle">policy-deck</p>
       <p>Turns command-classification rules into measured behavior, with explicit false-positive and false-negative accounting.</p>
       <p><strong>My contribution:</strong> Directed the command-policy evaluation and reviewed false-positive and false-negative results.</p>
@@ -98,7 +101,8 @@
       <p class="legend"><span><span class="swatch correct"></span>correct</span><span><span class="swatch fp"></span>false positive</span></p>
       <p><strong>2 false positives; 0 false negatives</strong> on 190 separate, partly rule-aware synthetic cases across 11 rules.</p>
       <p class="scope">A bounded synthetic test, not an execution sandbox.</p>
-      <a class="text-link" href="https://github.com/anhminhzui-dev/policy-deck">Inspect code and test cases</a>
+      <dl class="meta-rows"><div><dt>Tests</dt><dd>455, CI passing</dd></div><div><dt>Category</dt><dd>Command-policy measurement</dd></div></dl>
+      <a class="button ink" href="https://github.com/anhminhzui-dev/policy-deck">Inspect the code</a>
     </article>
   </div>
   </div>
@@ -106,7 +110,7 @@
 
 <section id="gnomon" aria-labelledby="gnomon-title">
   <div class="section-inner">
-  <div class="section-heading"><h2 id="gnomon-title">Gnomon.</h2><p>Evidence-first writing assessment.</p></div>
+  <div class="section-heading"><h2 id="gnomon-title">Gnomon</h2><p>Evidence-first writing assessment.</p></div>
   <div class="case-grid">
     <div class="case-copy">
       <h3>One connected assessment system</h3>
@@ -125,8 +129,7 @@
   <div class="case-visual">
     <div class="product-frame">
       <div class="product-frame-bar" aria-hidden="true">
-        <span class="product-frame-dot"></span><span class="product-frame-dot"></span><span class="product-frame-dot"></span>
-        <span class="product-frame-url">gnomon kanon</span>
+        <span class="product-frame-url">Gnomon Kanon, live product screens</span>
       </div>
       <div class="product-frame-scroll" tabindex="0" role="group" aria-label="Scrollable product walkthrough">
         <picture>
@@ -143,7 +146,7 @@
 
 <section id="research" class="research" aria-labelledby="research-title">
   <div class="section-inner">
-  <div class="section-heading"><h2 id="research-title">Research &amp; contribution.</h2><p>One diagram from the architecture report; the rest are in the PDF.</p></div>
+  <div class="section-heading"><h2 id="research-title">Research and contribution</h2><p>One diagram from the architecture report; the rest are in the PDF.</p></div>
   <figure class="research-figure">
     <svg class="fig-diagram fig-diagram-desktop" viewBox="0 0 1180 504" role="img" aria-label="Diagram: the assessment path and its supporting systems">
       <defs>
@@ -272,7 +275,7 @@
 
 <section id="repositories" aria-labelledby="repositories-title">
   <div class="section-inner">
-  <div class="section-heading"><h2 id="repositories-title">Repository ledger.</h2><p>Seven tested repositories, plus the competition entries below. <a class="text-link" href="https://github.com/anhminhzui-dev">GitHub profile</a></p></div>
+  <div class="section-heading"><h2 id="repositories-title">Repository ledger</h2><p>Seven tested repositories, plus the competition entries below. <a class="text-link" href="https://github.com/anhminhzui-dev">GitHub profile</a></p></div>
   <div class="ledger-wrap">
   <table class="ledger">
     <caption class="visually-hidden">Repository name, test count, CI status and purpose</caption>
@@ -294,7 +297,7 @@
 
 <section id="competitions" aria-labelledby="competitions-title">
   <div class="section-inner">
-  <div class="section-heading"><h2 id="competitions-title">Competitions, September 2026.</h2><p>Live entries with public code. States are the platforms' own, as of 11 September 2026.</p></div>
+  <div class="section-heading"><h2 id="competitions-title">Competitions, September 2026</h2><p>Live entries with public code. States are the platforms' own, as of 11 September 2026.</p></div>
   <div class="ledger-wrap">
   <table class="ledger">
     <caption class="visually-hidden">Competition entry, contest, current state and repository</caption>
@@ -315,7 +318,7 @@
 
 <section id="experience" class="experience" aria-labelledby="experience-title">
   <div class="section-inner">
-  <div class="section-heading"><h2 id="experience-title">Building. Analysing. Teaching.</h2></div>
+  <div class="section-heading"><h2 id="experience-title">Experience</h2></div>
   <div class="timeline">
     <article class="role"><div><h3>Gnomon</h3><p class="years">2024–present</p></div><div><h4>Founder &amp; AI Systems Engineer</h4><p>Paid assessment and workflow delivery; product architecture, data preparation, rubric-linked reasoning, multimodal training and agent orchestration.</p></div></article>
     <article class="role"><div><h3>FPT Software</h3><p class="years">2025–early 2026</p></div><div><h4>Data Science</h4><p>Prepared and consolidated business data, investigated trends and anomalies, and compared forecasting models against baselines.</p></div></article>
@@ -336,7 +339,7 @@
 <section id="contact" class="contact" aria-labelledby="contact-title">
   <div class="section-inner contact-panel glass">
     <div class="contact-text">
-      <h2 id="contact-title">Let's talk about the work.</h2>
+      <h2 id="contact-title">Let's talk about the work</h2>
       <p>Applied AI, evaluation, data and full-stack engineering.<br>Based in Ho Chi Minh City; open to international remote teams.</p>
       <p class="contract-line">Contract work: full-stack web, data science, ML and MLOps, AI engineering, reasoning and orchestration design.</p>
     </div>
@@ -350,8 +353,12 @@
 </main>
 <footer class="footer">
   <div class="section-inner footer-inner">
-    <div class="footer-id"><p>Vo Ba Hoang Minh</p><p class="footer-city">Ho Chi Minh City, Vietnam</p></div>
-    <a href="#main" class="footer-top">Back to top</a>
+    <div class="footer-id"><p class="footer-name">Minh Vo</p><p class="footer-city">Vo Ba Hoang Minh, Ho Chi Minh City, Vietnam</p></div>
+    <nav class="footer-cols" aria-label="Footer">
+      <div><p class="footer-head">Work</p><a href="#work">Selected engineering</a><a href="#gnomon">Gnomon</a><a href="#competitions">Competitions</a><a href="#repositories">Repositories</a></div>
+      <div><p class="footer-head">Research</p><a href="https://doi.org/10.5281/zenodo.22675789">Technical report, Zenodo</a><a href="papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf">Report PDF</a><a href="https://github.com/EleutherAI/lm-evaluation-harness/pull/4115">EleutherAI pull request</a></div>
+      <div><p class="footer-head">Contact</p><a href="Vo_Ba_Hoang_Minh_CV.pdf">CV, one page</a><a href="mailto:minhhoang250803@gmail.com">minhhoang250803@gmail.com</a><a href="https://github.com/anhminhzui-dev">GitHub</a><a href="https://www.linkedin.com/in/minh-v%C3%B5-b%C3%A1-ho%C3%A0ng-287942366/">LinkedIn</a></div>
+    </nav>
   </div>
 </footer>
 </div>

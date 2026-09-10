@@ -232,6 +232,9 @@ figure { margin: 0; }
   border-color: var(--line);
 }
 .button.secondary:hover { border-color: var(--ink); }
+.button.ink { background: var(--ink); border-color: var(--ink); color: var(--paper); font-size: 0.9rem; padding: 0.55rem 1.1rem; min-height: 40px; }
+.button.ink::after { content: "92"; margin-left: 0.6rem; }
+.button.ink:hover { background: #2a2a28; }
 .text-link {
   text-decoration: none;
   color: var(--ink);
@@ -267,28 +270,40 @@ figure { margin: 0; }
 .hero {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  align-items: center;
-  gap: var(--space-4);
-  /* Hero-to-section gap (round 3, FIX_DIRECTIVES_r3 #2): 32px here plus the
-     "Selected engineering." section's own 96px top padding = 128px total
-     at 1440; 16px here plus that section's 56px at <=600px = 72px total. */
   padding: var(--space-5) 1.5rem 2rem;
   max-width: var(--max);
   margin: 0 auto;
-  min-height: min(86vh, 780px);
   width: 100%;
   box-sizing: border-box;
 }
-.hero-copy { position: relative; z-index: 2; max-width: 34rem; min-width: 0; }
+/* r10 (reference anatomy, DESIGN_BASELINE_REFERENCES §1 anthropic_home):
+   headline left, serif paragraph right, then ONE full-width organic image
+   with 14px corners. The organic device is integrated, not boxed beside text. */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: var(--space-5);
+  align-items: end;
+  margin-bottom: var(--space-4);
+}
+.hero-aside { max-width: 30rem; padding-bottom: 0.4rem; }
+.hero-lede {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 60, 'opsz' 18;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 30rem;
+}
+.hero-copy { position: relative; z-index: 2; min-width: 0; }
 .hero-role {
   font-size: 1.02rem;
   color: var(--muted);
   margin: 0.4rem 0 0;
   font-weight: 600;
 }
-.hero h1 { font-size: clamp(2.6rem, 6vw, 4rem); margin-top: 0.3rem; color: var(--ink); }
+.hero h1 { font-size: clamp(2.6rem, 5.4vw, 4.4rem); line-height: 1.04; letter-spacing: -0.01em; margin: 0; color: var(--ink); max-width: 12ch; }
+.hero h1 u { text-decoration-thickness: 0.06em; text-underline-offset: 0.12em; }
 .intro {
   font-family: var(--font-display);
   font-variation-settings: 'SOFT' 70, 'opsz' 24;
@@ -312,8 +327,8 @@ figure { margin: 0; }
   .reveal-line { animation: none; opacity: 1; transform: none; }
 }
 .hero-description { color: var(--muted); margin: 1.1rem 0 0; max-width: 32rem; }
-.location { color: var(--muted); font-size: 0.92rem; margin: 1.1rem 0 0; }
-.hero .actions { margin-top: 1.8rem; }
+.location { color: var(--muted); font-size: 0.95rem; margin: 0.9rem 0 0; }
+.hero .actions { margin-top: 1.4rem; }
 
 /* No card (round 3, FIX_DIRECTIVES_r3 #1): round 2 wrapped the leaf in a
    rounded, bordered, distinctly-toned box — exactly what the judge's
@@ -325,8 +340,9 @@ figure { margin: 0; }
 .hero-stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1.04;
-  min-height: 400px;
+  aspect-ratio: 1440 / 520;
+  min-height: 320px;
+  max-height: 560px;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: inset 0 0 0 1px #D1CFC5;
@@ -389,42 +405,11 @@ figure { margin: 0; }
 .motion-toggle:hover { border-color: var(--ink); color: var(--ink); }
 
 @media (max-width: 900px) {
-  .hero { grid-template-columns: minmax(0, 1fr); padding-top: 20px; min-height: auto; gap: var(--space-3); }
-  /* Mobile hero order, round 4 (FIX_DIRECTIVES_r4 #9 / judge 9): name,
-     role and thesis first, then the leaf, then the CTA row, then the
-     pause control — round 3 put the leaf and an accessibility control
-     before the person's own name. `display: contents` un-boxes both
-     copy and visual wrappers so every child can be ordered directly
-     within `.hero`'s own grid instead of moving as two rigid blocks. */
-  .hero-copy { display: contents; }
-  .hero-visual { display: contents; }
-  /* Round 6 (FIX_DIRECTIVES_r6.md #1 / judge fix 1): three rounds running,
-     "Read my CV" sat below a 667-890px phone fold (measured CSS y 778-824
-     in r5). Root cause found by measuring the actual DOM, not guessing:
-     `display: contents` turns every hero paragraph into a direct sibling
-     of the grid, so the grid's own 24px `gap` STACKS ON TOP OF each
-     paragraph's own margin-top instead of replacing it — h1-to-role alone
-     was paying 24px (gap) + 6.4px (h1's own margin) before a single word
-     of body copy. Zeroing each element's own top margin here leaves
-     exactly one 24px gap between every pair of stacked hero elements
-     (the grid gap alone), and the stage drops from 200 to 180px. */
-  .hero h1 { margin-top: 0; }
-  .hero-role { margin-top: 0; }
-  .intro { margin-top: 0; }
-  .hero-description { margin-top: 0; }
-  .location { margin-top: 0; }
-  .hero .actions { margin-top: 0; }
-  /* First pass cut the stage to 180px and still measured the button top at
-     CSS y 665 — 25px short of the y640 bar. Second pass (same procedure's
-     one allowed re-cut): the gradient is a full-bleed abstract wash, not a
-     silhouette that needs headroom the way the old leaf did, so it drops
-     further to 130px; the 40px->20px top padding above absorbs the rest. */
-  /* 2026-09-11: 130px read as a thin strip on a phone; 220px shows the organic
-     field while "Read my CV" still sits inside the first screen (measured y 595
-     at 130px, so 90px of headroom to the 667 bar was unused). */
-  .hero-stage { order: 2; aspect-ratio: auto; height: 180px; min-height: 0; }
-  .hero .actions.hero-links { order: 3; }
-  .motion-toggle { order: 4; margin-top: 0.75rem; }
+  /* r10: hero is rows (text grid, then full-width field); no child reordering needed. */
+  .hero { padding-top: 20px; }
+  .hero-grid { grid-template-columns: 1fr; gap: var(--space-3); margin-bottom: var(--space-3); }
+  .hero h1 { max-width: none; }
+  .motion-toggle { margin-top: 0.75rem; }
 }
 @media (max-width: 480px) {
   .hero h1 { font-size: 2.1rem; }
@@ -437,8 +422,8 @@ figure { margin: 0; }
 /* ---------- section shell ---------- */
 section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
 .section-inner { max-width: var(--max); margin: 0 auto; }
-.section-heading { max-width: 42rem; margin-bottom: var(--space-4); }
-.section-heading h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); color: var(--ink); }
+.section-heading { max-width: 42rem; margin-bottom: var(--space-3); }
+.section-heading h2 { font-family: var(--font-body); font-weight: 600; font-size: 1.5rem; letter-spacing: -0.01em; color: var(--ink); }
 .section-heading p { color: var(--muted); margin-top: 0.6rem; }
 
 /* ---------- evidence tiles ---------- */
@@ -454,7 +439,17 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
   align-items: start;
 }
 @media (max-width: 860px) { .evidence-row { grid-template-columns: 1fr; } }
-.evidence-tile h3 { font-size: 1.25rem; }
+.release-card {
+  background: #E6E1D3;
+  border-radius: 12px;
+  padding: 1.6rem 1.5rem 1.5rem;
+  border: none;
+}
+.meta-rows { margin: 1.4rem 0 1.2rem; }
+.meta-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-top: 1px solid var(--line); }
+.meta-rows dt { font-family: var(--font-body); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.meta-rows dd { margin: 0; font-size: 0.9rem; color: var(--ink); text-align: right; }
+.evidence-tile h3 { font-size: 1.35rem; }
 .evidence-tile .project-subtitle { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
 .evidence-tile p { margin-top: 0.8rem; color: var(--ink); }
 .evidence-tile .scope { color: var(--muted); font-size: 0.85rem; margin-top: 0.9rem; }
@@ -605,7 +600,7 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
   border: 1px solid var(--line);
   background: transparent;
 }
-.product-frame-url {
+.product-frame-url { margin-left: 0;
   margin-left: 8px;
   font-size: 0.75rem;
   color: var(--muted);
@@ -777,75 +772,15 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
    CTA row sampled during the design pass). Replaces two orphaned lines
    on mismatched baselines/alignments with one row sharing the page's
    own x131/x1310-equivalent margins. */
-.footer {
-  background: var(--ink);
-  color: var(--paper);
-  position: relative;
-  z-index: 1;
-}
-.footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  min-height: 180px;
-  flex-wrap: wrap;
-  padding: 0 1.5rem;
-}
-.footer-id p { margin: 0; font-size: 0.95rem; }
-.footer-id .footer-city { color: rgba(240, 238, 230, 0.65); margin-top: 0.3rem; font-size: 0.85rem; }
-.footer-top {
-  color: var(--paper);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(240, 238, 230, 0.4);
-  font-size: 0.9rem;
-  padding: 0.5rem 0;
-}
-.footer-top:hover { border-bottom-color: var(--paper); }
-@media (max-width: 600px) {
-  .footer-inner { min-height: 140px; }
-}
-
-/* ---------- narrow-viewport rhythm ---------- */
-/* 56px section gaps at 390 vs. 96px at 1440 (brief §Layout rails) — without
-   this, every section boundary on a phone carries the full desktop gap,
-   which reads as dead space between short mobile blocks. */
-@media (max-width: 600px) {
-  :root { --space-6: 3.5rem; }
-}
-
-/* Repository ledger on a phone: a table with four columns has no honest
-   width to give the Purpose column, so cells truncated invisibly (the
-   real, round-1-deferred defect). Below 640px the table becomes a stack
-   of labelled cards instead — nothing to overflow, nothing to guess at. */
-@media (max-width: 640px) {
-  .ledger-wrap { border: none; overflow: visible; }
-  .ledger, .ledger tbody, .ledger tr, .ledger td { display: block; width: 100%; }
-  .ledger thead { display: none; }
-  .ledger tr {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 0.9rem 1rem;
-    margin-bottom: 0.75rem;
-    background: rgba(248, 247, 241, 0.5);
-  }
-  .ledger tr:last-child { margin-bottom: 0; }
-  .ledger td { border-bottom: none; padding: 0.3rem 0; font-size: 0.92rem; }
-  .ledger td.repo-name { font-size: 1rem; padding-bottom: 0.5rem; }
-  .ledger td[data-label]::before {
-    content: attr(data-label);
-    display: block;
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-bottom: 0.1rem;
-  }
-}
-
-/* ---------- utility ---------- */
-.visually-hidden {
-  position: absolute;
-  width: 1px; height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
+/* r10 footer: the reference's one deliberate high-contrast break. */
+.footer { background: var(--ink); color: var(--paper); padding: var(--space-5) 1.5rem var(--space-4); margin-top: var(--space-5); }
+.footer-inner { display: grid; grid-template-columns: 1.2fr 2fr; gap: var(--space-4); align-items: start; }
+.footer-name { font-family: var(--font-display); font-size: 1.4rem; margin: 0; }
+.footer-city { color: #B8B5AC; font-size: 0.9rem; margin-top: 0.4rem; }
+.footer-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.footer-cols div { display: flex; flex-direction: column; gap: 0.45rem; }
+.footer-head { font-weight: 600; font-size: 0.9rem; margin: 0 0 0.3rem; color: var(--paper); }
+.footer-cols a { color: #C9C6BD; text-decoration: none; font-size: 0.9rem; }
+.footer-cols a:hover { color: var(--paper); text-decoration: underline; }
+@media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: var(--space-3); } .footer-inner { grid-template-columns: 1fr; } .footer-cols { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 720px) { .hero-stage { aspect-ratio: 4 / 3; min-height: 0; height: auto; max-height: 300px; } .footer-cols { grid-template-columns: 1fr; } }
