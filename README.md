@@ -4,7 +4,7 @@
 
 **AI Evaluation Engineer | Data pipelines, multimodal fine-tuning and inspectable AI systems**
 
-[Portfolio website](https://anhminhzui-dev.github.io/anhminhzui-dev/) · [CV (PDF)](Vo_Ba_Hoang_Minh_CV.pdf) · [Research paper (PDF)](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) · [Engineering write-up](writeups/2026-09-07-destructive-git-refusal-gate.md)
+[Portfolio website](https://anhminhzui-dev.github.io/anhminhzui-dev/) · [CV (PDF)](Vo_Ba_Hoang_Minh_CV.pdf) · [Research paper (Zenodo DOI)](https://doi.org/10.5281/zenodo.22675789) · [PDF](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf) · [Engineering write-up](writeups/2026-09-07-destructive-git-refusal-gate.md)
 
 **Explore:** [Projects](#seven-focused-tools) · [Gnomon research](#research-constructing-evidence-grounded-language-judgments) · [Contributions](#contributions-and-work-in-progress) · [Creative portfolio](https://minh_hoang.artstation.com/) · [Contact](#contact)
 
@@ -54,7 +54,7 @@ The development record includes **101,175 corpus records across 47 source labels
 
 Earlier encoder work also includes configurable ModernBERT low-rank adapters, weight merging and a DirectML-compatible optimiser. The report distinguishes those historical implementations from the current extraction path.
 
-**[Constructing Language Judgments: Rubric Distillation and Evidence-Grounded Reasoning](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf)** connects compiled rubrics, structured reasoning supervision, evidence-verifying execution harnesses and resource-aware multimodal adaptation. Revision 15 details reward-ranked fine-tuning (RAFT), teacher-guided correction, source-conditioned curriculum and separate experimental GRPO infrastructure. Five vector figures, an executed scoring replay and scoped historical observations explain how judgments are constructed from verified observations. IELTS is the implemented application. This is an independent systems report, not peer reviewed; the historical results do not evaluate the complete intended training programme or establish gains from the added methods. Private datasets, prompts and scoring recipes are not published.
+**[Constructing Language Judgments: Rubric Distillation and Evidence-Grounded Reasoning](https://doi.org/10.5281/zenodo.22675789)** (archived on Zenodo, DOI 10.5281/zenodo.22675789; [PDF](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf)) connects compiled rubrics, structured reasoning supervision, evidence-verifying execution harnesses and resource-aware multimodal adaptation. Revision 16 details reward-ranked fine-tuning (RAFT), teacher-guided correction, source-conditioned curriculum and separate experimental GRPO infrastructure. Four vector figures, an executed scoring replay and scoped historical observations explain how judgments are constructed from verified observations. IELTS is the implemented application. This is an independent systems report, not peer reviewed; the historical results do not evaluate the complete intended training programme or establish gains from the added methods. Private datasets, prompts and scoring recipes are not published.
 
 ### Demo
 
@@ -74,7 +74,7 @@ Recorded interface walkthrough with synthetic content and demo identities, illus
 
 ### Papers and write-ups
 
-- Technical report, September 2026: [Constructing Language Judgments: Rubric Distillation and Evidence-Grounded Reasoning](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf). Rubric compilation, structured supervision, evidence identity, judgment construction and training systems.
+- Technical report, September 2026: [Constructing Language Judgments: Rubric Distillation and Evidence-Grounded Reasoning](https://doi.org/10.5281/zenodo.22675789) ([PDF](papers/2026-09-gnomon-ielts-feedback-engine-technical-report.pdf)). Rubric compilation, structured supervision, evidence identity, judgment construction and training systems.
 - Write-up: [A destructive-git refusal gate built from a live incident](writeups/2026-09-07-destructive-git-refusal-gate.md).
 
 ### Contributions and work in progress
