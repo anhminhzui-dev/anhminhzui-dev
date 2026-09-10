@@ -422,7 +422,7 @@ figure { margin: 0; }
   /* 2026-09-11: 130px read as a thin strip on a phone; 220px shows the organic
      field while "Read my CV" still sits inside the first screen (measured y 595
      at 130px, so 90px of headroom to the 667 bar was unused). */
-  .hero-stage { order: 2; aspect-ratio: auto; height: 220px; min-height: 0; }
+  .hero-stage { order: 2; aspect-ratio: auto; height: 180px; min-height: 0; }
   .hero .actions.hero-links { order: 3; }
   .motion-toggle { order: 4; margin-top: 0.75rem; }
 }
@@ -443,6 +443,7 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
 
 /* ---------- evidence tiles ---------- */
 .evidence-row {
+  align-items: start;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3);
@@ -498,7 +499,7 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
    to solid ink, distinguished by weight rather than a second hue. */
 .strip { display: flex; gap: 2px; flex-wrap: wrap; margin-bottom: 0.5rem; }
 .strip .cell { width: 6px; height: 16px; border-radius: 2px; background: var(--ink); opacity: 0.7; }
-.strip .cell.fp { background: var(--ink); opacity: 1; }
+.strip .cell.fp { background: var(--ink); opacity: 1; height: 22px; margin-top: -3px; }
 .legend { display: flex; gap: 1.2rem; font-size: 0.8rem; color: var(--muted); flex-wrap: wrap; }
 .legend .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 0.4rem; vertical-align: -1px; }
 .legend .swatch.admitted, .legend .swatch.correct { background: var(--ink); opacity: 0.7; }
