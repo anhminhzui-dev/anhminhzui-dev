@@ -345,8 +345,12 @@ figure { margin: 0; }
   height: 100%;
   object-fit: cover;
 }
-.hero-stage.scene-live .hero-fallback { opacity: 0; }
-#hero-scene { position: absolute; inset: 0; }
+/* 2026-09-11: the poster stays painted under the canvas. When the canvas draws
+   pale or not at all, the organic poster is what the visitor sees. */
+.hero-stage.scene-live .hero-fallback { opacity: 1; }
+#hero-scene { position: absolute; inset: 0; mix-blend-mode: multiply; opacity: 0.85; }
+/* 2026-09-11: the shader canvas multiplies over the organic poster instead of
+   covering it, so the warm field and contour lines stay visible on every GPU. */
 /* Round 6 (Founder ruling, amendment A): the shader-gradient canvas fills
    #hero-scene; these two sit above it inside the same stacking context so
    the grain and particles actually composite over the gradient's own
@@ -415,7 +419,10 @@ figure { margin: 0; }
      one allowed re-cut): the gradient is a full-bleed abstract wash, not a
      silhouette that needs headroom the way the old leaf did, so it drops
      further to 130px; the 40px->20px top padding above absorbs the rest. */
-  .hero-stage { order: 2; aspect-ratio: auto; height: 130px; min-height: 0; }
+  /* 2026-09-11: 130px read as a thin strip on a phone; 220px shows the organic
+     field while "Read my CV" still sits inside the first screen (measured y 595
+     at 130px, so 90px of headroom to the 667 bar was unused). */
+  .hero-stage { order: 2; aspect-ratio: auto; height: 220px; min-height: 0; }
   .hero .actions.hero-links { order: 3; }
   .motion-toggle { order: 4; margin-top: 0.75rem; }
 }
@@ -607,7 +614,7 @@ section { padding: var(--space-6) 1.5rem; position: relative; z-index: 1; }
   padding: 0.15rem 0.7rem;
 }
 .product-frame-scroll {
-  height: 584px;
+  height: 820px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
