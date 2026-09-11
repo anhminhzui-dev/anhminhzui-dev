@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fail-closed evaluator</title>
+<style>
+  :root {
+    /* r15: repointed to the DESIGN.md tokens (site/DESIGN.md s1) so the
+       first click a reader makes does not land on a second brand system. */
+    --ground: #FCFCFB;
+    --panel: var(--ground);
+    --hairline: #E4E0D8;
+    --ink: #121212;
+    --muted: #6B6459;
+    --accent: #A8461F;
+    --pass: var(--ink);
+    --fail: var(--accent);
+    --skip: var(--muted);
+    color-scheme: light;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('../fonts/geist-sans-latin-400-normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('../fonts/geist-sans-latin-500-normal.woff2') format('woff2');
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('../fonts/geist-sans-latin-600-normal.woff2') format('woff2');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('../fonts/geist-mono-latin-400-normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  * { box-sizing: border-box; }
+  html, body { max-width: 100%; overflow-x: hidden; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 16px/1.5 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 0 16px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding-block: 32px 64px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 12px;
+  }
+  h2 {
+    font-size: 1.05rem;
+    margin: 0 0 8px;
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+  }
+  p { margin: 0 0 14px; }
+  .lede { color: var(--muted); max-width: 60ch; }
+  .mono {
+    font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  #loading {
+    border: 1px solid var(--hairline);
+    background: var(--panel);
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 0.92rem;
+  }
+  #loading[hidden] { display: none; }
+  .bar {
+    height: 6px;
+    background: var(--hairline);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    width: 35%;
+    background: var(--accent);
+    animation: slide 1.1s ease-in-out infinite;
+  }
+  @keyframes slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(320%); }
+  }
+  label.field-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 10px;
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    resize: vertical;
+    background: #fff;
+    color: var(--ink);
+  }
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 4px;
+  }
+  button {
+    font: inherit;
+    font-size: 0.9rem;
+    padding: 10px 14px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  button.secondary {
+    background: #fff;
+    color: var(--accent);
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  button:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  #cycle-hint {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin: 4px 0 0;
+  }
+  #output {
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 16px;
+    margin-top: 18px;
+    background: var(--panel);
+  }
+  #output.empty { color: var(--muted); }
+  .verdict {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+    letter-spacing: 0.02em;
+  }
+  .verdict.admitted { color: var(--pass); }
+  .verdict.refused, .verdict.halt, .verdict.error { color: var(--fail); }
+  .code-line { margin: 0 0 4px; }
+  .code-line .code { font-weight: 600; }
+  .meaning { color: var(--muted); margin: 0 0 12px; }
+  ul.checks {
+    list-style: none;
+    margin: 0 0 12px;
+    padding: 0;
+  }
+  ul.checks li {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 0.92rem;
+  }
+  .mark { width: 1.3em; flex: none; font-weight: 700; }
+  li.pass .mark { color: var(--pass); }
+  li.fail .mark { color: var(--fail); }
+  li.skip { color: var(--skip); }
+  li.skip .mark { color: var(--skip); }
+  .elapsed {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 10px;
+  }
+  table caption { text-align: left; color: var(--muted); margin-bottom: 6px; font-size: 0.85rem; }
+  th, td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--hairline);
+    vertical-align: top;
+  }
+  th { font-weight: 600; }
+  table th:last-child, table td:last-child { white-space: nowrap; }
+  td.row-pass { color: var(--pass); font-weight: 600; }
+  td.row-fail { color: var(--fail); font-weight: 600; }
+  #parity-summary { font-weight: 600; margin-top: 4px; }
+  .overflow { overflow-x: auto; }
+  footer {
+    border-top: 1px solid var(--hairline);
+    margin-top: 32px;
+    padding-top: 16px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <h1>Fail-closed evaluation: try it</h1>
+  <p class="lede">
+    This checks one record before it would ever reach a grader. A record must pass every
+    check below or it is refused, with a named reason. Nothing is silently let through:
+    if a check cannot decide, the record is refused rather than guessed at.
+  </p>
+
+  <div id="loading">
+    Loading the Python runtime in your browser (about 10&nbsp;MB, one-time download for this
+    page) &mdash; this runs the evaluator's real code, not a simulation of it.
+    <div class="bar" aria-hidden="true"><i></i></div>
+  </div>
+
+  <h2>Try a record</h2>
+  <label class="field-label" for="record-input">Record (JSON)</label>
+  <textarea id="record-input" spellcheck="false" aria-describedby="cycle-hint"></textarea>
+  <div class="buttons">
+    <button id="btn-admit" disabled>Admit this record</button>
+    <button id="btn-cycle" class="secondary" disabled>Load a refused example</button>
+    <button id="btn-reset" class="secondary" disabled>Reset</button>
+  </div>
+  <p id="cycle-hint">"Load a refused example" cycles through the five refusal codes below, each with a real record.</p>
+
+  <div id="output" class="empty" aria-live="polite">Waiting for the Python runtime to finish loading.</div>
+
+  <h2>Parity check</h2>
+  <p class="lede">
+    The same admission function, run here, against twelve records lifted directly from this
+    repository's own fixtures and test suite (not invented for this page). Each row's expected
+    outcome was produced by running the unmodified repository code locally, offline, before this
+    page was built.
+  </p>
+  <div id="parity-summary">Waiting for the Python runtime.</div>
+  <div class="overflow">
+    <table id="parity-table" hidden>
+      <caption>Fixture source: fixtures/clean_units.jsonl, fixtures/bad_missing_image.jsonl, fixtures/bad_label_leak.jsonl, and tests/test_validators.py</caption>
+      <thead>
+        <tr><th>Fixture</th><th>Expected</th><th>Actual</th><th>Result</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p>
+      Same code as
+      <a href="https://github.com/anhminhzui-dev/failclosed-eval" target="_blank" rel="noopener">github.com/anhminhzui-dev/failclosed-eval</a>,
+      commit
+      <a class="mono" href="https://github.com/anhminhzui-dev/failclosed-eval/tree/c9083a65f57feec92d85d8e4bbac8b1b85383f93" target="_blank" rel="noopener">c9083a6</a>,
+      suite 239/239 on CI. Three files
+      (<span class="mono">rubric.py</span>, <span class="mono">provenance.py</span>, <span class="mono">validators.py</span>)
+      are copied byte-for-byte from that commit and run unmodified in your browser via
+      <a href="https://pyodide.org/" target="_blank" rel="noopener">Pyodide</a>. See also the
+      <a href="https://github.com/anhminhzui-dev/failclosed-eval/blob/main/PUBLIC_RUN_RECEIPT.md" target="_blank" rel="noopener">public 500-essay admission receipt</a>.
+      No data typed here leaves your browser; nothing is tracked.
+    </p>
+  </footer>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js"
+  integrity="sha384-4X7gSPzQ4pHfjTE5aBEPJAQcHu55sciq+NWO3OUOZ3zHSJhn4te9CBjUyRSr+nei"
+  crossorigin="anonymous"></script>
+<script>
+(function () {
+  "use strict";
+
+  var CODE_MEANINGS = {
+    INPUT_IMAGE_REQUIRED: "the item type needs a figure and no image bytes resolved",
+    MISSING_INSTRUCTION: "a text item has no instruction text",
+    UNRESOLVED_IMAGE: "an image path was given but the file is not there",
+    INVALID_IMAGE_PAYLOAD: "the inline image data is malformed",
+    LABEL_LEAK_IN_PROMPT: "a value-carrying label was found in the prompt text",
+    IMAGE_SLOT_MISSING: "the image slot failed its own post-build self-check (unreachable by design)",
+    UNKNOWN_CRITERION: "the record names a criterion outside the four-name rubric",
+    UNKNOWN_ITEM_TYPE: "the record names an item type outside {figure, text}",
+    UNEXPECTED_ERROR: "the record could not be processed at all (see message)"
+  };
+
+  var VALID_RECORD = {
+    item_id: "syn-002",
+    criterion: "CORRECTNESS",
+    item_type: "text",
+    instruction: "Judge whether the claims in this response are internally consistent.",
+    response_text: "The response asserts a fact, then two sentences later asserts the opposite without noticing the conflict."
+  };
+
+  // Five refused examples, one per reachable Tier-1 refusal code. Built from the same
+  // record shapes the repository's own tests/test_validators.py uses for these exact codes.
+  var REFUSED_EXAMPLES = [
+    {
+      code: "INPUT_IMAGE_REQUIRED",
+      record: {
+        item_id: "t-fig-1", criterion: "CLARITY", item_type: "figure",
+        instruction: "Describe the figure.",
+        response_text: "A synthetic response about a synthetic figure."
+      }
+    },
+    {
+      code: "MISSING_INSTRUCTION",
+      record: {
+        item_id: "t-txt-1", criterion: "CLARITY", item_type: "text",
+        instruction: "",
+        response_text: "A synthetic response about a synthetic instruction."
+      }
+    },
+    {
+      code: "UNRESOLVED_IMAGE",
+      record: {
+        item_id: "t-fig-1", criterion: "CLARITY", item_type: "figure",
+        instruction: "Describe the figure.",
+        response_text: "A synthetic response about a synthetic figure.",
+        image_path: "no/such/file/anywhere.png"
+      }
+    },
+    {
+      code: "INVALID_IMAGE_PAYLOAD",
+      record: {
+        item_id: "t-fig-1", criterion: "CLARITY", item_type: "figure",
+        instruction: "Describe the figure.",
+        response_text: "A synthetic response about a synthetic figure.",
+        image_data_uri: "data:image/png;base64,not!base64!!"
+      }
+    },
+    {
+      code: "LABEL_LEAK_IN_PROMPT",
+      record: {
+        item_id: "t-txt-1", criterion: "CLARITY", item_type: "text",
+        instruction: "Assess the response. level: 3",
+        response_text: "A synthetic response about a synthetic instruction."
+      }
+    }
+  ];
+
+  var PNG_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/9GGnOwAAAABJRU5ErkJggg==";
+
+  // Twelve records straight from the repo's own fixtures/*.jsonl and tests/test_validators.py.
+  // "expected" was produced by running the unmodified repository code locally (see RECEIPT.md).
+  var PARITY_FIXTURES = [
+    {
+      name: "tests/test_validators.py: _text_record() (valid)",
+      record: { item_id: "t-txt-1", criterion: "clarity", item_type: "text", instruction: "Assess the response.", response_text: "A synthetic response about a synthetic instruction." },
+      expected: { outcome: "ADMITTED", code: null }
+    },
+    {
+      name: "tests/test_validators.py: _figure_record() (valid)",
+      record: { item_id: "t-fig-1", criterion: "clarity", item_type: "figure", instruction: "Describe the figure.", response_text: "A synthetic response about a synthetic figure.", image_data_uri: PNG_DATA_URI },
+      expected: { outcome: "ADMITTED", code: null }
+    },
+    {
+      name: "test: figure with no image source",
+      record: { item_id: "t-fig-1", criterion: "clarity", item_type: "figure", instruction: "Describe the figure.", response_text: "A synthetic response about a synthetic figure." },
+      expected: { outcome: "REFUSED", code: "INPUT_IMAGE_REQUIRED" }
+    },
+    {
+      name: "test: text with blank instruction",
+      record: { item_id: "t-txt-1", criterion: "clarity", item_type: "text", instruction: "", response_text: "A synthetic response about a synthetic instruction." },
+      expected: { outcome: "REFUSED", code: "MISSING_INSTRUCTION" }
+    },
+    {
+      name: "test: image_path does not exist",
+      record: { item_id: "t-fig-1", criterion: "clarity", item_type: "figure", instruction: "Describe the figure.", response_text: "A synthetic response about a synthetic figure.", image_path: "no/such/file/anywhere.png" },
+      expected: { outcome: "REFUSED", code: "UNRESOLVED_IMAGE" }
+    },
+    {
+      name: "test: malformed base64 data URI",
+      record: { item_id: "t-fig-1", criterion: "clarity", item_type: "figure", instruction: "Describe the figure.", response_text: "A synthetic response about a synthetic figure.", image_data_uri: "data:image/png;base64,not!base64!!" },
+      expected: { outcome: "REFUSED", code: "INVALID_IMAGE_PAYLOAD" }
+    },
+    {
+      name: "test: value-carrying label in instruction",
+      record: { item_id: "t-txt-1", criterion: "clarity", item_type: "text", instruction: "Assess the response. level: 3", response_text: "A synthetic response about a synthetic instruction." },
+      expected: { outcome: "REFUSED", code: "LABEL_LEAK_IN_PROMPT" }
+    },
+    {
+      name: "test: value-carrying label in response text",
+      record: { item_id: "t-txt-1", criterion: "clarity", item_type: "text", instruction: "Assess the response.", response_text: "The response earned a level: 4" },
+      expected: { outcome: "REFUSED", code: "LABEL_LEAK_IN_PROMPT" }
+    },
+    {
+      name: "fixtures/clean_units.jsonl: syn-001 (figure)",
+      record: { item_id: "syn-001", criterion: "CORRECTNESS", item_type: "figure", response_text: "The response identifies the trend shown in the supplied figure and states its cause accurately.", instruction: "Describe what the figure shows and explain why the trend occurs.", image_data_uri: PNG_DATA_URI },
+      expected: { outcome: "ADMITTED", code: null }
+    },
+    {
+      name: "fixtures/clean_units.jsonl: syn-002 (text)",
+      record: { item_id: "syn-002", criterion: "CORRECTNESS", item_type: "text", response_text: "The response asserts a fact, then two sentences later asserts the opposite without noticing the conflict.", instruction: "Judge whether the claims in this response are internally consistent." },
+      expected: { outcome: "ADMITTED", code: null }
+    },
+    {
+      name: "fixtures/bad_label_leak.jsonl: syn-003",
+      record: { item_id: "syn-003", criterion: "COMPLETENESS", item_type: "figure", response_text: "The response covers three of the four labeled segments in the figure and omits the smallest one entirely.", instruction: "Check whether every part of the figure is addressed. level: 3", image_data_uri: PNG_DATA_URI },
+      expected: { outcome: "REFUSED", code: "LABEL_LEAK_IN_PROMPT" }
+    },
+    {
+      name: "fixtures/bad_missing_image.jsonl: syn-001",
+      record: { item_id: "syn-001", criterion: "CORRECTNESS", item_type: "figure", response_text: "The response identifies the trend shown in the supplied figure and states its cause accurately.", instruction: "Describe what the figure shows and explain why the trend occurs." },
+      expected: { outcome: "REFUSED", code: "INPUT_IMAGE_REQUIRED" }
+    }
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var loadingEl = $("loading");
+  var outputEl = $("output");
+  var inputEl = $("record-input");
+  var admitBtn = $("btn-admit");
+  var cycleBtn = $("btn-cycle");
+  var resetBtn = $("btn-reset");
+  var paritySummaryEl = $("parity-summary");
+  var parityTable = $("parity-table");
+
+  var admitJson = null; // set once Pyodide + bridge module are ready
+  var cycleIndex = 0;
+
+  function setTextarea(record) {
+    inputEl.value = JSON.stringify(record, null, 2);
+  }
+
+  function renderResult(result) {
+    outputEl.classList.remove("empty");
+    var verdictClass = result.outcome === "ADMITTED" ? "admitted" : "refused";
+    var verdictText = result.outcome;
+    var html = '<p class="verdict ' + verdictClass + '">' + verdictText + '</p>';
+
+    if (result.code) {
+      var meaning = CODE_MEANINGS[result.code] || "(no documented meaning for this code)";
+      html += '<p class="code-line">Refusal code: <span class="code mono">' + result.code + '</span></p>';
+      html += '<p class="meaning">' + meaning + '</p>';
+    } else if (result.outcome === "ADMITTED") {
+      html += '<p class="meaning">Every check passed. The record would be sent on for grading.</p>';
+    } else if (result.message) {
+      html += '<p class="meaning">' + result.message + '</p>';
+    }
+
+    if (result.checks && result.checks.length) {
+      html += '<ul class="checks">';
+      result.checks.forEach(function (c) {
+        var mark = c.status === "pass" ? "✓" : c.status === "fail" ? "✗" : "–";
+        html += '<li class="' + c.status + '"><span class="mark" aria-hidden="true">' + mark + '</span><span>' + c.label +
+          (c.status === "skip" ? " (not reached)" : "") + '</span></li>';
+      });
+      html += '</ul>';
+    }
+
+    if (typeof result.elapsed_ms === "number") {
+      html += '<p class="elapsed mono">elapsed: ' + result.elapsed_ms.toFixed(4) + ' ms (averaged over 300 calls)</p>';
+    }
+
+    outputEl.innerHTML = html;
+  }
+
+  function runAdmit() {
+    if (!admitJson) return;
+    var text = inputEl.value;
+    // A single call is faster than most browsers' clamped performance.now() resolution
+    // (reduced-timer-precision privacy protection rounds a lone reading to 0.000 ms), so
+    // the exact same call is repeated and averaged -- a standard microbenchmark technique,
+    // not a different code path. The rendered result always comes from the last call.
+    var REPEATS = 300;
+    var resultJson;
+    var t0 = performance.now();
+    for (var i = 0; i < REPEATS; i++) {
+      resultJson = admitJson(text);
+    }
+    var t1 = performance.now();
+    var result = JSON.parse(resultJson);
+    result.elapsed_ms = (t1 - t0) / REPEATS;
+    renderResult(result);
+  }
+
+  function runParity() {
+    if (!admitJson) return;
+    var rows = [];
+    var passCount = 0;
+    PARITY_FIXTURES.forEach(function (fx) {
+      var resultJson = admitJson(JSON.stringify(fx.record));
+      var result = JSON.parse(resultJson);
+      var actualOutcome = result.outcome;
+      var actualCode = result.code || null;
+      var ok = actualOutcome === fx.expected.outcome && actualCode === fx.expected.code;
+      if (ok) passCount++;
+      rows.push({
+        name: fx.name,
+        expected: fx.expected.outcome + (fx.expected.code ? " / " + fx.expected.code : ""),
+        actual: actualOutcome + (actualCode ? " / " + actualCode : ""),
+        ok: ok
+      });
+    });
+
+    paritySummaryEl.textContent = passCount + " of " + PARITY_FIXTURES.length + " fixture records match the repository's own recorded expectations.";
+    var tbody = parityTable.querySelector("tbody");
+    tbody.innerHTML = "";
+    rows.forEach(function (r) {
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + r.name + "</td><td class=\"mono\">" + r.expected + "</td><td class=\"mono\">" + r.actual +
+        "</td><td class=\"" + (r.ok ? "row-pass" : "row-fail") + "\">" + (r.ok ? "PASS" : "FAIL") + "</td>";
+      tbody.appendChild(tr);
+    });
+    parityTable.hidden = false;
+  }
+
+  admitBtn.addEventListener("click", runAdmit);
+  cycleBtn.addEventListener("click", function () {
+    var example = REFUSED_EXAMPLES[cycleIndex % REFUSED_EXAMPLES.length];
+    cycleIndex++;
+    setTextarea(example.record);
+    if (admitJson) runAdmit();
+  });
+  resetBtn.addEventListener("click", function () {
+    setTextarea(VALID_RECORD);
+    if (admitJson) runAdmit();
+  });
+
+  setTextarea(VALID_RECORD);
+
+  async function boot() {
+    try {
+      var pyodide = await loadPyodide();
+
+      var files = [
+        "py/failclosed_eval/__init__.py",
+        "py/failclosed_eval/rubric.py",
+        "py/failclosed_eval/provenance.py",
+        "py/failclosed_eval/validators.py",
+        "py/bridge.py"
+      ];
+      pyodide.FS.mkdirTree("/home/pyodide/failclosed_eval");
+      for (var i = 0; i < files.length; i++) {
+        var path = files[i];
+        var resp = await fetch(path);
+        var text = await resp.text();
+        var dest = "/home/pyodide/" + path.replace(/^py\//, "");
+        pyodide.FS.writeFile(dest, text);
+      }
+      pyodide.runPython("import sys\nif '/home/pyodide' not in sys.path:\n    sys.path.insert(0, '/home/pyodide')\nfrom bridge import admit_json\n");
+      admitJson = pyodide.globals.get("admit_json");
+
+      loadingEl.hidden = true;
+      admitBtn.disabled = false;
+      cycleBtn.disabled = false;
+      resetBtn.disabled = false;
+
+      // Verification-only hook, exercised by the headless-browser screenshot check in
+      // RECEIPT.md: ?example=N pre-loads REFUSED_EXAMPLES[N] and admits it, exactly what
+      // clicking "Load a refused example" N+1 times then "Admit this record" would do by
+      // hand. ?scroll=parity scrolls the parity table into view before the screenshot is
+      // taken. Neither touches the admission logic itself.
+      var params = new URLSearchParams(location.search);
+      if (params.has("example")) {
+        var idx = parseInt(params.get("example"), 10) || 0;
+        setTextarea(REFUSED_EXAMPLES[idx % REFUSED_EXAMPLES.length].record);
+      }
+      runAdmit();
+      runParity();
+      if (params.get("scroll") === "parity") {
+        document.getElementById("parity-table").scrollIntoView({ block: "start" });
+      }
+    } catch (err) {
+      loadingEl.textContent = "The Python runtime failed to load: " + err;
+    }
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

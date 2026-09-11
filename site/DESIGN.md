@@ -1,14 +1,43 @@
-# Design plan — warm organic register, round 2 (2026-09-10)
+# DESIGN.md — the brand system for anhminhzui.dev (sole source of truth; written 2026-09-11 16:58 after the 3×3 direction study; the 2026-09-10 round-2 plan it replaces is in git history)
 
-1. Palette (5 hex, sampled from the reference set, not invented): paper `#F0EEE6`, ink `#141413`, muted `#5E5D59`, line `#D1CFC5`, accent `#4F6B3F` (moss, ginkgo-leaf family — NOT Claude's `#D97757`). Contrast on paper: ink 15.87:1, muted 5.67:1, accent 5.15:1 (AA pass, body text); accent CTA with paper-tone text 5.15:1, with white text 5.99:1 (both AA pass). Line `#D1CFC5` is decorative-only (1.34:1, never carries text).
-2. Faces (2, both OFL, self-hosted `.woff2` in `public/fonts/`): Fraunces variable (opsz+wght+SOFT axes, dialled toward the soft end for warmth) for display/headings; Instrument Sans variable for UI/body. Newsreader and Public Sans removed from the build.
-3. One memorable thing: a single leaf, a real 3D form in React Three Fiber (`src/HeroScene.tsx`) — extruded fan-blade geometry with a gentle midrib fold, vein-line displacement and a petiole stem, thin `meshPhysicalMaterial` transmission (paper-translucent, not glassy-loud), soft key light, drifts toward the pointer, settles over ~2s on load, never loops after. Build note, honestly: the ginkgo's own two-lobed crown notch was built and dropped after four capture-and-look passes — under the hero's raking 3D light a shallow notch reads exactly like a heart's or an apple's, not a leaf's; the shipped fan silhouette (wider than tall, veined, stemmed) is the organic device without that specific cue. Static SVG leaf poster (same silhouette) is the no-JS/no-WebGL fallback.
-4. Layout, top to bottom: topbar (liquid "MV" ink-blot mark + wordmark, nav) → hero (leaf scene + name/role/thesis/3 actions, CV visible unscrolled) → evidence row (admission grid + policy strip, two frosted-paper cards) → Gnomon case (4-stage flow, scroll-in once, device-framed capture in a paper browser chrome, door strip) → research strip (4 rasterised figures) → repository ledger (8 rows, gentle tilt on hover) → creative-technology (promoted, ArtStation card) → experience timeline → contact (one glass panel) → footer.
-5. Shader-gradient field (`ShaderGradientCanvas`/`ShaderGradient`, same file): two neighbouring warm paper tints, low strength/brightness, slow drift — reads as light moving on paper, sits behind the leaf only, never a visible "gradient blob."
-6. Glass panels: `backdrop-filter: blur(10px) saturate(115%)` on a near-paper tint, one hairline `#D1CFC5` border, shadow capped at `0 1px 0` — frosted paper, not dark glass.
-7. Accent discipline: the monogram, the primary CTA state, and link underlines carry the accent; the admission grid's "refused" cells and the policy strip's 2 false-positive cells also use it (explicit content instruction — the only sanctioned exceptions, both a literal encoding of "the exception state," not decoration). Nowhere else.
-8. Kill list checked: sentence-case nav/headings (no all-caps eyebrows), no "A · B · C" strings, no "→" glued to link text, no 01/02/03 markers except the flow diagram, three distinct evidence shapes (grid, strip, table) so no repeated card grid.
-9. Motion: one load moment (leaf settle, ~2s, easing out) + hero thesis text-reveal (once) + flow-diagram draws once on scroll-in; tilt on repository-ledger... evidence tiles answers the pointer only, no autoplay loop anywhere. `prefers-reduced-motion` freezes the leaf to its rest pose and skips both reveals; a visible Pause control sits on the hero.
-10. Borrowed component library effects (hand-rolled after licence checks — see receipt §libraries): Highlight (hero thesis), Progressive Blur (door-strip / research-strip scroll edges), Tilt Card (evidence tiles), Text Reveal (hero thesis, once), Noise Texture (paper field, very low opacity). Infinite Slider skipped in favour of the existing plain scroll strip — an auto-looping marquee would break the "no autoplay loop" motion law.
-11. Accessibility floor unchanged: AA contrast (checked above), visible focus ring in ink, 44px targets, keyboard tab order follows visual order, no hover-only evidence, all data visuals have a real-text caption/count beside them.
-12. Static-HTML law unchanged: `index.html` ships full real content; React mounts only into `#hero-scene` (leaf + gradient) and drives the flow-diagram/tilt/reveal triggers — page is fully readable with JavaScript disabled.
+Decision: direction **P1 + T1** (white paper, one warm accent; Geist + Geist Mono). Chosen because the four industry references the reader recognises (eugeneyan.com, huyenchip.com, rauno.me, brittanychiang.com) are all light-ground, sans-serif, one-accent, text-first pages, and because the page's ten-second job (PRODUCT.md) is proof of competence, not visual flourish. Study receipt: site_rebuild_2026-09-09/design_directions/RECEIPT.md (nine combinations, contrast computed, fonts verified loaded). Runner-up P2 stone/teal is recorded there; not used.
+
+## 1. Colour (five tokens, one definition each; contrast measured on the ground)
+| Token | Hex | Contrast on ground | Use |
+|---|---|---|---|
+| --ground | #FCFCFB | — | page background, cards (no second card tint) |
+| --ink | #121212 | 18.25:1 | all text, wordmark, focus ring |
+| --muted | #6B6459 | 5.69:1 | sub-lines, captions, table headers |
+| --hairline | #E4E0D8 | decorative only | dividers, table rules, card borders, architecture sketch boxes |
+| --accent | #A8461F | 5.74:1 (white on accent 5.90:1) | ONLY: primary button fill, the measured numbers in the hero number line, the organic element (at 12% opacity). Nowhere else. Link underlines are ink. |
+Banned: #F0EEE6, #FAF9F5, #D97757, #4F6B3F, gradients, glass panels, noise overlays, shadows deeper than 0 1px 0 var(--hairline).
+
+## 2. Type (one family plus one mono; self-hosted woff2 in public/fonts, subset latin)
+- Display and body: **Geist** (weights 400, 500, 600). Headings 600, body 400, buttons/nav 500.
+- Measured values only: **Geist Mono** 400 — counts, dates, hashes, test numbers, the hero number line. Never a sentence, label, nav item or button.
+- Scale (px / line-height): fs-1 12/1.5 · fs-2 14/1.6 · fs-3 16/1.65 · fs-4 20/1.55 · fs-5 28/1.3 · fs-6 40/1.15 · fs-7 48/1.05. Letter-spacing -0.02em on fs-5..fs-7 only. Below 480px: fs-7→fs-6, fs-6→fs-5 through the same rule set.
+- Hero h1 at fs-7 must fit in at most 3 lines at 1440 (max-width 22ch). Sentence case everywhere. No all-caps.
+Remove from the build: Fraunces, Instrument Sans and their preloads.
+
+## 3. Layout and spacing
+- One column, max-width 1040px, side padding 24px (16px under 480px). Section gap 96px (56px on phone). Card padding 24px. Grid gap 24px.
+- Order (PRODUCT.md): top bar → hero → Work → Proof → Experience → Contact → footer. Nothing else. No "research strip", no creative-technology card, no tilt cards, no device frames.
+- Hero: two columns 3:2 at ≥900px (copy left, organic element right); stacks on phone with the element ABOVE the copy at 16:10, max-height 220px.
+- Every pressable element: min 44px target, :focus-visible 2px ink outline offset 2px, :active scale(0.98). Underlined links (text-decoration-thickness 1px, offset 3px).
+
+## 4. Content rules applied by the build (from PRODUCT.md)
+- Wordmark: "Vo Ba Hoang Minh". Browser title "Minh Vo — AI engineer".
+- h1 (max 12 words): "I build evaluation-first AI systems for paying users." Sub-line: "Founder of Gnomon, which grades real student writing for teachers. Every claim in Work and Proof below links to a running test." (Corrected s-r15 judge pass: the earlier "every claim on this page" oversold — Experience carries no links — so the sentence now scopes to the two sections it is actually true of. The 24-word sentence in PRODUCT.md Q3 is the thesis; the hero uses this 9-word form because Chip Huyen's and Eugene Yan's hero lines are 8–17 words.)
+- Buttons: primary "Try the live evaluator" → /demo/ ; secondary link "Read the proof ledger" → #proof ; quiet link "CV (PDF, one page)" → Vo_Ba_Hoang_Minh_CV.pdf.
+- Number line (Geist Mono on the digit spans only, accent colour on the digits, body face on the words — mono never sets a sentence): "375 of 500 payloads admitted and 125 malformed inputs refused · 101,175 records screened · 44 checks · 7 public evaluation repos" (r15: folds in the one X-of-Y denominator PRODUCT.md's own fold-test requires, and corrects the repo count from 4 to the real 7 CI-passing evaluation repos in the ledger. r15 judge-fixes pass 2: "evaluation payloads judged correctly" read as a 75%-accuracy claim against a validator whose real behaviour was 500 of 500 correct-by-design — 375 clean rows admitted, 125 deliberately bad rows refused; reworded to state both counts plainly, matching the Work card and the CV, with no correctness framing.)
+- Work: 3 cards max — Gnomon essay assessment (live demo link), failclosed-eval (239 tests, CI link), one hackathon product (Uh-Huh, live demo https://uh-huh-demo.onrender.com/). Each: one-line what, live link, one number with denominator, one 3-box sketch in hairline.
+- Proof table: every public repo row from the current page with tests count, CI link, repo link; the archived report row with its DOI; the EleutherAI PR row.
+- Experience: the current page's facts unchanged (Gnomon founder; FPT Software; FPT Education; contract and forward-deployed work line), degree line "FPT University | Bachelor's degree." exactly.
+- Contact: minhhoang250803@gmail.com with a working Copy button; github.com/anhminhzui-dev; https://www.linkedin.com/in/minh-v%C3%B5-b%C3%A1-ho%C3%A0ng-287942366/ . No booking link.
+- Footer: "Vo Ba Hoang Minh · Built with React and three.js · No tracking."
+
+## 5. The one organic element
+React Three Fiber in src/HeroScene.tsx: a single soft form (the existing fan-leaf geometry is fine) rendered in the accent hue at low saturation, matte material, no transmission, no shader-gradient background, no particles. One load settle (≤1.5s, ease-out), then it answers the pointer only. prefers-reduced-motion or no WebGL → static PNG of the same form (regenerate public/assets/hero-fallback.png from a headless render, 1200×750). It is the only place motion exists.
+
+## 6. What "done" means for a round (judged by site_rebuild_2026-09-09/JUDGE_RUBRIC_PRODUCT.md, written before the build)
+Renders at 1440 and 390 with no overflow, fonts loaded (not fallbacks), every control works, /demo/ runs, contrast as in §1, no banned tell, and the ten-second test passes on the 1440 screenshot without scrolling.
