@@ -204,26 +204,21 @@ a:active, button:active { transform: scale(0.98); }
    not). The actual fix: render only the thousands separator in the
    proportional body face, where its natural glyph width is narrow. */
 .num-sep { font-family: var(--font-body); }
-#main, #work, #proof, #experience, #contact { scroll-margin-top: 96px; }
+#main, #product, #work, #repos, #research, #resume, #contact { scroll-margin-top: 96px; }
 
 .hero-visual { display: flex; flex-direction: column; min-width: 0; }
 @media (max-width: 899px) { .hero-visual { order: -1; } }
 .hero-stage {
   position: relative; width: 100%;
   aspect-ratio: 1 / 1; max-height: 420px;
+  border: 1px solid var(--hairline); border-radius: 12px; box-shadow: 0 1px 0 var(--hairline);
+  overflow: hidden;
 }
 @media (max-width: 899px) {
   .hero-stage { aspect-ratio: 16 / 10; max-height: 220px; }
 }
-.hero-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.hero-stage.scene-live .hero-fallback { opacity: 0; }
-#hero-scene { position: absolute; inset: 0; }
-.motion-toggle {
-  align-self: center; margin-top: 12px; min-height: 44px; padding: 0 0.9rem;
-  border: 1px solid var(--muted); border-radius: var(--radius);
-  background: transparent; color: var(--muted); font-size: var(--fs-1); cursor: pointer;
-}
-.motion-toggle:hover { border-color: var(--ink); color: var(--ink); }
+.hero-art { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hero-art-caption { margin-top: 0.6rem; font-size: var(--fs-1); text-align: center; }
 
 /* ---------- section shell ---------- */
 section { padding: calc(var(--section-gap) / 2) 0; }
@@ -298,6 +293,98 @@ section { padding: calc(var(--section-gap) / 2) 0; }
 .icon-link { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; text-decoration: none; color: var(--ink); font-weight: 500; }
 .icon-link:hover { color: var(--muted); }
 .icon-link .icon { width: 20px; height: 20px; flex: 0 0 auto; }
+
+/* ==========================================================================
+   Round 16 asset layer — see DESIGN.md "## 7. Asset layer (round 16)" and
+   ASSET_BOARD_r16.md for the component map and licence decisions. Every rule
+   below is native/hand-rolled (no dependency added) except where noted.
+   ========================================================================== */
+
+/* ---------- device frame (ASSET_BOARD s4, Attio-style plain card) ---------- */
+.shot-frame {
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  padding: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 0 var(--hairline);
+}
+.shot-frame img, .shot-frame video { display: block; width: 100%; border-radius: 6px; }
+
+/* ---------- Tilt Card (hand-rolled, JS sets transform inline) ---------- */
+.tilt { transition: transform 0.15s ease-out; will-change: transform; }
+@media (prefers-reduced-motion: reduce) { .tilt { transition: none; } }
+
+/* ---------- Magnetic Button (hand-rolled) ---------- */
+.magnetic { transition: transform 0.2s ease-out; }
+@media (prefers-reduced-motion: reduce) { .magnetic { transition: none; } }
+
+/* ---------- Text Reveal (hand-rolled word stagger) ---------- */
+.reveal-text { display: block; }
+.reveal-word { display: inline-block; opacity: 0; transform: translateY(0.35em); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal-text.is-in .reveal-word { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { .reveal-word { transition: none; opacity: 1; transform: none; } }
+
+/* ---------- Blur Fade entrance (hand-rolled) ---------- */
+.blur-fade { opacity: 0; filter: blur(4px); transform: translateY(8px); transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease; }
+.blur-fade.is-in { opacity: 1; filter: blur(0); transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { .blur-fade { transition: none; filter: none; transform: none; opacity: 1; } }
+
+/* ---------- Progressive Blur edge mask (hand-rolled, decorative) ---------- */
+.scroll-rail { position: relative; overflow-x: auto; }
+.scroll-rail::before, .scroll-rail::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 32px; pointer-events: none; z-index: 2;
+}
+.scroll-rail::before { left: 0; background: linear-gradient(90deg, var(--ground), transparent); }
+.scroll-rail::after { right: 0; background: linear-gradient(270deg, var(--ground), transparent); }
+
+/* ---------- PRODUCT section ---------- */
+.product-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 0 var(--side-pad); }
+@media (min-width: 860px) { .product-layout { grid-template-columns: 3fr 2fr; align-items: start; } }
+.phototab-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.phototab-btn {
+  min-height: 36px; padding: 0 0.75rem; border: 1px solid var(--hairline); border-radius: 8px;
+  background: transparent; color: var(--muted); font-family: var(--font-body); font-size: var(--fs-1); cursor: pointer;
+}
+.phototab-btn[aria-pressed="true"] { color: var(--ink); border-color: var(--ink); font-weight: 500; }
+.product-walk-caption { color: var(--muted); font-size: var(--fs-2); margin-top: 0.75rem; }
+.arch-sketch { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 1.25rem; }
+.arch-sketch .sketch-box { font-size: var(--fs-2); padding: 10px 14px; }
+.arch-sketch .sketch-arrow { transform: rotate(0deg); padding: 0 2px; }
+@media (max-width: 640px) { .arch-sketch { flex-direction: column; align-items: stretch; } .arch-sketch .sketch-arrow { transform: rotate(90deg); align-self: center; } }
+
+/* ---------- REPOS cards ---------- */
+.repo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--grid-gap); padding: 0 var(--side-pad); margin-bottom: 2rem; }
+.repo-card { background: var(--ground); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.repo-card h3 { font-size: var(--fs-3); }
+.repo-card p { color: var(--muted); font-size: var(--fs-2); }
+.repo-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: var(--fs-1); color: var(--muted); }
+.repo-meta .mono { color: var(--ink); }
+.repo-card .text-link { margin-top: 0.25rem; }
+
+/* ---------- RESEARCH ---------- */
+.research-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 0 var(--side-pad); }
+@media (min-width: 860px) { .research-grid { grid-template-columns: 3fr 2fr; } }
+.abstract { color: var(--ink); font-size: var(--fs-3); }
+.research-figs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: start; align-content: start; }
+.research-fig { border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; align-self: start; }
+.research-fig img { display: block; width: 100%; }
+.research-fig figcaption { padding: 6px 10px; font-size: var(--fs-1); color: var(--muted); border-top: 1px solid var(--hairline); }
+
+/* ---------- vfx ---------- */
+.vfx-copy { max-width: 42rem; margin: 0 var(--side-pad) 1.75rem; color: var(--ink); font-size: var(--fs-3); }
+.vfx-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--grid-gap); padding: 0 var(--side-pad); }
+.vfx-item { margin: 0; border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; background: var(--ground); }
+.vfx-item img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.vfx-item figcaption { padding: 6px 10px; font-size: var(--fs-1); color: var(--muted); border-top: 1px solid var(--hairline); }
+.vfx-item .vfx-year { color: var(--muted); }
+.vfx-profile { margin: 1.75rem var(--side-pad) 0; }
+
+/* ---------- RÉSUMÉ ---------- */
+.resume-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 0 var(--side-pad); }
+@media (min-width: 860px) { .resume-layout { grid-template-columns: 2fr 3fr; } }
+.resume-preview .shot-frame img { border: 1px solid var(--hairline); }
+.resume-preview .actions { margin-top: 1rem; }
 
 /* ---------- footer ---------- */
 .footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--hairline); }

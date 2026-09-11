@@ -41,3 +41,14 @@ React Three Fiber in src/HeroScene.tsx: a single soft form (the existing fan-lea
 
 ## 6. What "done" means for a round (judged by site_rebuild_2026-09-09/JUDGE_RUBRIC_PRODUCT.md, written before the build)
 Renders at 1440 and 390 with no overflow, fonts loaded (not fallbacks), every control works, /demo/ runs, contrast as in §1, no banned tell, and the ten-second test passes on the 1440 screenshot without scrolling.
+
+## 7. Asset layer (round 16)
+Sections added after the hero, in PRODUCT.md's Round 16 order: Product, Work (now with a `.shot-frame` visual per card), Repos (new cards + the existing ledger table below, unchanged), Research (new), Résumé (new, absorbs the former standalone Experience section — same content, same order). Component decisions, licence checks and the reference-site audit are recorded in full at `site_rebuild_2026-09-09/ASSET_BOARD_r16.md`; this section states only what shipped and why.
+
+**Licence fork (decided, not asked):** RULES names five effects — Text Reveal, Tilt Card, Count Up, Progressive Blur, Magnetic Button — that are literal Unlumen UI component names, but Unlumen UI's own licence (fetched at research time) is a custom no-redistribution grant, not MIT/OFL. All five effects are therefore **hand-rolled natively** in `src/interactions.ts` (15–40 lines each, zero dependency, MIT-by-construction) instead of installed from that library. No package.json dependency changed this round — Magic UI's/SmoothUI's shadcn-registry installs (Number Ticker, Blur Fade, Wave Text, Phototab, Image Metadata) were the ASSET_BOARD's first-choice mapping, but were substituted with the same native approach for reliability (no registry-install network step in the build) and to keep the zero-dependency footprint the repo already had. Phototab's cross-fade and Infinite Slider (marked optional in ASSET_BOARD, "cut if it reads as SaaS-demo") and the hover variant of Image Metadata were cut for the same reason; figures use the always-visible caption-bar fallback instead of a hover overlay.
+
+**Device frame:** `.shot-frame` (styles.css) — the Attio-style plain bordered card from ASSET_BOARD §4, `0 1px 0 hairline` shadow ceiling, no browser chrome. Applied to all Gnomon captures, the product-walk poster/GIF, the failclosed-eval demo capture, the Uh-Huh live capture, and the CV preview.
+
+**One organic hero moment:** unchanged — `HeroScene.tsx` is still the only place motion beyond micro-interaction exists; nothing new was added to the hero this round.
+
+**Reduced motion:** every hand-rolled effect checks `prefers-reduced-motion` before attaching a listener or animating (see each function in `interactions.ts`); Count Up renders the final digits immediately, Text Reveal and Blur Fade show final state with no transition, Tilt Card and Magnetic Button attach no listener at all, and the product-walk GIF stays on its static poster frame.
