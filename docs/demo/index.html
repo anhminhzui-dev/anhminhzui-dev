@@ -249,6 +249,7 @@
     clip: rect(0 0 0 0);
     white-space: nowrap;
   }
+@media(max-width:600px){.overflow table{min-width:680px}.overflow th,.overflow td{white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -287,7 +288,7 @@
     page was built.
   </p>
   <div id="parity-summary">Waiting for the Python runtime.</div>
-  <div class="overflow">
+  <div class="overflow" tabindex="0" aria-label="Fixture parity results; scroll horizontally">
     <table id="parity-table" hidden>
       <caption>Fixture source: fixtures/clean_units.jsonl, fixtures/bad_missing_image.jsonl, fixtures/bad_label_leak.jsonl, and tests/test_validators.py</caption>
       <thead>
