@@ -1,9 +1,11 @@
-// interactions.ts — round 16 asset layer, native/hand-rolled (MIT-by-construction,
-// zero dependency). Licence fork recorded in ASSET_BOARD_r16.md s0: Unlumen UI's
-// own catalogue names these five effects but its licence is not MIT/OFL, so every
-// effect here is a small hand-rolled substitute instead of an installed component.
-// Each function is a no-op (or renders the final state immediately) under
-// prefers-reduced-motion, per DESIGN.md and the round-16 RULES line.
+// interactions.ts — round 16 asset layer (hover/tilt/magnetic, native/hand-rolled,
+// MIT-by-construction, zero dependency: Unlumen UI's own catalogue names these
+// effects but its licence is not MIT/OFL) plus round 18's Motion-driven moments
+// (MOTION_VOCABULARY, BRIEF_r18.md slot 4 / STUDY_r18.md s3): number tickers,
+// the résumé's one scroll-entrance stagger, and the product phototab crossfade.
+// Every effect here is a no-op (or renders the final state immediately) under
+// prefers-reduced-motion, per DESIGN.md and BRIEF_r18.md slot 4.
+import { animate, inView, stagger } from 'motion'
 
 function reducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -49,49 +51,16 @@ export function initMagneticButton() {
   })
 }
 
-// ---- Text Reveal (substitutes Unlumen UI "Text Reveal") ----
-// Wraps each word of a `.reveal-text` element in a span and fades/lifts them in,
-// once, on first scroll-into-view. Static text under reduced motion (words are
-// still wrapped for consistent markup but the CSS transition is disabled globally).
-export function initTextReveal() {
-  const els = document.querySelectorAll<HTMLElement>('.reveal-text')
-  els.forEach((el) => {
-    const words = el.textContent?.split(' ') ?? []
-    el.textContent = ''
-    words.forEach((w, i) => {
-      const span = document.createElement('span')
-      span.className = 'reveal-word'
-      span.style.transitionDelay = `${i * 35}ms`
-      span.textContent = w
-      el.append(span, document.createTextNode(' '))
-    })
-  })
-  if (reducedMotion() || !('IntersectionObserver' in window)) {
-    els.forEach((el) => el.classList.add('is-in'))
-    return
-  }
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-in')
-          io.unobserve(entry.target)
-        }
-      })
-    },
-    { threshold: 0.4 },
-  )
-  els.forEach((el) => io.observe(el))
-}
-
-// ---- Count Up (substitutes Magic UI "Number Ticker") ----
+// ---- Count Up (Motion-powered; MOTION_VOCABULARY "number tickers on the
+// four proof cards, 600-900ms, once, ease-out") ----
 // data-target holds the final integer; data-sep="," inserts a thousands
-// separator rendered in the body face (see styles.css .num-sep note).
+// separator rendered in the body face (see styles.css .num-sep note). Also
+// drives the two count-up spans in the Product impact line (same mechanism).
 export function initCountUp() {
   const els = document.querySelectorAll<HTMLElement>('.count-up')
   const render = (el: HTMLElement, n: number, grouped: boolean) => {
     el.textContent = ''
-    const text = grouped ? n.toLocaleString('en-US') : String(n)
+    const text = grouped ? Math.round(n).toLocaleString('en-US') : String(Math.round(n))
     text.split(/(,)/).forEach((part) => {
       if (part === ',') {
         const sep = document.createElement('span')
@@ -111,95 +80,89 @@ export function initCountUp() {
       render(el, target, grouped)
       return
     }
-    const duration = 900
-    const start = performance.now()
-    const step = (now: number) => {
-      const p = Math.min(1, (now - start) / duration)
-      const eased = 1 - Math.pow(1 - p, 3)
-      render(el, Math.round(target * eased), grouped)
-      if (p < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
+    animate(0, target, {
+      duration: 0.9,
+      ease: 'easeOut',
+      onUpdate: (latest) => render(el, latest, grouped),
+    })
   }
 
   if (!('IntersectionObserver' in window)) {
-    els.forEach((el) => run(el as HTMLElement))
+    els.forEach((el) => run(el))
     return
   }
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          run(entry.target as HTMLElement)
-          io.unobserve(entry.target)
-        }
-      })
-    },
-    { threshold: 0.6 },
-  )
-  els.forEach((el) => io.observe(el))
+  els.forEach((el) => {
+    const stop = inView(el, () => {
+      run(el)
+      stop()
+    }, { amount: 0.6 })
+  })
 }
 
-// ---- Blur Fade (substitutes Magic UI "Blur Fade") ----
-// Entrance-only, once per element: opacity + 4px blur-in. Reduced motion strips
-// the blur radius via the CSS rule in styles.css and shows the final state.
-export function initBlurFade() {
-  const els = document.querySelectorAll<HTMLElement>('.blur-fade')
-  if (reducedMotion() || !('IntersectionObserver' in window)) {
-    els.forEach((el) => el.classList.add('is-in'))
-    return
-  }
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-in')
-          io.unobserve(entry.target)
-        }
-      })
-    },
-    { threshold: 0.15 },
-  )
-  els.forEach((el) => io.observe(el))
+// ---- Résumé entrance (Motion-powered; MOTION_VOCABULARY "Résumé timeline —
+// each role fades/slides in once on scroll, staggered per entry") ----
+// This is the section's ONE orchestrated moment (STUDY_r18.md s3) — Product,
+// Work and Repos each get their own single moment elsewhere (crossfade /
+// hover), so none of them also gets a scroll-entrance fade. No CSS class
+// pre-hides these elements: the default state is fully visible, and this
+// only overlays a reveal when motion is allowed and IntersectionObserver
+// exists, so a no-JS or reduced-motion viewer never sees hidden content.
+export function initResumeReveal() {
+  const section = document.getElementById('resume')
+  if (!section) return
+  const items = section.querySelectorAll<HTMLElement>('.resume-preview, .timeline .role')
+  if (!items.length || reducedMotion() || !('IntersectionObserver' in window)) return
+  items.forEach((el) => {
+    el.style.opacity = '0'
+    el.style.transform = 'translateY(8px)'
+  })
+  const stop = inView(section, () => {
+    animate(
+      Array.from(items),
+      { opacity: [0, 1], transform: ['translateY(8px)', 'translateY(0px)'] },
+      { duration: 0.28, ease: 'easeOut', delay: stagger(0.06) },
+    )
+    stop()
+  }, { amount: 0.2 })
 }
 
 // ---- Phototab (substitutes SmoothUI "Phototab") ----
 // Click-driven tab strip switching the framed image in a PRODUCT gallery.
-// Never motion-driven, so there is no reduced-motion fallback to write.
+// Motion powers a short crossfade on the swap (MOTION_VOCABULARY: interactions
+// <=200ms, ease-out); under reduced motion the src swaps with no transition.
 export function initPhototabs() {
   document.querySelectorAll<HTMLElement>('.phototab').forEach((group) => {
     const buttons = group.querySelectorAll<HTMLButtonElement>('.phototab-btn')
     const frame = group.querySelector<HTMLImageElement>('.phototab-img')
+    const fullsize = group.querySelector<HTMLAnchorElement>('#product-fullsize')
     if (!frame) return
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (btn.getAttribute('aria-pressed') === 'true') return
         buttons.forEach((b) => b.setAttribute('aria-pressed', 'false'))
         btn.setAttribute('aria-pressed', 'true')
-        frame.src = btn.dataset.src || frame.src
-        frame.alt = btn.dataset.alt || frame.alt
+        const swap = () => {
+          frame.src = btn.dataset.src || frame.src
+          frame.alt = btn.dataset.alt || frame.alt
+          if (fullsize) fullsize.href = frame.src
+        }
+        if (reducedMotion()) {
+          swap()
+          return
+        }
+        animate(frame, { opacity: [1, 0] }, { duration: 0.09, ease: 'easeOut' }).then(() => {
+          swap()
+          animate(frame, { opacity: [0, 1] }, { duration: 0.09, ease: 'easeOut' })
+        })
       })
     })
   })
 }
 
-// ---- GIF poster swap ----
-// The looping product-walk GIF has no motion opt-out of its own (ASSET_BOARD
-// s4), so the static poster frame ships as the <img src>; swap to the GIF
-// only when the viewer has not asked for reduced motion.
-export function initGifPoster() {
-  if (reducedMotion()) return
-  const img = document.getElementById('product-walk-img') as HTMLImageElement | null
-  if (!img) return
-  const motionSrc = img.dataset.motionSrc
-  if (motionSrc) img.src = motionSrc
-}
-
 export function initInteractions() {
   initTiltCards()
   initMagneticButton()
-  initTextReveal()
   initCountUp()
-  initBlurFade()
+  initResumeReveal()
   initPhototabs()
-  initGifPoster()
 }
