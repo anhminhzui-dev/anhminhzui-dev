@@ -1,6 +1,8 @@
 /* ==========================================================================
    anhminhzui.dev — DESIGN.md system (direction P1 + T1)
-   Five colour tokens, one definition each. Geist + Geist Mono, self-hosted.
+   Five colour tokens, one definition each. Type pairing 3 (round 17, head
+   recommendation HEAD_LOOK_2026-09-11.md): Cabinet Grotesk (display) +
+   Hanken Grotesk (body) + Martian Mono (measured values), all self-hosted.
    Section order: top bar -> hero -> Work -> Proof -> Experience -> Contact
    -> footer. Nothing else.
    ========================================================================== */
@@ -31,8 +33,9 @@
   --fs-6: 40px; --lh-6: 1.15;
   --fs-7: 48px; --lh-7: 1.05;
 
-  --font-body: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 @media (max-width: 480px) {
@@ -46,30 +49,58 @@
 }
 
 @font-face {
-  font-family: 'Geist';
-  src: url('/fonts/geist-sans-latin-400-normal.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Geist';
-  src: url('/fonts/geist-sans-latin-500-normal.woff2') format('woff2');
+  font-family: 'Cabinet Grotesk';
+  src: url('/fonts/cabinet-grotesk-latin-500-normal.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Geist';
-  src: url('/fonts/geist-sans-latin-600-normal.woff2') format('woff2');
+  font-family: 'Cabinet Grotesk';
+  src: url('/fonts/cabinet-grotesk-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cabinet Grotesk';
+  src: url('/fonts/cabinet-grotesk-latin-800-normal.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('/fonts/hanken-grotesk-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('/fonts/hanken-grotesk-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('/fonts/hanken-grotesk-latin-600-normal.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/geist-mono-latin-400-normal.woff2') format('woff2');
+  font-family: 'Martian Mono';
+  src: url('/fonts/martian-mono-latin-400-normal.woff2') format('woff2');
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Martian Mono';
+  src: url('/fonts/martian-mono-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
@@ -90,7 +121,14 @@ body {
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
-h1, h2, h3, h4 { font-weight: 600; line-height: 1.2; margin: 0; color: var(--ink); }
+/* DESIGN.md s2: display = Cabinet Grotesk (h1 800, h2 700); h3/h4 are used
+   throughout as card titles (work/repo/timeline), which s2 assigns to the
+   body face at 600 — so they stay in --font-body rather than the display
+   face. */
+h1, h2 { font-family: var(--font-display); line-height: 1.2; margin: 0; color: var(--ink); }
+h3, h4 { font-family: var(--font-body); font-weight: 600; line-height: 1.2; margin: 0; color: var(--ink); }
+h1 { font-weight: 800; }
+h2 { font-weight: 700; }
 p { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
@@ -158,7 +196,7 @@ a:active, button:active { transform: scale(0.98); }
   background: transparent; cursor: pointer;
   flex-direction: column; align-items: center; justify-content: center; gap: 5px;
 }
-.nav-toggle span:not(.visually-hidden) { width: 20px; height: 1.5px; background: var(--ink); display: block; transition: transform 0.25s ease, opacity 0.25s ease; }
+.nav-toggle span:not(.visually-hidden) { width: 20px; height: 1.5px; background: var(--ink); display: block; transition: transform 0.2s ease, opacity 0.2s ease; }
 .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
@@ -177,26 +215,32 @@ a:active, button:active { transform: scale(0.98); }
   .nav-toggle { display: flex; }
 }
 
-/* ---------- hero ---------- */
-.hero { padding: 3.5rem var(--side-pad) 1rem; max-width: calc(var(--max) + 3rem); margin: 0 auto; }
-.hero-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
-@media (min-width: 900px) { .hero { max-width: var(--max); padding-left: calc(var(--side-pad) * 2); padding-right: calc(var(--side-pad) * 2); }
-  .hero-grid { grid-template-columns: 3fr 2fr; gap: 3rem; align-items: center; }
+/* ---------- hero (round 17: 12-col grid ported from hero_variants/index.html
+   V3, DESIGN.md s5) ---------- */
+/* Coherence repair (r18): every other section's left edge is the sum of
+   .section-inner's own centering gap + padding PLUS .section-heading's own
+   margin (both var(--side-pad)) — at 1440 that is (1440-1040)/2 + 24 + 24 =
+   248px. .hero had none of that (only its own var(--side-pad)), landing its
+   h1 ~230px left of every section below it. This reproduces the exact same
+   offset on the left only, so the graphic frame keeps bleeding to the true
+   viewport right edge (padding-right stays 0, no max-width on .hero itself). */
+.hero {
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px;
+  min-height: 78vh; align-items: center;
+  padding-top: 56px; padding-right: 0; padding-bottom: 40px;
+  padding-left: calc(max(0px, (100vw - var(--max)) / 2) + (var(--side-pad) * 2));
 }
-.hero-copy { min-width: 0; }
+/* Fix round 2, defect 2: 560px left no room for the CV link once it joined
+   .actions as a third flex item, forcing it onto its own row; 600px still
+   sits well inside the columns-1-6 envelope (~696px at 1440). */
+.hero-copy { grid-column: 1 / 7; max-width: 600px; min-width: 0; }
 .hero h1 {
-  font-size: var(--fs-7); line-height: var(--lh-7); letter-spacing: -0.02em;
-  max-width: 22ch;
+  font-size: 56px; line-height: 1.05; letter-spacing: -0.015em;
+  max-width: 22ch; margin: 0 0 20px;
 }
-.hero-sub { font-size: var(--fs-4); line-height: var(--lh-4); color: var(--muted); margin-top: 1.1rem; max-width: 42ch; }
-.cv-quiet { margin-top: 0.25rem; }
-.number-line {
-  font-family: var(--font-body); font-size: var(--fs-2); color: var(--muted);
-  margin-top: 1.75rem; line-height: var(--lh-2);
-}
-.number-line .num { color: var(--accent); font-family: var(--font-mono); }
+.hero-sub { font-size: var(--fs-4); line-height: var(--lh-4); color: var(--muted); margin-top: 0; max-width: 48ch; }
 /* r15 judge-fixes pass 2, criterion 7: removing tabular-nums (above) did not
-   fix the comma spacing, because Geist Mono is a genuinely monospace face —
+   fix the comma spacing, because the mono face is genuinely monospace —
    every glyph gets the same fixed advance width regardless of that CSS
    property, so a narrow comma glyph still sits inside a full digit-width
    cell and reads as air on both sides ("101 , 175"). Confirmed by measuring
@@ -206,26 +250,70 @@ a:active, button:active { transform: scale(0.98); }
 .num-sep { font-family: var(--font-body); }
 #main, #product, #work, #repos, #research, #resume, #contact { scroll-margin-top: 96px; }
 
-.hero-visual { display: flex; flex-direction: column; min-width: 0; }
-@media (max-width: 899px) { .hero-visual { order: -1; } }
-.hero-stage {
-  position: relative; width: 100%;
-  aspect-ratio: 1 / 1; max-height: 420px;
-  border: 1px solid var(--hairline); border-radius: 12px; box-shadow: 0 1px 0 var(--hairline);
-  overflow: hidden;
+/* graphic frame: full strength inside its own frame (columns 7-12), bleeds
+   to the true right edge (no right side-pad on .hero); caption sits outside
+   the canvas in muted mono (DESIGN.md s5). */
+.hero-graphic {
+  grid-column: 7 / 13; align-self: stretch; position: relative; overflow: hidden;
+  min-height: 420px; display: flex; flex-direction: column; justify-content: center;
 }
-@media (max-width: 899px) {
-  .hero-stage { aspect-ratio: 16 / 10; max-height: 220px; }
+.graphic-frame {
+  position: relative; flex: 1; min-height: 420px; border-radius: 2px; overflow: hidden;
+  background: var(--ground); border: 1px solid var(--hairline);
 }
-.hero-art { display: block; width: 100%; height: 100%; object-fit: cover; }
-.hero-art-caption { margin-top: 0.6rem; font-size: var(--fs-1); text-align: center; }
+.flow-canvas, .graphic-fallback {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.flow-canvas[hidden] { display: none; }
+/* Fix round 2, defect 1: the global `img { display: block; }` reset (above)
+   is an author rule and outranks the UA stylesheet's [hidden] rule, so
+   without this the fallback <img> stayed visible even after JS set its
+   `hidden` attribute — canvas and static fallback rendered stacked at once. */
+.graphic-fallback[hidden] { display: none; }
+.graphic-caption { margin: 12px 0 0; text-align: center; font-size: var(--fs-1); color: var(--muted); }
 
-/* ---------- section shell ---------- */
+/* proof strip: four cards, measured numbers in mono/accent, labels in muted
+   body face (DESIGN.md s2, s4). */
+.proof-strip {
+  margin: 1.75rem 0 0; padding: 24px 0 0; border-top: 1px solid var(--hairline);
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.proof-strip li { display: flex; flex-direction: column; gap: 4px; }
+.proof-strip .num { font-family: var(--font-mono); font-size: var(--fs-5); color: var(--accent); line-height: 1.2; }
+.proof-strip .num .of { font-size: var(--fs-3); color: var(--muted); font-family: var(--font-mono); }
+.proof-strip .label { font-family: var(--font-body); font-size: var(--fs-1); color: var(--muted); line-height: 1.4; }
+
+@media (max-width: 900px) {
+  /* Stacked layout: the graphic no longer bleeds (it sits full-width after
+     the copy, same as every other section's content), so both sides take
+     the same doubled offset the sections use below 1040px viewport width
+     (centering gap is 0 there, leaving section-inner padding + section-
+     heading margin = var(--side-pad) * 2 — 48px at 900-480px, 32px ≤480px
+     once --side-pad itself redefines to 16px). */
+  .hero { grid-template-columns: 1fr; padding: 32px calc(var(--side-pad) * 2) 0; min-height: 0; }
+  .hero-copy { grid-column: auto; max-width: none; }
+  .hero-graphic {
+    grid-column: auto; aspect-ratio: 16 / 10; max-height: 220px; min-height: 0;
+    margin-top: 24px;
+  }
+  .graphic-frame { min-height: 0; }
+  .proof-strip { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 40px; }
+  /* HEAD_LOOK_2026-09-11.md defect 2: never run 3,000 particles on a phone
+     canvas — the static field wins below 480px regardless of JS timing. */
+  .flow-canvas { display: none !important; }
+  .graphic-fallback { display: block !important; }
+}
+
+/* ---------- section shell ----------
+   SYSTEM_r18.md 1.7: every section carries the same top padding — no seam
+   between the hero and the first section below it. */
 section { padding: calc(var(--section-gap) / 2) 0; }
-.hero + section { padding-top: calc(var(--section-gap) * 0.6); }
 @media (max-width: 720px) { section { padding: 56px 0; } }
 .section-heading { max-width: 42rem; margin: 0 var(--side-pad) 2rem; }
-.section-heading h2 { font-size: var(--fs-5); letter-spacing: -0.02em; }
+.section-heading h2 { font-size: var(--fs-5); letter-spacing: -0.006em; }
 .section-heading p { color: var(--muted); margin-top: 0.5rem; font-size: var(--fs-3); }
 
 /* ---------- work ---------- */
@@ -233,8 +321,17 @@ section { padding: calc(var(--section-gap) / 2) 0; }
 @media (max-width: 860px) { .work-grid { grid-template-columns: 1fr; } }
 .work-card {
   background: var(--ground); border: 1px solid var(--hairline); border-radius: var(--radius);
-  padding: var(--card-pad); display: flex; flex-direction: column;
+  padding: var(--card-pad); display: flex; flex-direction: column; min-height: 420px;
+  transition: transform 0.15s ease-out, border-color 0.15s ease-out;
 }
+/* Marketing/Cards (HyperUI, r18_refs/work_cards_social-links.png): borrowed
+   mechanism = a bordered card frame (already had one) plus a hover
+   micro-interaction on the whole card, not just the image. DESIGN.md caps
+   shadow depth at "0 1px 0 hairline", so the lift reads via transform +
+   border darken, never a deeper box-shadow. */
+.work-card:hover { transform: translateY(-3px); border-color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .work-card:hover { transform: none; } }
+.work-card .shot-frame img { height: 240px; object-fit: cover; }
 .work-card h3 { font-size: var(--fs-4); }
 .work-card .what { margin-top: 0.6rem; color: var(--ink); }
 .sketch { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin: 1.1rem 0; }
@@ -251,7 +348,10 @@ section { padding: calc(var(--section-gap) / 2) 0; }
 /* ---------- proof ledger ---------- */
 .ledger-wrap { margin: 0 var(--side-pad); overflow-x: auto; border: 1px solid var(--hairline); border-radius: var(--radius); }
 .ledger { width: 100%; border-collapse: collapse; }
-.ledger th, .ledger td { text-align: left; padding: 0.85rem 1rem; border-bottom: 1px solid var(--hairline); font-size: var(--fs-2); vertical-align: top; }
+/* Tables, "Bordered" (HyperUI, r18_refs/repos_table_bordered.png): borrowed
+   mechanism = more generous vertical padding per cell (no zebra striping —
+   DESIGN.md bans a second row tint). */
+.ledger th, .ledger td { text-align: left; padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--hairline); font-size: var(--fs-2); vertical-align: top; }
 .ledger tr:last-child td { border-bottom: 0; }
 .ledger th { color: var(--muted); font-weight: 500; font-size: var(--fs-1); }
 .ledger td.repo-name { font-weight: 600; color: var(--ink); }
@@ -265,24 +365,35 @@ section { padding: calc(var(--section-gap) / 2) 0; }
   .ledger td:first-child::before { content: none; }
 }
 
-/* ---------- experience ---------- */
-.timeline { display: grid; gap: 0; padding: 0 var(--side-pad); }
-.timeline .role {
-  display: grid; grid-template-columns: 10rem 1fr; gap: var(--grid-gap);
-  padding: 1.1rem 0; border-top: 1px solid var(--hairline);
+/* ---------- experience ----------
+   Timelines, "Vertical" (HyperUI, r18_refs/resume_timeline_vertical.png):
+   borrowed mechanism = a literal connecting line + one dot per entry, read
+   as "one continuous career line" (today's stack had no drawn line). */
+.timeline { position: relative; padding: 0 var(--side-pad); }
+.timeline::before {
+  content: ''; position: absolute; left: calc(var(--side-pad) + 10px); top: 14px; bottom: 14px;
+  width: 1px; background: var(--hairline);
 }
-.timeline .role:first-child { border-top: none; }
+.timeline .role { display: grid; grid-template-columns: 20px 10rem 1fr; gap: var(--grid-gap); padding: 1.1rem 0; position: relative; }
+.timeline .role:first-child { padding-top: 0; }
+.timeline .role:last-child { padding-bottom: 0; }
+.timeline-dot { width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--ink); }
 .timeline .role h3 { font-size: var(--fs-3); }
 .timeline .role .years { color: var(--muted); font-size: var(--fs-2); margin-top: 0.2rem; }
 .timeline .role h4 { font-size: var(--fs-3); font-weight: 600; margin: 0 0 0.35rem; }
 .timeline .role p { color: var(--muted); font-size: var(--fs-2); }
-@media (max-width: 640px) { .timeline .role { grid-template-columns: 1fr; gap: 0.4rem; } }
+@media (max-width: 640px) {
+  .timeline .role { grid-template-columns: 20px 1fr; gap: 0.4rem 1rem; }
+  .timeline-dot { grid-row: 1 / 3; }
+  .role-head { grid-column: 2; grid-row: 1; }
+  .role-body { grid-column: 2; grid-row: 2; }
+}
 .education { margin: 0 var(--side-pad); padding-top: 1.1rem; border-top: 1px solid var(--hairline); color: var(--ink); font-size: var(--fs-3); }
 
 /* ---------- contact ---------- */
 .contact-grid { padding: 0 var(--side-pad); display: flex; flex-direction: column; gap: 1.5rem; }
 .contact-email { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
-.contact-email .mono { font-size: var(--fs-4); }
+.contact-email .mono { font-size: var(--fs-4); min-width: 0; overflow-wrap: anywhere; }
 .btn-copy {
   min-height: 44px; padding: 0 1.1rem; border: 1px solid var(--muted); border-radius: var(--radius);
   background: transparent; color: var(--ink); font-family: var(--font-body); font-weight: 500; font-size: var(--fs-2);
@@ -309,7 +420,7 @@ section { padding: calc(var(--section-gap) / 2) 0; }
   overflow: hidden;
   box-shadow: 0 1px 0 var(--hairline);
 }
-.shot-frame img, .shot-frame video { display: block; width: 100%; border-radius: 6px; }
+.shot-frame img, .shot-frame video { display: block; width: 100%; height: auto; border-radius: 6px; }
 
 /* ---------- Tilt Card (hand-rolled, JS sets transform inline) ---------- */
 .tilt { transition: transform 0.15s ease-out; will-change: transform; }
@@ -319,34 +430,33 @@ section { padding: calc(var(--section-gap) / 2) 0; }
 .magnetic { transition: transform 0.2s ease-out; }
 @media (prefers-reduced-motion: reduce) { .magnetic { transition: none; } }
 
-/* ---------- Text Reveal (hand-rolled word stagger) ---------- */
-.reveal-text { display: block; }
-.reveal-word { display: inline-block; opacity: 0; transform: translateY(0.35em); transition: opacity 0.5s ease, transform 0.5s ease; }
-.reveal-text.is-in .reveal-word { opacity: 1; transform: translateY(0); }
-@media (prefers-reduced-motion: reduce) { .reveal-word { transition: none; opacity: 1; transform: none; } }
-
-/* ---------- Blur Fade entrance (hand-rolled) ---------- */
-.blur-fade { opacity: 0; filter: blur(4px); transform: translateY(8px); transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease; }
-.blur-fade.is-in { opacity: 1; filter: blur(0); transform: translateY(0); }
-@media (prefers-reduced-motion: reduce) { .blur-fade { transition: none; filter: none; transform: none; opacity: 1; } }
-
-/* ---------- Progressive Blur edge mask (hand-rolled, decorative) ---------- */
-.scroll-rail { position: relative; overflow-x: auto; }
-.scroll-rail::before, .scroll-rail::after {
-  content: ''; position: absolute; top: 0; bottom: 0; width: 32px; pointer-events: none; z-index: 2;
-}
-.scroll-rail::before { left: 0; background: linear-gradient(90deg, var(--ground), transparent); }
-.scroll-rail::after { right: 0; background: linear-gradient(270deg, var(--ground), transparent); }
+/* ---------- Résumé entrance (round 18: Motion-driven, replaces the r16
+   blanket .blur-fade — see interactions.ts initResumeReveal. Only the
+   Résumé section gets a scroll entrance per STUDY_r18.md s3; Motion sets
+   the opacity/transform inline via JS, so there is no CSS hidden-by-default
+   state here and the section stays fully visible with no JS or motion. ---------- */
 
 /* ---------- PRODUCT section ---------- */
 .product-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 0 var(--side-pad); }
-@media (min-width: 860px) { .product-layout { grid-template-columns: 3fr 2fr; align-items: start; } }
-.phototab-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+/* STUDY_r18.md s5 / BRIEF slot 3: gallery column floors at 640px so the
+   phototab image never compresses; breakpoint moved to 1040px (the content
+   column's own max-width) so the floor always has room without overflowing
+   a narrower viewport — below it the layout stacks to one full-width column. */
+@media (min-width: 1040px) { .product-layout { grid-template-columns: minmax(640px, 3fr) minmax(240px, 2fr); align-items: start; } }
+/* Tabs, "Base" (HyperUI Application/Tabs, r18_refs/product_tabs_base.png):
+   borrowed mechanism = a visible underline on the active tab, in ink (not
+   accent — DESIGN.md reserves accent for button fill / measured numbers /
+   the organic element only). Not borrowed: HyperUI's own pill/segmented
+   surrounding chrome. */
+.phototab-strip { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.75rem; border-bottom: 1px solid var(--hairline); }
 .phototab-btn {
-  min-height: 36px; padding: 0 0.75rem; border: 1px solid var(--hairline); border-radius: 8px;
+  min-width: 44px; min-height: 44px; padding: 0 2px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent;
   background: transparent; color: var(--muted); font-family: var(--font-body); font-size: var(--fs-1); cursor: pointer;
+  transition: color 0.15s ease-out, border-color 0.15s ease-out;
 }
-.phototab-btn[aria-pressed="true"] { color: var(--ink); border-color: var(--ink); font-weight: 500; }
+.phototab-btn:hover { color: var(--ink); }
+.phototab-btn[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .phototab-btn { transition: none; } }
 .product-walk-caption { color: var(--muted); font-size: var(--fs-2); margin-top: 0.75rem; }
 .arch-sketch { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 1.25rem; }
 .arch-sketch .sketch-box { font-size: var(--fs-2); padding: 10px 14px; }
@@ -355,29 +465,47 @@ section { padding: calc(var(--section-gap) / 2) 0; }
 
 /* ---------- REPOS cards ---------- */
 .repo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--grid-gap); padding: 0 var(--side-pad); margin-bottom: 2rem; }
-.repo-card { background: var(--ground); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.repo-card {
+  background: var(--ground); border: 1px solid var(--hairline); border-radius: var(--radius);
+  padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;
+  transition: transform 0.15s ease-out, border-color 0.15s ease-out;
+}
+.repo-card:hover { transform: translateY(-2px); border-color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .repo-card:hover { transform: none; } }
 .repo-card h3 { font-size: var(--fs-3); }
 .repo-card p { color: var(--muted); font-size: var(--fs-2); }
 .repo-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: var(--fs-1); color: var(--muted); }
 .repo-meta .mono { color: var(--ink); }
 .repo-card .text-link { margin-top: 0.25rem; }
 
-/* ---------- RESEARCH ---------- */
-.research-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 0 var(--side-pad); }
-@media (min-width: 860px) { .research-grid { grid-template-columns: 3fr 2fr; } }
-.abstract { color: var(--ink); font-size: var(--fs-3); }
-.research-figs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: start; align-content: start; }
-.research-fig { border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; align-self: start; }
-.research-fig img { display: block; width: 100%; }
-.research-fig figcaption { padding: 6px 10px; font-size: var(--fs-1); color: var(--muted); border-top: 1px solid var(--hairline); }
+/* ---------- RESEARCH ----------
+   Blog cards, "Bordered with image, title, excerpt, CTA" (HyperUI,
+   r18_refs/research_blogcard_cta.png): borrowed mechanism = one bordered
+   card holding the figures flush to the top edge and the text below, so
+   each figure keeps the card's full inner width (>=320px, per BRIEF T7 —
+   today's two-column 1fr/1fr split squeezed the thumbnails to ~75px). CTA
+   links stay ink-underlined per DESIGN.md's link rule, never accent. */
+.research-card { margin: 0 var(--side-pad); border: 1px solid var(--hairline); border-radius: var(--radius); overflow: hidden; background: var(--hairline); }
+.research-figs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+@media (max-width: 700px) { .research-figs { grid-template-columns: 1fr; } }
+.research-fig { margin: 0; background: var(--ground); }
+.research-fig img { display: block; width: 100%; height: auto; }
+.research-fig figcaption { padding: 8px 12px; font-size: var(--fs-1); color: var(--muted); border-top: 1px solid var(--hairline); background: var(--ground); }
+.research-body { padding: var(--card-pad); background: var(--ground); }
+.research-body h3 { font-size: var(--fs-4); }
+.research-body .abstract { color: var(--ink); font-size: var(--fs-3); margin-top: 0.75rem; }
+.research-body .actions { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.25rem; }
 
 /* ---------- vfx ---------- */
-.vfx-copy { max-width: 42rem; margin: 0 var(--side-pad) 1.75rem; color: var(--ink); font-size: var(--fs-3); }
-.vfx-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--grid-gap); padding: 0 var(--side-pad); }
-.vfx-item { margin: 0; border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; background: var(--ground); }
-.vfx-item img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
-.vfx-item figcaption { padding: 6px 10px; font-size: var(--fs-1); color: var(--muted); border-top: 1px solid var(--hairline); }
-.vfx-item .vfx-year { color: var(--muted); }
+.vfx-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--grid-gap); padding: 0 var(--side-pad); }
+.vfx-item { display: block; margin: 0; border: 1px solid var(--hairline); border-radius: 4px; overflow: hidden; background: var(--ground); }
+.vfx-item img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 50%; }
+.vfx-item-virgo img { object-position: 62% 45%; }
+/* SYSTEM_r18.md coherence line 4 / DESIGN.md s1: accent is reserved for
+   button fill, the hero number line and the organic element only — the
+   global :focus-visible rule (ink) already covers this element, so no
+   override is needed here. */
+@media (max-width: 899px) { .vfx-strip { grid-template-columns: repeat(2, 1fr); } }
 .vfx-profile { margin: 1.75rem var(--side-pad) 0; }
 
 /* ---------- RÉSUMÉ ---------- */
@@ -386,6 +514,13 @@ section { padding: calc(var(--section-gap) / 2) 0; }
 .resume-preview .shot-frame img { border: 1px solid var(--hairline); }
 .resume-preview .actions { margin-top: 1rem; }
 
-/* ---------- footer ---------- */
-.footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--hairline); }
+/* ---------- footer ----------
+   Footers, "Company info and links" (HyperUI, r18_refs/contact_footer_company-
+   links.png): borrowed mechanism = a hairline rule (already present) with
+   more generous vertical rhythm before the closing line. */
+.footer { padding: 3.25rem 0 3rem; border-top: 1px solid var(--hairline); }
 .footer p { padding: 0 var(--side-pad); color: var(--muted); font-size: var(--fs-2); }
+
+/* Shared, explicit control for the continuous canvas and walkthrough. */
+#motion-toggle { padding: 0; border: 0; background: none; font: inherit; cursor: pointer; margin-top: 12px; }
+#motion-toggle[hidden] { display: none; }
