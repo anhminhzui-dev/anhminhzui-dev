@@ -5,7 +5,7 @@ tag `cv-r<N>` on the commit that published it. Working builds that never shipped
 fact inventory every version is cut from is `cv/MASTER_CV.md`; the audit trail of every earlier file is
 `M:/AGENT_VAULT/PORTFOLIO/cv/CV_REGISTER.md` (private).
 
-## cv-r20 — 2026-09-18 — audited against every earlier version (20 files, 107 facts)
+## cv-r20 — 2026-09-18 — commit d037f0b — sha256 723c589714531727 — audited against every earlier version (20 files, 107 facts)
 ### Added (restored from earlier versions; each corroborated in two or more files)
 - Gnomon: facts-not-grades architecture; fail-closed evaluation harness counts (2,232 criterion units, 629 essays,
   1,866 admitted, 366 refused); LLM-as-judge on a frozen, hash-checked evidence window; KD-tree exemplar retrieval;
