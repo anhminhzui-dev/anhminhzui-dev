@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"><title>Gnomon — interactive institutional prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<style>/* Preserve the original desktop prototype; narrow viewports can pan both axes. */
+@media(max-width:1119px){body{min-width:1120px}}
+html{overflow:auto}[role="button"]:focus-visible{outline:2px solid #7A1230;outline-offset:3px}</style>
+</head>
+<body>
+<aside style="position:relative;z-index:100;background:#FAF7F0;color:#1C1B24;padding:10px 16px;font:13px system-ui;border-bottom:1px solid #d9d3c9">Private institutional software · school local network. Portfolio demonstration uses simulated data. <a href="../#product" style="color:#7A1230">Back to portfolio</a></aside>
+<p id="portfolio-unavailable" style="padding:10px 16px;font:13px/1.5 system-ui">This portfolio preserves a simulated interface. School account services and additional study resources are not connected here. <a href="../#product">Return to portfolio evidence</a>.</p>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#FAF7F0}
+  ::selection{background:rgba(122,18,48,0.14)}
+  @keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes lightDrift{0%{transform:translate(0,0)}50%{transform:translate(3%,4%)}100%{transform:translate(0,0)}}
+  @keyframes travel{to{stroke-dashoffset:-900}}
+  @keyframes spinSlow{to{transform:rotate(360deg)}}
+  @keyframes pulseRing{0%{transform:scale(1);opacity:0.5}70%{transform:scale(2.1);opacity:0}100%{opacity:0}}
+  @keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes livePulse{0%,100%{opacity:1}50%{opacity:0.25}}
+  @keyframes drawOnce{to{stroke-dashoffset:0}}
+  @keyframes castShadow{to{opacity:0.16}}
+  @keyframes popNode{0%{transform:scale(0)}70%{transform:scale(1.22)}100%{transform:scale(1)}}
+  @keyframes fadeInOnce{to{opacity:1}}
+  @keyframes gbob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-5px) rotate(-1.2deg)}}
+  @keyframes gblink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.08)}}
+  @keyframes deskIn{from{opacity:0;transform:translateY(10px) scale(0.98)}to{opacity:1;transform:none}}
+  @keyframes wflut{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-5deg)}}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:0.001ms!important;animation-iteration-count:1!important}}
+  :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="--pad:clamp(70px,8vw,150px);--ink:#1C1B24;--ac:#7A1230;--acDeep:#5E0F2C;--acBright:#8A1538;--gold:#B08D4C;--goldL:#E3C88B;position:relative;background:#FAF7F0;color:#1C1B24;font-family:'Newsreader',Georgia,serif;padding-left:var(--pad);padding-right:clamp(28px,5vw,84px);padding-bottom:0;overflow-x:visible;min-height:100vh;">
+
+  <!-- AMBIENT BACKGROUND LAYERS -->
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(28,25,34,0.032) 1px,transparent 1px),linear-gradient(90deg,rgba(28,25,34,0.032) 1px,transparent 1px);background-size:46px 46px;"></div>
+  <div aria-hidden="true" data-drift-light style="position:fixed;inset:-25%;z-index:0;pointer-events:none;background:radial-gradient(38% 38% at 28% 22%,rgba(176,141,76,0.15),transparent 70%),radial-gradient(44% 44% at 78% 72%,rgba(122,18,48,0.08),transparent 72%),radial-gradient(30% 30% at 62% 12%,rgba(227,200,139,0.10),transparent 70%);animation:lightDrift 30s ease-in-out infinite;"></div>
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.55;mix-blend-mode:multiply;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E&quot;);"></div>
+
+  <!-- composed archival field: a plotting sheet — agreement line, reading-nodes, gold contours, dial-O watermark; all faint, seal-free -->
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;">
+    <svg width="100%" height="100%" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1440 900" style="position:absolute;inset:0;">
+      <defs>
+        <radialGradient id="bgVig" cx="50%" cy="36%" r="78%"><stop offset="52%" stop-color="transparent"></stop><stop offset="100%" stop-color="rgba(28,25,34,0.055)"></stop></radialGradient>
+      </defs>
+      <!-- top-right: the dial-O watermark — the ring + a gnomon ray landing on a gold reading-node -->
+      <g transform="translate(1258,158)" opacity="0.6">
+        <circle r="196" fill="none" stroke="rgba(122,18,48,0.055)" stroke-width="1.4"></circle>
+        <circle r="156" fill="none" stroke="rgba(176,141,76,0.09)" stroke-width="1" stroke-dasharray="1.5 10"></circle>
+        <line x1="0" y1="0" x2="151" y2="-38" stroke="rgba(176,141,76,0.10)" stroke-width="1.3"></line>
+        <circle cx="0" cy="0" r="4" fill="rgba(122,18,48,0.07)"></circle>
+        <circle cx="151" cy="-38" r="7" fill="rgba(176,141,76,0.13)"></circle>
+      </g>
+      <!-- contour arcs removed — they cut diagonally across the content band and read as distraction -->
+      <!-- bottom-left: the agreement field — a y=x reference line with reading-nodes plotted along it (the moat, as terrain) -->
+      <g transform="translate(96,566)">
+        <line x1="0" y1="300" x2="300" y2="0" stroke="rgba(28,25,34,0.055)" stroke-width="1" stroke-dasharray="3 7"></line>
+        <g fill="rgba(176,141,76,0.12)">
+          <circle cx="38" cy="258" r="3"></circle><circle cx="86" cy="220" r="3.4"></circle>
+          <circle cx="128" cy="178" r="3"></circle><circle cx="152" cy="144" r="4.2"></circle>
+          <circle cx="194" cy="114" r="3.2"></circle><circle cx="238" cy="68" r="3"></circle>
+          <circle cx="270" cy="34" r="3.4"></circle>
+        </g>
+      </g>
+      <rect width="1440" height="900" fill="url(#bgVig)"></rect>
+    </svg>
+  </div>
+
+  <!-- THREAD -->
+  <svg data-rail-svg preserveAspectRatio="none" viewBox="0 0 4 4000" style="position:absolute;left:calc(var(--pad)/2 - 2px);top:0;width:4px;height:100%;z-index:1;overflow:visible;pointer-events:none;">
+    <line data-rail-track x1="2" y1="0" x2="2" y2="4000" stroke="rgba(28,25,34,0.09)" stroke-width="1" vector-effect="non-scaling-stroke"></line>
+    <line data-rail-reveal x1="2" y1="0" x2="2" y2="4000" stroke="#B08D4C" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-dasharray="4000" stroke-dashoffset="4000" stroke-linecap="round"></line>
+    <line data-rail-current x1="2" y1="0" x2="2" y2="4000" stroke="#E3C88B" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-dasharray="5 360" stroke-dashoffset="0" opacity="0.6" style="animation:travel 5.5s linear infinite;"></line>
+  </svg>
+
+  <!-- NAV -->
+  <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0 22px;border-bottom:1px solid rgba(28,25,34,0.1);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg viewBox="0 0 200 200" style="width:28px;height:28px;flex:0 0 auto;" aria-label="Gnomon Kanon mark — the cast"><line x1="30" y1="150" x2="158" y2="150" stroke="var(--ac)" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="var(--ac)"></path><line x1="78" y1="150" x2="150" y2="124" stroke="#1C1B24" stroke-width="8" stroke-linecap="round" opacity="0.15"></line><line x1="78" y1="150" x2="138" y2="78" stroke="var(--gold)" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="var(--gold)"></circle></svg>
+      <span style="font-family:'Newsreader',serif;font-size:25px;font-weight:500;letter-spacing:0.005em;color:#1C1B24;">Gnomon&nbsp;Kanon</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:30px;font-family:'Public Sans',sans-serif;font-size:13.5px;color:#4A4650;">
+      <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto02 }}" style="cursor:pointer;">The proof</span>
+      <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto03 }}" style="cursor:pointer;">The Suite</span>
+      <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto04 }}" style="cursor:pointer;">Evidence</span>
+      <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto06 }}" style="cursor:pointer;">Pricing</span>
+      <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ gotoTrust }}" style="cursor:pointer;">Trust &amp; data</span>
+      <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ gotoPortal }}" style="cursor:pointer;color:#7C7883;">Sign in</span>
+      <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto07 }}" style="display:inline-flex;align-items:center;gap:8px;padding:9px 17px;border:1px solid var(--ac);color:var(--ac);border-radius:2px;font-weight:600;cursor:pointer;">Request an audit</span>
+    </div>
+  </div>
+
+  <!-- 01 ARRIVAL — PRODUCT-FIRST HERO -->
+  <section data-screen-label="01 Arrival" style="position:relative;z-index:2;padding:48px 0 84px;">
+    <!-- C — SYNTHESIS: the demo IS the hero, held within editorial framing -->
+    <div style="position:relative;z-index:1;">
+
+      <!-- framing: eyebrow · one-line headline · positioning · proof band -->
+      <div style="max-width:880px;margin:0 auto;text-align:center;">
+        <div style="font-family:'Public Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--ac);opacity:0;animation:riseIn 0.8s ease forwards 0.05s;">Academic Operations Suite <span style="color:#9A96A1;">· watch it run</span></div>
+        <h1 style="margin:14px auto 0;max-width:16em;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(38px,4.8vw,66px);line-height:1.02;letter-spacing:-0.015em;color:#1C1B24;">
+          <span style="display:inline;opacity:0;animation:riseIn 0.9s ease forwards 0.1s;">One examiner. </span><span style="display:inline;opacity:0;animation:riseIn 0.9s ease forwards 0.22s;">A thousand scripts. </span><span style="display:inline;font-style:italic;color:var(--ac);opacity:0;animation:riseIn 0.9s ease forwards 0.36s;">Every one marked twice.</span>
+        </h1>
+        <p style="max-width:600px;margin:20px auto 0;font-family:'Newsreader',serif;font-size:18px;line-height:1.6;color:#3A3641;font-weight:300;opacity:0;animation:riseIn 0.9s ease forwards 0.5s;">
+          The operations layer beneath your institution — reading every submission beside your teachers, so one marker can stand behind a thousand results.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;margin-top:20px;font-family:'Public Sans',sans-serif;font-size:12.5px;color:#696571;opacity:0;animation:riseIn 0.9s ease forwards 0.62s;">
+          <span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--gold);"></span><span>Target: within about half a band of a senior-examiner panel · a <strong style="color:#1C1B24;font-weight:600;">12,000</strong>-script blind study is registered</span></span>
+          <span style="width:1px;height:13px;background:rgba(28,25,34,0.18);"></span>
+          <span>reserved until the study completes · <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto04 }}" style="color:var(--ac);border-bottom:1px solid rgba(122,18,48,0.4);cursor:pointer;">read the protocol ↓</span></span>
+        </div>
+      </div>
+
+      <!-- the stage: full-width auto-playing console, held within the page margins -->
+      <div style="margin-top:clamp(30px,4vh,46px);position:relative;opacity:0;animation:riseIn 1s ease forwards 0.62s;">
+        <div style="height:clamp(520px,66vh,680px);position:relative;">
+          <dc-import name="Gnomon Demo Stage" style="position:absolute;inset:0;" hint-size="100%,620px"></dc-import>
+        </div>
+      </div>
+
+      <!-- CTAs, beneath the proof -->
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:28px;opacity:0;animation:riseIn 0.9s ease forwards 0.82s;">
+        <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto07 }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 26px;background:linear-gradient(180deg,var(--acBright),var(--acDeep));color:#FBEFE9;border-radius:2px;font-family:'Public Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 12px 30px -14px rgba(94,15,44,0.6);">Request an audit</span>
+        <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto04 }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 22px;color:#1C1B24;border-radius:2px;font-family:'Public Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">See the evidence <span style="color:var(--gold);">↓</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01b CREDIBILITY BAND — the moat as the buyer scans it in five seconds: accuracy · control · audit · abstention. Accuracy carries the honest numbers; the other three carry the verifiable mechanism. Previews §02, which proves it in full. -->
+  <section data-screen-label="01b Credibility" data-reveal style="position:relative;z-index:2;padding:8px 0 4px;opacity:0;transform:translateY(18px);transition:opacity 0.9s ease,transform 0.9s ease;">
+    <div style="border:1px solid rgba(122,18,48,0.16);border-radius:10px;background:linear-gradient(180deg,#FDFCF9,#F7F2E8);box-shadow:0 40px 90px -70px rgba(28,25,34,0.6);overflow:hidden;">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:13px 24px;border-bottom:1px solid rgba(176,141,76,0.4);">
+        <span style="font-family:'Public Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--ac);">Accuracy · Control · Audit</span>
+        <span style="flex:1;min-width:24px;height:1px;background:linear-gradient(90deg,rgba(176,141,76,0.5),rgba(176,141,76,0));"></span>
+        <span style="font-family:'Newsreader',serif;font-style:italic;font-size:14px;color:#696571;">Four commitments you can check — in numbers here, in full below.</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));">
+        <!-- ACCURACY -->
+        <div style="padding:22px 24px;border-right:1px solid rgba(28,25,34,0.08);border-bottom:1px solid rgba(28,25,34,0.08);">
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#9A96A1;">Accuracy</span><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:0.1em;color:#80632C;background:rgba(227,200,139,0.34);padding:2px 7px;border-radius:2px;">TARGET</span></div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-top:14px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:40px;font-weight:500;color:var(--ac);line-height:0.9;letter-spacing:-0.02em;">≤ ½</span><span style="font-family:'Public Sans',sans-serif;font-size:13px;color:#696571;padding-bottom:3px;">band</span></div>
+          <div style="margin-top:12px;font-family:'Newsreader',serif;font-size:15.5px;line-height:1.32;color:#1C1B24;">Registered target: within about half a band of a senior-examiner panel.</div>
+          <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.5;color:#80632C;">target QWK 0.85–0.89 · target ρ 0.89–0.92 · vs field bar 0.70 — reserved until measured</div>
+        </div>
+        <!-- CONTROL -->
+        <div style="padding:22px 24px;border-right:1px solid rgba(28,25,34,0.08);border-bottom:1px solid rgba(28,25,34,0.08);">
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#9A96A1;">Control</span><span style="width:9px;height:9px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 3px #FDFCF9,0 3px 9px -2px rgba(176,141,76,0.8);"></span></div>
+          <div style="margin-top:14px;font-family:'Newsreader',serif;font-style:italic;font-size:22px;line-height:1;color:var(--ac);">The teacher decides.</div>
+          <div style="margin-top:12px;font-family:'Newsreader',serif;font-size:15.5px;line-height:1.32;color:#1C1B24;">Every band is a proposal — a human countersigns or overrides it, always.</div>
+          <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.5;color:#80632C;">human-on-the-loop · nothing entered unsigned</div>
+        </div>
+        <!-- AUDIT -->
+        <div style="padding:22px 24px;border-right:1px solid rgba(28,25,34,0.08);border-bottom:1px solid rgba(28,25,34,0.08);">
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#9A96A1;">Audit</span><span style="width:9px;height:9px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 3px #FDFCF9,0 3px 9px -2px rgba(176,141,76,0.8);"></span></div>
+          <div style="margin-top:14px;font-family:'Newsreader',serif;font-style:italic;font-size:22px;line-height:1;color:var(--ac);">No claim without its quote.</div>
+          <div style="margin-top:12px;font-family:'Newsreader',serif;font-size:15.5px;line-height:1.32;color:#1C1B24;">Each judgment cites the exact line it read, on an append-only ledger.</div>
+          <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.5;color:#80632C;">receipts anchored to text · reconciled vs outcomes</div>
+        </div>
+        <!-- ABSTENTION -->
+        <div style="padding:22px 24px;border-bottom:1px solid rgba(28,25,34,0.08);">
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#9A96A1;">Abstention</span><span style="width:9px;height:9px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 3px #FDFCF9,0 3px 9px -2px rgba(176,141,76,0.8);"></span></div>
+          <div style="margin-top:14px;font-family:'Newsreader',serif;font-style:italic;font-size:22px;line-height:1;color:var(--ac);">It stops before it guesses.</div>
+          <div style="margin-top:12px;font-family:'Newsreader',serif;font-size:15.5px;line-height:1.32;color:#1C1B24;">Thin evidence → no band. The script goes to a human, and the abstention is counted.</div>
+          <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.5;color:#80632C;">flagged for review · on the record</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 THE TRUST STACK — the moat, made explicit -->
+  <section data-screen-label="02 The Trust Stack" data-reveal style="position:relative;z-index:2;padding:76px 0;opacity:0;transform:translateY(18px);transition:opacity 0.9s ease,transform 0.9s ease;">
+    <div style="position:relative;margin-bottom:30px;">
+      <span style="position:absolute;left:calc(var(--pad)/-2 - 6px);top:1px;width:13px;height:13px;border-radius:50%;background:#FAF7F0;border:1.5px solid var(--gold);box-shadow:0 0 0 5px #FAF7F0;"></span>
+      <span style="position:absolute;left:calc(var(--pad)/-2 + 9px);top:7px;height:1px;width:calc(var(--pad)/2 - 12px);background:linear-gradient(90deg,var(--gold),rgba(176,141,76,0));"></span>
+      <div style="font-family:'Public Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--ac);">The Moat · 02</div>
+    </div>
+    <div style="max-width:760px;margin-bottom:14px;">
+      <h2 style="margin:0;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(34px,4vw,54px);line-height:1.05;letter-spacing:-0.01em;">You don't have to believe it.<br><span style="font-style:italic;color:var(--ac);">You can check it.</span></h2>
+      <p style="margin:20px 0 0;font-family:'Newsreader',serif;font-size:18px;line-height:1.6;color:#3A3641;font-weight:300;">A procurement office does not take a vendor's word — it verifies. So we built the verification in. Four commitments, each one you can disprove in a click. Read in order; the confidence compounds.</p>
+    </div>
+    <div style="position:relative;margin-top:46px;">
+      <!-- the through-line, tying the four commitments -->
+      <div aria-hidden="true" style="position:absolute;left:0;right:0;top:36px;height:1px;background:linear-gradient(90deg,rgba(176,141,76,0.12),rgba(176,141,76,0.55),rgba(176,141,76,0.12));"></div>
+      <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:16px;">
+        <sc-for list="{{ trustStack }}" as="pillar" hint-placeholder-count="4">
+          <div style="background:#FFFFFF;border:1px solid rgba(28,25,34,0.1);border-radius:6px;padding:22px 22px 20px;display:flex;flex-direction:column;box-shadow:0 24px 60px -50px rgba(28,25,34,0.5);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#696571;letter-spacing:0.08em;">{{ pillar.num }}</span>
+              <span style="width:11px;height:11px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FFFFFF,0 4px 12px -3px rgba(176,141,76,0.8);"></span>
+            </div>
+            <h3 style="margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:23px;line-height:1.1;letter-spacing:-0.01em;color:#1C1B24;">{{ pillar.title }}</h3>
+            <p style="margin:11px 0 0;font-family:'Newsreader',serif;font-style:italic;font-size:15.5px;line-height:1.35;color:var(--ac);font-weight:300;">{{ pillar.claim }}</p>
+            <div style="margin:16px 0 0;">{{ pillar.visual }}</div>
+            <p style="margin:14px 0 20px;font-family:'Public Sans',sans-serif;font-size:12.5px;line-height:1.55;color:#696571;">{{ pillar.body }}</p>
+            <div style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(28,25,34,0.08);">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.4;color:#80632C;">{{ pillar.proof }}</div>
+              <a href="{{ pillar.href }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.02em;color:#7C7883;text-decoration:none;border-bottom:1px solid rgba(28,25,34,0.16);">{{ pillar.source }} <span style="color:var(--gold);">↗</span></a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <p style="margin:28px 0 0;font-family:'Public Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#696571;max-width:720px;">Each commitment links to the established, peer-reviewed method behind it — not our own marketing. Our registered institutional validation study (target QWK&nbsp;0.85–0.89 against a senior-examiner panel) is the headline of <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto04 }}" style="color:var(--ac);border-bottom:1px solid rgba(122,18,48,0.35);cursor:pointer;">The Evidence</span> — reserved until it completes.</p>
+  </section>
+
+  <!-- 03 THE CONNECTED SUITE -->
+  <section data-screen-label="03 Suite" data-reveal data-stagger-children style="position:relative;z-index:2;padding:76px 0;opacity:0;transform:translateY(18px);transition:opacity 0.9s ease,transform 0.9s ease;">
+    <div style="position:relative;margin-bottom:30px;">
+      <span style="position:absolute;left:calc(var(--pad)/-2 - 6px);top:1px;width:13px;height:13px;border-radius:50%;background:#FAF7F0;border:1.5px solid var(--gold);box-shadow:0 0 0 5px #FAF7F0;"></span>
+      <span style="position:absolute;left:calc(var(--pad)/-2 + 9px);top:7px;height:1px;width:calc(var(--pad)/2 - 12px);background:linear-gradient(90deg,var(--gold),rgba(176,141,76,0));"></span>
+      <div style="font-family:'Public Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--ac);">One Continuous Record · 03</div>
+    </div>
+    <div style="max-width:720px;margin-bottom:60px;">
+      <h2 style="margin:0;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(34px,4vw,54px);line-height:1.05;letter-spacing:-0.01em;">The score is one station<br>on a longer line.</h2>
+      <p style="margin:20px 0 0;font-family:'Newsreader',serif;font-size:18px;line-height:1.6;color:#3A3641;font-weight:300;">Everything a cohort does travels the same thread — enrol, teach, practise, grade, track, report. Nothing is re-keyed between systems; nothing is lost between hands. Grading is where you meet it first, not where it ends.</p>
+    </div>
+    <div style="position:relative;padding:8px 0 4px;">
+      <div style="position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,rgba(176,141,76,0.15),rgba(176,141,76,0.7),rgba(176,141,76,0.15));"></div>
+      <svg style="position:absolute;left:0;right:0;top:50%;width:100%;height:2px;transform:translateY(-1px);overflow:visible;pointer-events:none;"><line x1="0" y1="1" x2="100%" y2="1" stroke="#E3C88B" stroke-width="2" stroke-dasharray="4 300" style="animation:travel 6s linear infinite;"></line></svg>
+      <div style="position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;">
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;"><div style="order:1;font-family:'Newsreader',serif;font-size:19px;color:#1C1B24;margin-bottom:14px;">Enrol</div><div style="order:2;width:15px;height:15px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FDFCF9,0 3px 10px -3px rgba(176,141,76,0.85);"></div><div style="order:3;font-family:'Public Sans',sans-serif;font-size:11px;color:#696571;margin-top:16px;max-width:130px;line-height:1.4;">Placement &amp; cohorts</div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;"><div style="order:3;font-family:'Newsreader',serif;font-size:19px;color:#1C1B24;margin-top:14px;">Teach</div><div style="order:2;width:15px;height:15px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FDFCF9,0 3px 10px -3px rgba(176,141,76,0.85);"></div><div style="order:1;font-family:'Public Sans',sans-serif;font-size:11px;color:#696571;margin-bottom:16px;max-width:130px;line-height:1.4;">LMS &amp; lessons</div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;"><div style="order:1;font-family:'Newsreader',serif;font-size:19px;color:#1C1B24;margin-bottom:14px;">Practise</div><div style="order:2;width:15px;height:15px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FDFCF9,0 3px 10px -3px rgba(176,141,76,0.85);"></div><div style="order:3;font-family:'Public Sans',sans-serif;font-size:11px;color:#696571;margin-top:16px;max-width:130px;line-height:1.4;">Drills &amp; mocks</div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;"><div style="order:3;font-family:'Newsreader',serif;font-size:22px;color:var(--ac);margin-top:14px;font-weight:500;">Grade</div><div style="order:2;position:relative;width:26px;height:26px;"><span style="position:absolute;inset:0;border-radius:50%;background:var(--gold);animation:pulseRing 2.6s ease-out infinite;"></span><span style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 4px 14px -4px rgba(176,141,76,0.9);border:2px solid #FFFFFF;"></span></div><div style="order:1;display:inline-block;font-family:'Public Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#FBEFE9;background:var(--ac);padding:4px 9px;border-radius:2px;margin-bottom:14px;">You are here</div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;"><div style="order:1;font-family:'Newsreader',serif;font-size:19px;color:#1C1B24;margin-bottom:14px;">Track</div><div style="order:2;width:15px;height:15px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FDFCF9,0 3px 10px -3px rgba(176,141,76,0.85);"></div><div style="order:3;font-family:'Public Sans',sans-serif;font-size:11px;color:#696571;margin-top:16px;max-width:130px;line-height:1.4;">Progress &amp; alerts</div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;"><div style="order:3;font-family:'Newsreader',serif;font-size:19px;color:#1C1B24;margin-top:14px;">Report</div><div style="order:2;width:15px;height:15px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FDFCF9,0 3px 10px -3px rgba(176,141,76,0.85);"></div><div style="order:1;font-family:'Public Sans',sans-serif;font-size:11px;color:#696571;margin-bottom:16px;max-width:130px;line-height:1.4;">Countersigned records</div></div>
+      </div>
+    </div>
+    <!-- FITS YOUR STACK — auto-scrolling integration marquee, drawn monochrome glyphs (no trademark lift) -->
+    <div style="margin-top:64px;position:relative;border:1px solid rgba(28,25,34,0.12);border-radius:8px;background:#FDFCF9;overflow:hidden;box-shadow:0 26px 60px -48px rgba(28,25,34,0.5);">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px;padding:16px 24px;border-bottom:1px solid rgba(176,141,76,0.4);">
+        <span style="font-family:'Public Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ac);">Fits the systems you already run</span>
+        <span style="font-family:'Newsreader',serif;font-style:italic;font-size:15px;color:#696571;">Gnomon adds a second marker; it replaces none of your tools.</span>
+      </div>
+      <div style="position:relative;padding:24px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);">
+        <div style="display:flex;width:max-content;align-items:center;animation:marquee 44s linear infinite;" style-hover="animation-play-state:paused;">
+          {{ logoTrack }}
+        </div>
+      </div>
+    </div>
+
+    <!-- STANDARD WE MARK TO — a factual statement of the public rubric we grade against; NOT a partnership or endorsement claim. Boards shown small+grey; disclaimer microline below states no affiliation. -->
+    <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px;padding:22px 24px;border:1px solid rgba(176,141,76,0.35);border-radius:8px;background:linear-gradient(180deg,#FDFCF9,#FAF6EC);">
+      <div style="flex:1 1 260px;max-width:340px;">
+        <div style="font-family:'Public Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ac);margin-bottom:7px;">The standard we mark to</div>
+        <div style="font-family:'Newsreader',serif;font-size:14.5px;line-height:1.45;color:#3A3641;">Every band is judged against the <a href="https://ielts.org/" target="_blank" rel="noopener" style="color:var(--ac);border-bottom:1px solid rgba(122,18,48,0.35);text-decoration:none;">public IELTS band descriptors</a> — the same rubric these boards publish, applied without deviation.</div>
+      </div>
+      <div style="flex:1 1 380px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:center;">
+        <img src="assets/logos/logo-cambridge.webp" alt="Cambridge" style="width:100%;max-width:150px;height:40px;object-fit:contain;object-position:center;justify-self:center;opacity:0.82;filter:grayscale(1);"></img>
+        <img src="assets/logos/logo-british-council.svg" alt="British Council" style="width:100%;max-width:150px;height:44px;object-fit:contain;object-position:center;justify-self:center;opacity:0.82;filter:grayscale(1);"></img>
+        <img src="assets/logos/logo-idp.svg" alt="IDP Education" style="width:100%;max-width:130px;height:40px;object-fit:contain;object-position:center;justify-self:center;opacity:0.82;filter:grayscale(1);"></img>
+      </div>
+    </div>
+
+    <!-- shared no-affiliation microline — covers both the tool marquee and the standards row -->
+  </section>
+
+  <!-- 04 THE EVIDENCE -->
+  <section data-screen-label="04 Evidence" data-reveal data-stagger-children style="position:relative;z-index:2;padding:76px 0;opacity:0;transform:translateY(18px);transition:opacity 0.9s ease,transform 0.9s ease;">
+    <div style="position:relative;margin-bottom:30px;">
+      <span style="position:absolute;left:calc(var(--pad)/-2 - 6px);top:1px;width:13px;height:13px;border-radius:50%;background:#FAF7F0;border:1.5px solid var(--gold);box-shadow:0 0 0 5px #FAF7F0;"></span>
+      <span style="position:absolute;left:calc(var(--pad)/-2 + 9px);top:7px;height:1px;width:calc(var(--pad)/2 - 12px);background:linear-gradient(90deg,var(--gold),rgba(176,141,76,0));"></span>
+      <div style="font-family:'Public Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--ac);">The Evidence · 04</div>
+    </div>
+    <div style="max-width:720px;margin-bottom:40px;">
+      <h2 style="margin:0;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(34px,4vw,54px);line-height:1.04;letter-spacing:-0.01em;">Marks that hold up<br>to scrutiny.</h2>
+      <p style="margin:20px 0 0;max-width:580px;font-family:'Newsreader',serif;font-size:18px;line-height:1.6;color:#3A3641;font-weight:300;">A 12,000-script blind study is registered to test whether Gnomon's proposed bands track a senior-examiner panel this closely — landing within about half a band on a typical script — with every disagreement surfaced for a human, never hidden. The full study is our single headline claim; it is reserved here, in the open, until it runs and peer review completes.</p>
+    </div>
+
+    <!-- THE PAPER — the reserved validation study; the centerpiece of the section -->
+    <div style="position:relative;background:linear-gradient(180deg,#FDFCF9,#F6F1E6);border:1px solid rgba(122,18,48,0.2);border-radius:12px;box-shadow:0 70px 130px -74px rgba(28,25,34,0.6);overflow:hidden;">
+      <svg aria-hidden="true" viewBox="0 0 200 200" style="position:absolute;right:clamp(20px,3vw,40px);top:64px;width:clamp(96px,10vw,150px);height:clamp(96px,10vw,150px);opacity:0.08;pointer-events:none;"><line x1="30" y1="150" x2="158" y2="150" stroke="var(--ac)" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="var(--ac)"></path><line x1="78" y1="150" x2="138" y2="78" stroke="var(--gold)" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="var(--gold)"></circle></svg>
+      <!-- masthead -->
+      <div style="position:relative;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:18px clamp(24px,3vw,44px);border-bottom:1px solid rgba(176,141,76,0.42);">
+        <span style="font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--ac);">Gnomon Kanon · Validation Study</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#80632C;background:rgba(227,200,139,0.34);padding:4px 10px;border-radius:2px;">FORTHCOMING</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#9A96A1;">peer review · publication pending</span>
+        </div>
+      </div>
+      <!-- byline — independent, single-author study; no photo, no affiliation. Leads with the work, not a title. -->
+      <!-- byline — independent, single-author study; no photo, no affiliation. Leads with the work, not a title. -->
+      <div style="position:relative;display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 14px;padding:15px clamp(24px,3vw,44px);border-bottom:1px solid rgba(176,141,76,0.28);background:rgba(255,255,255,0.4);">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ac);">Independent study</span>
+        <span style="font-family:'Newsreader',serif;font-size:15.5px;color:#3A3641;line-height:1.4;">Designed, run and published by <span style="color:#1C1B24;">[Your name]</span> — no institutional affiliation or endorsement claimed.</span>
+      </div>
+      <!-- body -->
+      <div style="position:relative;display:grid;grid-template-columns:1.12fr 0.88fr;gap:clamp(28px,4vw,56px);padding:clamp(30px,3.4vw,46px) clamp(24px,3vw,44px);align-items:start;">
+        <!-- left: the claim + monumental figure -->
+        <div>
+          <h3 style="margin:0;max-width:15em;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(23px,2.3vw,31px);line-height:1.12;letter-spacing:-0.01em;color:#1C1B24;">Do the proposed bands hold up<br>to a senior-examiner panel?</h3>
+          <div style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#80632C;background:rgba(227,200,139,0.34);padding:4px 10px;border-radius:2px;">TARGET — NOT YET MEASURED</div>
+          <div style="display:flex;align-items:flex-end;gap:22px;margin-top:12px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:clamp(56px,7vw,100px);font-weight:500;color:var(--ac);line-height:0.8;letter-spacing:-0.02em;white-space:nowrap;">≤ 0.5</div>
+            <div style="padding-bottom:12px;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#80632C;">bands · MAE (target)</div>
+              <div style="font-family:'Public Sans',sans-serif;font-size:13px;color:#4A4650;line-height:1.45;max-width:210px;">registered target mean gap from a senior-examiner panel — under half a band on a typical script (0.3–0.5 across Task 1 &amp; 2); reserved until the blind study measures it</div>
+            </div>
+          </div>
+          <!-- methods box -->
+          <div style="margin-top:28px;max-width:520px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#9A96A1;text-transform:uppercase;margin-bottom:6px;">Registered protocol · not yet run</div>
+            <div style="border:1px solid rgba(28,25,34,0.1);border-radius:6px;overflow:hidden;">
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 15px;border-bottom:1px solid rgba(28,25,34,0.07);"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#9A96A1;text-transform:uppercase;">Sample (planned)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#1C1B24;">12,000 scripts · blind-marked</span></div>
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 15px;border-bottom:1px solid rgba(28,25,34,0.07);"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#9A96A1;text-transform:uppercase;">Tasks</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#1C1B24;">IELTS Writing · Task 1 &amp; 2</span></div>
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 15px;border-bottom:1px solid rgba(28,25,34,0.07);"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#9A96A1;text-transform:uppercase;">Reference</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#1C1B24;">senior-examiner panel, adjudicated</span></div>
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 15px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#9A96A1;text-transform:uppercase;">Agreement (target)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#1C1B24;">QWK 0.85–0.89 · ρ 0.89–0.92 · bar 0.70</span></div>
+            </div>
+          </div>
+          <!-- reserved citation -->
+          <div style="margin-top:24px;display:flex;flex-wrap:wrap;align-items:center;gap:14px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:12px 18px;border:1px dashed rgba(122,18,48,0.38);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9A96A1;background:rgba(255,255,255,0.55);"><span style="width:7px;height:7px;border-radius:50%;background:#C9C4CE;"></span>citation &amp; DOI land here on publication</span>
+            <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ goto07 }}" style="font-family:'Public Sans',sans-serif;font-size:14px;font-weight:600;color:var(--ac);cursor:pointer;border-bottom:1.5px solid rgba(122,18,48,0.45);">Request the preprint →</span>
+          </div>
+        </div>
+        <!-- right: figure 1 -->
+        <div>
+          <div style="background:repeating-linear-gradient(45deg,#FFFFFF,#FFFFFF 8px,#F6F1E6 8px,#F6F1E6 16px);border:1px dashed rgba(122,18,48,0.35);border-radius:8px;padding:20px 22px 15px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:'Public Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.14em;color:#9A96A1;text-transform:uppercase;margin-bottom:4px;"><span>Fig 1 · agreement</span><span style="font-family:'IBM Plex Mono',monospace;letter-spacing:0.04em;color:#80632C;">RESERVED</span></div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#696571;margin-bottom:10px;">plots n = 12,000 scripts once the blind study runs · axis = examiner band</div>
+            <svg viewBox="0 0 320 240" style="width:100%;height:auto;display:block;">
+              <line x1="40" y1="200" x2="300" y2="200" stroke="rgba(28,25,34,0.16)" stroke-width="1"></line>
+              <line x1="40" y1="200" x2="40" y2="16" stroke="rgba(28,25,34,0.16)" stroke-width="1"></line>
+              <line x1="52" y1="196" x2="292" y2="26" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="5 5" opacity="0.55"></line>
+              <text x="170" y="112" font-family="Newsreader, serif" font-style="italic" font-size="13" fill="#9A96A1" text-anchor="middle">no data plotted yet</text>
+              <text x="40" y="222" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9A96A1">6.0</text>
+              <text x="270" y="222" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9A96A1">9.0</text>
+            </svg>
+            <div style="text-align:center;font-family:'Public Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.14em;color:#9A96A1;text-transform:uppercase;margin-top:6px;">Examiner band →</div>
+          </div>
+          <div style="margin-top:12px;font-family:'Public Sans',sans-serif;font-size:11.5px;color:#696571;line-height:1.55;">Method, dataset, and reliability diagrams release in full with the paper, once the study runs. Nothing is asserted here that the study has not yet shown.</div>
+        </div>
+      </div>
+    </div>
+    <!-- THE RESEARCH, IN THE OPEN — single-author, unaffiliated: credibility comes from openness (method, data, paper you can request), never from borrowed faces or titles. No people shown. -->
+    <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;padding:18px 22px;border:1px solid rgba(28,25,34,0.1);border-radius:8px;background:rgba(255,255,255,0.5);">
+      <div style="flex:0 0 auto;">
+        <div style="font-family:'Public Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ac);">The research, in the open</div>
+        <div style="font-family:'Newsreader',serif;font-style:italic;font-size:14px;color:#696571;margin-top:4px;">Checkable, not claimed — the method, the data, the paper.</div>
+      </div>
+      <div style="flex:1 1 300px;display:flex;flex-wrap:wrap;gap:10px 12px;">
+        <a href="#portfolio-unavailable" style="display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#3A3641;text-decoration:none;padding:8px 13px;border:1px solid rgba(28,25,34,0.16);border-radius:3px;" style-hover="border-color:var(--ac);color:var(--ac);">Method &amp; metrics <span style="color:var(--gold);">↗</span></a>
+        <a href="#portfolio-unavailable" style="display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#3A3641;text-decoration:none;padding:8px 13px;border:1px solid rgba(28,25,34,0.16);border-radius:3px;" style-hover="border-color:var(--ac);color:var(--ac);">Dataset &amp; reliability diagrams <span style="color:var(--gold);">↗</span></a>
+        <a href="#portfolio-unavailable" style="display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#3A3641;text-decoration:none;padding:8px 13px;border:1px solid rgba(28,25,34,0.16);border-radius:3px;" style-hover="border-color:var(--ac);color:var(--ac);">Request the preprint <span style="color:var(--gold);">↗</span></a>
+      </div>
+      <div style="flex:0 0 auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#9A96A1;letter-spacing:0.03em;">released in full on publication</div>
+    </div>
+    <div style="margin-top:16px;font-family:'Public Sans',sans-serif;font-size:12px;color:#9A96A1;max-width:760px;line-height:1.6;">The figure above is our one headline claim — stated in the open and held to peer review. No number appears on this page without the study, the receipt, or the ledger that stands behind it.</div>
+  </section>
+
+  <!-- 06 THE ARITHMETIC -->
+  <section data-screen-label="05 Arithmetic" data-reveal data-stagger-children style="position:relative;z-index:2;padding:76px 0;opacity:0;transform:translateY(18px);transition:opacity 0.9s ease,transform 0.9s ease;">
+    <div style="position:relative;margin-bottom:30px;">
+      <span style="position:absolute;left:calc(var(--pad)/-2 - 6px);top:1px;width:13px;height:13px;border-radius:50%;background:#FAF7F0;border:1.5px solid var(--gold);box-shadow:0 0 0 5px #FAF7F0;"></span>
+      <span style="position:absolute;left:calc(var(--pad)/-2 + 9px);top:7px;height:1px;width:calc(var(--pad)/2 - 12px);background:linear-gradient(90deg,var(--gold),rgba(176,141,76,0));"></span>
+      <div style="font-family:'Public Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--ac);">The Arithmetic · 05</div>
+    </div>
+    <div style="max-width:680px;margin-bottom:48px;">
+      <h2 style="margin:0;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(32px,3.6vw,50px);line-height:1.06;letter-spacing:-0.01em;">What a term costs, with and<br>without a second marker.</h2>
+      <p style="margin:20px 0 0;font-family:'Newsreader',serif;font-size:18px;line-height:1.6;color:#3A3641;font-weight:300;">The same cohort, the same rubric — the difference is what slips through when every script waits for one pair of hands.</p>
+    </div>
+    <div style="position:relative;border:1px solid rgba(28,25,34,0.14);border-radius:10px;overflow:hidden;box-shadow:0 40px 90px -60px rgba(28,25,34,0.55);background:#FDFCF9;">
+      <!-- ledger masthead -->
+      <div style="display:grid;grid-template-columns:1.15fr 1fr 1.1fr;border-bottom:1.5px solid rgba(28,25,34,0.16);">
+        <div style="padding:15px 26px;font-family:'Public Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#9A96A1;">Per term · one cohort</div>
+        <div style="padding:15px 24px;font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#696571;border-left:1px solid rgba(28,25,34,0.09);">Marking by hand</div>
+        <div style="position:relative;padding:15px 24px;font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ac);border-left:1.5px solid var(--gold);background:rgba(122,18,48,0.05);">With Gnomon · second marker</div>
+      </div>
+      <!-- ledger rows -->
+      <sc-for list="{{ arithmetic }}" as="row" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:1.15fr 1fr 1.1fr;border-bottom:1px solid rgba(28,25,34,0.08);align-items:center;">
+          <div style="padding:19px 26px;font-family:'Newsreader',serif;font-size:16px;color:#2A2732;">{{ row.label }}<span style="display:block;font-family:'Public Sans',sans-serif;font-size:11px;color:#9A96A1;margin-top:2px;">{{ row.sub }}</span></div>
+          <div style="padding:19px 24px;border-left:1px solid rgba(28,25,34,0.07);display:flex;align-items:baseline;gap:10px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:30px;color:#696571;">{{ row.hand }}</span><span style="font-family:'Public Sans',sans-serif;font-size:11.5px;color:#696571;">{{ row.handNote }}</span></div>
+          <div style="padding:19px 24px;border-left:1.5px solid var(--gold);background:rgba(122,18,48,0.045);display:flex;align-items:baseline;gap:10px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:500;color:var(--ac);">{{ row.gnomon }}</span><span style="font-family:'Public Sans',sans-serif;font-size:11.5px;color:#80632C;">{{ row.gnomonNote }}</span></div>
+        </div>
+      </sc-for>
+      <!-- cast watermark on the Gnomon column -->
+      <svg aria-hidden="true" viewBox="0 0 200 200" style="position:absolute;right:26px;bottom:-18px;width:132px;height:132px;opacity:0.05;pointer-events:none;"><line x1="30" y1="150" x2="158" y2="150" stroke="var(--ac)" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="var(--ac)"></path><line x1="78" y1="150" x2="138" y2="78" stroke="var(--gold)" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="var(--gold)"></circle></svg>
+    </div>
+    <div style="margin-top:14px;font-family:'Public Sans',sans-serif;font-size:11px;color:#9A96A1;">An illustrative term, drawn from pilot parameters — your audit produces your own ledger.</div>
+  </section>
+
+  <!-- 07 PRICING -->
+  <section data-screen-label="06 Pricing" data-reveal data-stagger-children style="position:relative;z-index:2;padding:76px 0;opacity:0;transform:translateY(18px);transition:opacity 0.9s ease,transform 0.9s ease;">
+    <div style="position:relative;margin-bottom:30px;">
+      <span style="position:absolute;left:calc(var(--pad)/-2 - 6px);top:1px;width:13px;height:13px;border-radius:50%;background:#FAF7F0;border:1.5px solid var(--gold);box-shadow:0 0 0 5px #FAF7F0;"></span>
+      <span style="position:absolute;left:calc(var(--pad)/-2 + 9px);top:7px;height:1px;width:calc(var(--pad)/2 - 12px);background:linear-gradient(90deg,var(--gold),rgba(176,141,76,0));"></span>
+      <div style="font-family:'Public Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--ac);">The Terms · 06</div>
+    </div>
+    <div style="max-width:680px;margin-bottom:40px;">
+      <h2 style="margin:0;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(32px,3.6vw,50px);line-height:1.06;letter-spacing:-0.01em;">You pay for a second marker,<br>priced per student.</h2>
+      <p style="margin:20px 0 0;font-family:'Newsreader',serif;font-size:18px;line-height:1.6;color:#3A3641;font-weight:300;">No seat licences for staff, no charge for the teachers who countersign. One annual rate per enrolled student on the plan — the pilot proves the number before you commit.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;align-items:stretch;">
+      <!-- Pilot -->
+      <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid rgba(28,25,34,0.12);border-radius:8px;padding:26px 26px;box-shadow:0 24px 56px -44px rgba(28,25,34,0.4);">
+        <div style="font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#696571;">The Pilot</div>
+        <div style="margin-top:14px;display:flex;align-items:baseline;gap:8px;"><span style="font-family:'Newsreader',serif;font-size:40px;line-height:1;color:var(--ac);">90% off</span></div>
+        <div style="margin-top:6px;font-family:'Public Sans',sans-serif;font-size:12px;color:#696571;">your first term · one cohort · credited to your licence</div>
+        <div style="height:1px;background:rgba(28,25,34,0.09);margin:20px 0;"></div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-family:'Public Sans',sans-serif;font-size:13px;line-height:1.5;color:#3A3641;">
+          <span>Real scripts, your rubric, marked beside your examiners</span>
+          <span>Every band with its confidence interval and receipts</span>
+          <span>The full ledger to inspect — yours to keep</span>
+          <span>No card, no commitment</span>
+        </div>
+        <span style="margin-top:auto;padding-top:22px;"><span style="display:block;text-align:center;padding:12px 0;border:1px solid var(--ac);color:var(--ac);border-radius:3px;font-family:'Public Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Bring one cohort</span></span>
+      </div>
+      <!-- Department (featured) -->
+      <div style="display:flex;flex-direction:column;background:linear-gradient(180deg,#FFFFFF,#FBF6EA);border:1.5px solid var(--gold);border-radius:8px;padding:26px 26px;box-shadow:0 34px 70px -40px rgba(94,15,44,0.4);position:relative;overflow:visible;">
+        <div style="position:absolute;inset:0;overflow:hidden;border-radius:8px;pointer-events:none;"><svg aria-hidden="true" viewBox="0 0 200 200" style="position:absolute;right:-14px;bottom:-20px;width:128px;height:128px;opacity:0.06;"><line x1="30" y1="150" x2="158" y2="150" stroke="var(--ac)" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="var(--ac)"></path><line x1="78" y1="150" x2="138" y2="78" stroke="var(--gold)" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="var(--gold)"></circle></svg></div>
+        <div style="position:absolute;top:-11px;left:26px;font-family:'Public Sans',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#FBEFE9;background:linear-gradient(180deg,var(--acBright),var(--acDeep));padding:4px 11px;border-radius:2px;">Most schools start here</div>
+        <div style="position:relative;display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ac);">Department</div>
+          <span style="width:12px;height:12px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FDF8EC,0 4px 12px -3px rgba(176,141,76,0.85);"></span>
+        </div>
+        <div style="margin-top:14px;display:flex;align-items:baseline;gap:6px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:20px;color:#80632C;">from</span><span style="font-family:'Newsreader',serif;font-size:40px;line-height:1;">$9</span><span style="font-family:'Public Sans',sans-serif;font-size:13px;color:#696571;">/ student / year</span></div>
+        <div style="margin-top:6px;font-family:'Public Sans',sans-serif;font-size:12px;color:#696571;">one subject, up to ~500 students</div>
+        <div style="height:1px;background:rgba(176,141,76,0.3);margin:20px 0;"></div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-family:'Public Sans',sans-serif;font-size:13px;line-height:1.5;color:#3A3641;">
+          <span>Everything in the pilot, in production</span>
+          <span>Unlimited teachers &amp; markers — no per-seat fee</span>
+          <span>Every script your students write — generous fair use</span>
+          <span>LMS integration — LTI 1.3, Canvas, Moodle</span>
+          <span>The seven-year countersigned ledger</span>
+          <span>Email &amp; onboarding support</span>
+        </div>
+        <span style="margin-top:auto;padding-top:22px;"><span style="display:block;text-align:center;padding:12px 0;background:linear-gradient(180deg,var(--acBright),var(--acDeep));color:#FBEFE9;border-radius:3px;font-family:'Public Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Request an audit</span></span>
+      </div>
+      <!-- Institution -->
+      <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid rgba(28,25,34,0.12);border-radius:8px;padding:26px 26px;box-shadow:0 24px 56px -44px rgba(28,25,34,0.4);">
+        <div style="font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#696571;">Institution</div>
+        <div style="margin-top:14px;display:flex;align-items:baseline;gap:8px;"><span style="font-family:'Newsreader',serif;font-size:34px;line-height:1;">Let’s talk</span></div>
+        <div style="margin-top:6px;font-family:'Public Sans',sans-serif;font-size:12px;color:#696571;">multi-campus · all subjects</div>
+        <div style="height:1px;background:rgba(28,25,34,0.09);margin:20px 0;"></div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-family:'Public Sans',sans-serif;font-size:13px;line-height:1.5;color:#3A3641;">
+          <span>Everything in Department, across campuses</span>
+          <span>Regional data residency &amp; SSO (SAML)</span>
+          <span>Trust &amp; Data room, security questionnaires</span>
+          <span>Named success lead &amp; SLA</span>
+          <span>Volume rate per student</span>
+        </div>
+        <span style="margin-top:auto;padding-top:22px;"><span style="display:block;text-align:center;padding:12px 0;border:1px solid var(--ac);color:var(--ac);border-radius:3px;font-family:'Public Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Talk to us</span></span>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-family:'Public Sans',sans-serif;font-size:11px;color:#9A96A1;">Indicative pricing for the demo — your audit sets the real per-student rate. Students never pay; the institution licenses the second marker.</div>
+  </section>
+
+  <!-- 08 THE INVITATION -->
+  <section data-screen-label="07 Invitation" data-reveal data-stagger-children style="position:relative;z-index:2;padding:76px 0 0;opacity:0;transform:translateY(18px);transition:opacity 0.9s ease,transform 0.9s ease;">
+    <div style="position:relative;margin-bottom:30px;">
+      <span style="position:absolute;left:calc(var(--pad)/-2 - 8px);top:-2px;width:18px;height:18px;border-radius:50%;background:conic-gradient(from 0deg,#E3C88B,#80632C,#E3C88B,#B08D4C,#E3C88B);box-shadow:0 0 0 5px #FAF7F0;"></span>
+      <span style="position:absolute;left:calc(var(--pad)/-2 + 11px);top:7px;height:1px;width:calc(var(--pad)/2 - 14px);background:linear-gradient(90deg,var(--gold),rgba(176,141,76,0));"></span>
+      <div style="font-family:'Public Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--ac);">An Invitation · 07</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:48px 64px;align-items:flex-start;">
+      <div style="flex:1 1 440px;min-width:340px;position:relative;">
+        <h2 style="margin:0;font-family:'Newsreader',serif;font-weight:400;font-size:clamp(40px,5vw,72px);line-height:1.0;letter-spacing:-0.015em;">Bring us<br>one cohort.</h2>
+        <p style="margin:24px 0 0;max-width:520px;font-family:'Newsreader',serif;font-size:19px;line-height:1.6;color:#3A3641;font-weight:300;">We'll mark a full term of real scripts beside your examiners — free, and yours to keep. Verify our agreement on your own ledger before anything changes.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;">
+          <span style="display:inline-flex;align-items:center;gap:10px;padding:15px 28px;background:linear-gradient(180deg,var(--acBright),var(--acDeep));color:#FBEFE9;border-radius:2px;font-family:'Public Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 14px 34px -16px rgba(94,15,44,0.6);">Request your audit</span>
+          <span style="display:inline-flex;align-items:center;gap:10px;padding:15px 22px;color:#1C1B24;border-radius:2px;font-family:'Public Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Talk to us first</span>
+        </div>
+        <!-- HOW BUYING WORKS -->
+        <div style="display:flex;flex-wrap:wrap;gap:0;margin-top:40px;border:1px solid rgba(28,25,34,0.1);border-radius:6px;overflow:hidden;background:#FFFFFF;">
+          <div style="flex:1 1 180px;padding:18px 20px;border-right:1px solid rgba(28,25,34,0.08);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);">01</div>
+            <div style="font-family:'Public Sans',sans-serif;font-size:13px;font-weight:600;color:#1C1B24;margin-top:6px;">Bring one cohort</div>
+            <div style="font-family:'Public Sans',sans-serif;font-size:12px;color:#696571;margin-top:4px;line-height:1.5;">Real scripts, your rubric. 90% off your first term.</div>
+          </div>
+          <div style="flex:1 1 180px;padding:18px 20px;border-right:1px solid rgba(28,25,34,0.08);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);">02</div>
+            <div style="font-family:'Public Sans',sans-serif;font-size:13px;font-weight:600;color:#1C1B24;margin-top:6px;">Verify the ledger</div>
+            <div style="font-family:'Public Sans',sans-serif;font-size:12px;color:#696571;margin-top:4px;line-height:1.5;">We mark beside your examiners; you inspect every receipt.</div>
+          </div>
+          <div style="flex:1 1 180px;padding:18px 20px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);">03</div>
+            <div style="font-family:'Public Sans',sans-serif;font-size:13px;font-weight:600;color:#1C1B24;margin-top:6px;">Roll out by term</div>
+            <div style="font-family:'Public Sans',sans-serif;font-size:12px;color:#696571;margin-top:4px;line-height:1.5;">The pilot credits toward your licence.</div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 1 380px;min-width:300px;display:flex;flex-direction:column;gap:20px;">
+        <!-- PILOT PROFILE -->
+        <div style="background:#FFFFFF;border:1px solid rgba(28,25,34,0.1);border-radius:8px;padding:24px 26px;box-shadow:0 30px 70px -50px rgba(28,25,34,0.5);">
+          <div style="font-family:'Public Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ac);">Pilot profile · anonymised</div>
+          <p style="margin:12px 0 0;font-family:'Newsreader',serif;font-size:16.5px;line-height:1.6;color:#2A2732;font-weight:300;">A three-campus preparation group in Ho Chi Minh City released a full cohort's results in <strong style="font-weight:600;">3 days, down from 38</strong> — every band countersigned by its own teachers.</p>
+          <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#9A96A1;line-height:1.5;">illustrative profile · name withheld — your audit writes the real one</div>
+        </div>
+        <!-- LOGO SLOTS -->
+        <div>
+          <div style="font-family:'Public Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#696571;margin-bottom:10px;">Institutions appear here as they go public — never before</div>
+          <div style="display:flex;gap:10px;">
+            <image-slot id="sig-logo-1" shape="rounded" radius="6" placeholder="logo" style="width:110px;height:52px;flex:0 0 auto;"></image-slot>
+            <image-slot id="sig-logo-2" shape="rounded" radius="6" placeholder="logo" style="width:110px;height:52px;flex:0 0 auto;"></image-slot>
+            <image-slot id="sig-logo-3" shape="rounded" radius="6" placeholder="logo" style="width:110px;height:52px;flex:0 0 auto;"></image-slot>
+          </div>
+        </div>
+        <!-- CAMPUS PHOTO -->
+        <image-slot id="sig-campus" shape="rounded" radius="8" placeholder="campus photograph" style="width:100%;height:240px;"></image-slot>
+      </div>
+    </div>
+
+    <!-- TRUST & DATA — ruled register -->
+    <div id="trust" style="margin-top:88px;padding-top:44px;border-top:1px solid rgba(28,25,34,0.12);position:relative;">
+      <div style="position:relative;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px;">
+        <div style="position:relative;padding-left:26px;">
+          <span style="position:absolute;left:0;top:3px;width:12px;height:12px;border-radius:50%;background:linear-gradient(180deg,var(--goldL),var(--gold));box-shadow:0 0 0 4px #FAF7F0,0 3px 10px -3px rgba(176,141,76,0.85);"></span>
+          <div style="font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ac);">Trust &amp; data</div>
+          <h3 style="margin:10px 0 0;font-family:'Newsreader',serif;font-weight:400;font-size:30px;letter-spacing:-0.01em;">Your record, your rules.</h3>
+        </div>
+        <span style="font-family:'Public Sans',sans-serif;font-size:12px;color:#696571;">Security questionnaires answered in days, not weeks — ask.</span>
+      </div>
+      <div style="position:relative;border:1px solid rgba(28,25,34,0.12);border-radius:10px;overflow:hidden;background:#FDFCF9;box-shadow:0 30px 70px -56px rgba(28,25,34,0.5);">
+        <svg aria-hidden="true" viewBox="0 0 200 200" style="position:absolute;right:24px;bottom:-20px;width:130px;height:130px;opacity:0.05;pointer-events:none;"><line x1="30" y1="150" x2="158" y2="150" stroke="var(--ac)" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="var(--ac)"></path><line x1="78" y1="150" x2="138" y2="78" stroke="var(--gold)" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="var(--gold)"></circle></svg>
+        <sc-for list="{{ dataRows }}" as="row" hint-placeholder-count="4">
+          <div style="position:relative;display:grid;grid-template-columns:minmax(150px,0.5fr) 1.5fr;gap:20px 32px;align-items:baseline;padding:18px 26px;border-bottom:1px solid rgba(28,25,34,0.07);">
+            <div style="font-family:'Public Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ac);">{{ row.label }}</div>
+            <div style="font-family:'Newsreader',serif;font-size:16px;line-height:1.55;color:#3A3641;font-weight:300;">{{ row.body }}</div>
+          </div>
+        </sc-for>
+        <div style="position:relative;display:flex;flex-wrap:wrap;gap:10px 22px;padding:16px 26px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#696571;background:rgba(28,25,34,0.02);">
+          <span>FERPA-aligned</span><span>GDPR-aligned</span><span>SOC 2 Type II — in progress</span><span>WCAG 2.2 AA — target</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div style="margin-top:72px;margin-left:calc(var(--pad)*-1);margin-right:calc(clamp(28px,5vw,84px)*-1);padding:56px clamp(28px,5vw,84px) 46px var(--pad);background:#1C1B24;color:#CFC9D0;position:relative;z-index:2;overflow:hidden;">
+      <svg aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.5;">
+        <defs>
+          <pattern id="castField" width="116" height="116" patternUnits="userSpaceOnUse">
+            <g stroke="#8A1538" stroke-width="1.3" fill="none" opacity="0.26"><line x1="36" y1="72" x2="36" y2="46"></line><line x1="36" y1="72" x2="58" y2="61"></line></g>
+            <circle cx="58" cy="61" r="2.1" fill="#B08D4C" opacity="0.4"></circle>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#castField)"></rect>
+      </svg>
+      <div style="position:relative;z-index:1;display:grid;grid-template-columns:minmax(240px,1fr) auto auto;gap:44px 56px;align-items:start;">
+        <div style="max-width:320px;">
+          <div style="display:flex;align-items:center;gap:12px;"><svg viewBox="0 0 200 200" style="width:24px;height:24px;flex:0 0 auto;"><line x1="30" y1="150" x2="158" y2="150" stroke="#FDFCF9" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="#FDFCF9"></path><line x1="78" y1="150" x2="138" y2="78" stroke="#E3C88B" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="#E3C88B"></circle></svg><span style="font-family:'Newsreader',serif;font-size:24px;font-weight:500;letter-spacing:0.005em;color:#FAF7F0;">Gnomon&nbsp;Kanon</span></div>
+          <p style="margin:16px 0 0;font-family:'Newsreader',serif;font-style:italic;font-size:16px;color:#9A96A1;line-height:1.5;">Every grade, marked twice — and countersigned.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:11px;font-family:'Public Sans',sans-serif;font-size:13px;"><span style="font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#696571;">Suite</span><span style="color:#CFC9D0;">LMS</span><span style="color:#CFC9D0;">Grading</span><span style="color:#CFC9D0;">Trackers</span><span style="color:#CFC9D0;">Reports</span></div>
+        <div style="display:flex;flex-direction:column;gap:11px;font-family:'Public Sans',sans-serif;font-size:13px;"><span style="font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#696571;">Institution</span><span style="color:#CFC9D0;">Evidence</span><span style="color:#CFC9D0;">Trust &amp; data</span><span style="color:#CFC9D0;">Pricing</span><span style="color:#CFC9D0;">Request audit</span></div>
+      </div>
+      <div style="position:relative;z-index:1;margin-top:44px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;font-family:'Public Sans',sans-serif;font-size:11.5px;color:#7C7883;">
+          <span style="flex:0 1 auto;">© 2026 Gnomon Kanon. A second marker for every institution.</span>
+          <span style="flex:0 1 auto;">Demo content is labelled where it appears · validation study registered, reserved until it completes</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.6;letter-spacing:0.02em;color:#615D6A;max-width:820px;">All product names, logos, and trademarks are the property of their respective owners. Logos indicate the systems our customers use and the public standards we mark against — no affiliation, partnership, or endorsement is implied. Indicative pricing shown in the arithmetic section is illustrative; your audit sets the real per-student rate. Validation figures (target QWK&nbsp;0.85–0.89 vs a senior-examiner panel) are the registered protocol for a blind-marking study; the slot is reserved and no measured result is claimed until the study completes.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FRONT DESK — her, on duty -->
+  <sc-if value="{{ showDesk }}" hint-placeholder-val="{{ true }}">
+  <div style="position:fixed;right:14px;bottom:0;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-bottom:10px;font-family:'Public Sans',sans-serif;">
+    <sc-if value="{{ deskOpen }}" hint-placeholder-val="">
+      <div style="width:344px;background:#FFFFFF;border:1px solid rgba(28,25,34,0.14);border-radius:10px;box-shadow:0 34px 80px -30px rgba(28,25,34,0.6);overflow:hidden;animation:deskIn 0.35s ease both;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;border-bottom:1px solid rgba(28,25,34,0.08);background:linear-gradient(180deg,#FCFAF5,#F6F2E9);">
+          <div>
+            <div style="font-size:12.5px;font-weight:700;color:#1C1B24;">Ask Gnomon</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:3px;font-size:10.5px;color:#696571;"><span style="width:6px;height:6px;border-radius:50%;background:#2E7D5B;animation:livePulse 2s ease-in-out infinite;"></span>Your guide · pre-sales</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.12em;color:#80632C;background:rgba(227,200,139,0.3);padding:3px 7px;border-radius:2px;">SCRIPTED DEMO</span>
+            <span role="button" tabIndex="0" onKeyDown="{{ keyboardActivate }}" onClick="{{ toggleDesk }}" style="cursor:pointer;font-size:15px;color:#9A96A1;padding:2px 4px;">×</span>
+          </div>
+        </div>
+        <div style="padding:16px;">
+          <div style="padding:12px 14px;background:rgba(227,200,139,0.15);border:1px solid rgba(176,141,76,0.4);border-radius:12px 12px 12px 4px;font-family:'Newsreader',serif;font-style:italic;font-size:15px;line-height:1.5;color:#2A2732;">{{ deskLine }}</div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:14px;">
+            <sc-for list="{{ deskQs }}" as="dq" hint-placeholder-count="4">
+              <div onClick="{{ dq.onPick }}" style="padding:10px 13px;border:1px solid rgba(28,25,34,0.12);border-radius:5px;font-size:12.5px;color:#3A3641;cursor:pointer;background:#FFFFFF;" style-hover="background:#FBF8F1;border-color:rgba(122,18,48,0.35);">{{ dq.q }}</div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid rgba(28,25,34,0.07);background:#FBF8F1;font-size:9.5px;color:#9A96A1;line-height:1.45;">One assistant, three desks — the same model guides you here, marks beside teachers, and coaches students. Demo answers are scripted.</div>
+      </div>
+    </sc-if>
+    <div onClick="{{ toggleDesk }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+      <sc-if value="{{ deskClosed }}" hint-placeholder-val="{{ true }}">
+        <span style="padding:8px 13px;background:#FFFFFF;border:1px solid rgba(28,25,34,0.12);border-radius:14px 14px 4px 14px;box-shadow:0 14px 30px -18px rgba(28,25,34,0.5);font-family:'Newsreader',serif;font-style:italic;font-size:13.5px;color:#2A2732;">Questions? Ask Gnomon</span>
+      </sc-if>
+      <div style="width:58px;height:58px;flex:0 0 auto;border-radius:16px;background:linear-gradient(180deg,var(--acBright),var(--acDeep));display:grid;place-items:center;box-shadow:0 12px 22px -8px rgba(94,15,44,0.55);">
+        <svg viewBox="0 0 100 100" width="33" height="33" aria-label="dial-O"><circle cx="50" cy="52" r="37" fill="none" stroke="#FDFCF9" stroke-width="11"></circle><circle cx="76" cy="26" r="12" fill="#E3C88B"></circle></svg>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+
+<!-- Standalone prototype: production account navigation is not mounted. -->
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Oxblood&quot;,&quot;Racing Green&quot;,&quot;Registrar Blue&quot;],&quot;default&quot;:&quot;Oxblood&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;},&quot;ambient&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;frontDesk&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Front desk&quot;}}">
+class Component extends DCLogic {
+  state = { mode: 'teacher', sel: 0, sealed: {}, read: false, ciStep: 0, deskOpen: false,
+    deskLine: 'Hello \u2014 I\u2019m Gnomon, your guide. Ask me anything about the second marker your school can hire.' };
+
+  deskFaq = [
+    { q: 'What is Gnomon, in one line?', go: '04',
+      a: 'A second marker your school employs: it reads every script beside your teachers \u2014 marked twice, every claim quoting its line. Your teacher keeps the final word. Here is the evidence.' },
+    { q: 'How accurate is it \u2014 really?', go: '04',
+      a: 'Our registered target is to agree with a senior-examiner panel to within about half a band (QWK 0.85–0.89); a 12,000-script blind study is registered to test it, and the number is reserved until that study completes. And when it isn’t sure, it abstains rather than guess. Here is the evidence.' },
+    { q: 'What does it cost?', go: '06',
+      a: 'From about $9 per student a year; teachers and markers are never charged. The pilot runs at 90% off your first term, credited to your licence \u2014 it proves the number first. Here are the terms.' },
+    { q: 'How do we start?', go: '07',
+      a: 'Bring us one cohort. We mark a full term beside your examiners at 90% off, and you verify every row on your own ledger before anything changes.' },
+  ];
+
+  go(target) {
+    const root = this.root || document;
+    const el = target === 'trust' ? root.querySelector('#trust') : root.querySelector('[data-screen-label^="' + target + '"]');
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+
+  students = [
+    { name: 'Candidate 0417', task: 'Task 2 · Opinion', band: '7.5', ci: '90% CI 7.0\u20138.0', crit: [86,80,86,80], bands: ['7.5','7.0','7.5','7.0'],
+      reasons: ['Position is clear and held across every paragraph.','Cohesion is strong; two referencing slips flagged for you.','Wide lexical range, with minor collocation errors.'] },
+    { name: 'Candidate 0392', task: 'Task 2 · Discussion', band: '6.5', ci: '90% CI 6.0\u20137.0', crit: [70,66,74,68], bands: ['6.5','6.5','7.0','6.5'],
+      reasons: ['Both views are covered; the writer\u2019s own opinion arrives late.','Some overlong sentences reduce clarity.','Adequate range, but key terms are repeated.'] },
+    { name: 'Candidate 0435', task: 'Task 1 · Process', band: '\u2192 you', ci: null, abstain: true, crit: [76,34,74,30], bands: ['7.0','low conf.','7.0','low conf.'],
+      reasons: ['The script shifts register sharply mid-way \u2014 the evidence for a single band is thin.','Two criteria fall below the confidence threshold.','No band is proposed. The receipts are attached; the judgment is yours.'] },
+    { name: 'Candidate 0408', task: 'Task 2 · Problem', band: '6.0', ci: '90% CI 5.5\u20136.5', crit: [64,60,66,60], bands: ['6.0','6.0','6.5','6.0'],
+      reasons: ['The problem is clear; solutions are underdeveloped.','Paragraphing is inconsistent.','Errors occasionally impede meaning.'] },
+  ];
+
+  ciSteps = [
+    { t: 'reading\u2026 90% CI 6.0\u20139.0', l: '0%', w: '100%' },
+    { t: '90% CI 6.5\u20138.5', l: '17%', w: '66%' },
+    { t: '90% CI 7.0\u20138.0', l: '33%', w: '34%' },
+  ];
+
+  tabActive = "flex:1;text-align:center;padding:11px 22px;border-radius:3px;font-family:'Public Sans',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;background:#FFFFFF;color:#1C1B24;box-shadow:0 2px 8px -3px rgba(28,25,34,0.35);";
+  tabIdle = "flex:1;text-align:center;padding:11px 22px;border-radius:3px;font-family:'Public Sans',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;background:transparent;color:#696571;";
+
+  trustStack = [
+    { num: '01', title: 'Receipts', claim: 'No claim without its quote.',
+      body: 'Hover any judgment and the exact span it read ignites in the script. The anchor is quote-based, so it survives edits — you are never shown a verdict floating free of its evidence.',
+      proof: 'hover a claim → its line ignites', source: 'W3C Recommendation · Web Annotation', href: 'https://www.w3.org/TR/annotation-model/' },
+    { num: '02', title: 'Calibration', claim: 'Every score carries its doubt.',
+      body: 'A confidence interval on every band, not a lone number — and its agreement with a senior-examiner panel is stated, not implied. You see how sure it is, in its own words.',
+      proof: 'Band 6.5 · 90% CI 6.0–7.0', source: 'peer-reviewed · Guo et al., ICML 2017', href: 'https://arxiv.org/abs/1706.04599' },
+    { num: '03', title: 'Abstention', claim: 'It stops before it guesses.',
+      body: 'When the evidence for a single band is thin, no band is proposed. The script is handed to a human with the receipts attached — and every abstention is counted, on the record.',
+      proof: '2 criteria below threshold → your call', source: 'peer-reviewed · Geifman & El-Yaniv, 2017', href: 'https://arxiv.org/abs/1705.08500' },
+    { num: '04', title: 'The Ledger', claim: 'Written once, never revised.',
+      body: 'Every countersigned read is appended, dated and versioned, then reconciled against real outcomes. It is a predictor you can hold to a hit-rate — not a claim you take on faith.',
+      proof: 'append-only · reconciled vs outcomes', source: 'W3C standard · PROV provenance', href: 'https://www.w3.org/TR/prov-overview/' },
+  ];
+
+  integrations = [
+    { idx: '01', name: 'LTI 1.3' },
+    { idx: '02', name: 'Canvas' },
+    { idx: '03', name: 'Moodle' },
+    { idx: '04', name: 'Google Classroom' },
+    { idx: '05', name: 'Grade pass-back' },
+    { idx: '06', name: 'Roster sync' },
+    { idx: '07', name: 'SAML SSO' },
+    { idx: '08', name: 'CSV / API export' },
+  ];
+
+  stack = [
+    { name: 'Canvas', src: 'assets/logos/logo-canvas.svg', isLogo: true, isWord: false },
+    { name: 'Moodle', src: 'assets/logos/logo-moodle.svg', isLogo: true, isWord: false },
+    { name: 'Google Classroom', src: 'assets/logos/logo-google-classroom.svg', isLogo: true, isWord: false },
+    { name: 'Blackboard', src: 'assets/logos/logo-blackboard.svg', isLogo: true, isWord: false },
+    { name: 'Microsoft Teams', src: 'assets/logos/logo-ms-teams.svg', isLogo: true, isWord: false },
+    { name: 'Brightspace', src: 'assets/logos/logo-brightspace.svg', isLogo: true, isWord: false },
+    { name: 'Schoology', src: 'assets/logos/logo-schoology.svg', isLogo: true, isWord: false },
+    { name: 'PowerSchool', src: 'assets/logos/logo-powerschool.svg', isLogo: true, isWord: false },
+    { name: 'Clever', src: 'assets/logos/logo-clever.svg', isLogo: true, isWord: false },
+    { name: 'Google Drive', src: 'assets/logos/logo-google-drive.svg', isLogo: true, isWord: false },
+    { name: 'Zoom', src: 'assets/logos/logo-zoom.svg', isLogo: true, isWord: false },
+  ];
+
+  arithmetic = [
+    { label: 'Turnaround', sub: 'whole cohort released', hand: '38', handNote: 'days', gnomon: '3', gnomonNote: 'days' },
+    { label: 'Band drift', sub: 'consistency across scripts', hand: '±1.0', handNote: 'marker to marker', gnomon: '0.4', gnomonNote: 'one standard' },
+    { label: 'Marker-hours returned', sub: 'given back to teaching, per week', hand: '0', handNote: 'none', gnomon: '38', gnomonNote: 'hours / wk' },
+    { label: 'Audit trail', sub: 'if a grade is queried', hand: 'none', handNote: '', gnomon: '7-yr', gnomonNote: 'countersigned ledger' },
+  ];
+
+  dataRows = [
+    { label: 'Student data', body: 'Encrypted at rest and in transit. The institution owns every record — export it at any time.' },
+    { label: 'Retention', body: 'Countersigned results kept seven years, then destroyed — or sooner, on your instruction.' },
+    { label: 'Hosting', body: 'Regional options — Singapore and Vietnam. Data never leaves your region without written consent.' },
+    { label: 'Security posture', body: 'SOC 2 Type II audit in progress; FERPA- and GDPR-aligned practice, reviewed annually.' },
+  ];
+
+  pillarVisual(i) {
+    const h = React.createElement;
+    const box = { background: '#FBF9F4', border: '1px solid rgba(28,25,34,0.08)', borderRadius: '4px', padding: '12px' };
+    if (i === 0) {
+      return h('div', { style: box },
+        h('div', { style: { fontFamily: "'Newsreader',serif", fontSize: '11.5px', lineHeight: 1.55, color: '#9A96A1' } },
+          'The graph ',
+          h('span', { style: { color: 'var(--ac)', background: 'rgba(122,18,48,0.1)', borderBottom: '2px solid var(--ac)', padding: '0 2px', fontWeight: 500 } }, 'shows a steady rise'),
+          ' over the decade.'),
+        h('div', { style: { marginTop: '9px', display: 'flex', alignItems: 'center', gap: '6px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', letterSpacing: '0.04em' } },
+          h('span', { style: { background: 'var(--ac)', color: '#FBEFE9', padding: '2px 6px', borderRadius: '2px' } }, 'QUOTE'),
+          h('span', { style: { color: '#696571' } }, '→'),
+          h('span', { style: { color: '#80632C' } }, 'Task Response')));
+    }
+    if (i === 1) {
+      return h('div', { style: box },
+        h('div', { style: { display: 'flex', justifyContent: 'space-between', fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#1C1B24', marginBottom: '11px' } },
+          h('span', null, 'Band 6.5'), h('span', { style: { color: '#80632C' } }, '90% CI 6.0–7.0')),
+        h('div', { style: { position: 'relative', height: '6px', background: 'rgba(28,25,34,0.08)', borderRadius: '3px' } },
+          h('div', { style: { position: 'absolute', left: '40%', width: '20%', top: 0, bottom: 0, background: 'rgba(122,18,48,0.25)', borderRadius: '3px' } }),
+          h('div', { style: { position: 'absolute', left: '50%', top: '-3px', width: '12px', height: '12px', marginLeft: '-6px', borderRadius: '50%', background: 'var(--ac)', border: '2px solid #fff', boxShadow: '0 2px 6px -1px rgba(122,18,48,0.6)' } })),
+        h('div', { style: { display: 'flex', justifyContent: 'space-between', fontFamily: "'IBM Plex Mono',monospace", fontSize: '8.5px', color: '#696571', marginTop: '7px' } },
+          h('span', null, '4'), h('span', null, '9')));
+    }
+    if (i === 2) {
+      return h('div', { style: box },
+        h('div', { style: { fontFamily: "'Newsreader',serif", fontSize: '11.5px', color: '#C4C0C8', lineHeight: 1.5 } }, 'Band estimate withheld — evidence thin.'),
+        h('div', { style: { marginTop: '9px', display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(227,200,139,0.3)', border: '1px solid rgba(176,141,76,0.4)', borderRadius: '2px', padding: '4px 8px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', letterSpacing: '0.08em', color: '#80632C' } },
+          h('span', { style: { width: '6px', height: '6px', borderRadius: '50%', background: '#E3C88B' } }),
+          'HELD FOR HUMAN REVIEW'));
+    }
+    return h('div', { style: { ...box, padding: '6px 12px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '9.5px' } },
+      [['11 Jul', '6.5'], ['09 Jul', '7.0']].map((r, k) => h('div', { key: k, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5px 0', borderBottom: k === 0 ? '1px solid rgba(28,25,34,0.07)' : 'none' } },
+        h('span', { style: { color: '#9A96A1' } }, r[0]),
+        h('span', { style: { color: '#1C1B24' } }, 'Band ' + r[1]),
+        h('span', { style: { color: '#80632C' } }, '✓ countersigned'))));
+  }
+
+  renderVals() {
+    const s = this.students[this.state.sel] || this.students[0];
+    const isSealed = !!this.state.sealed[this.state.sel];
+    const abstain = !!s.abstain;
+
+    const queue = this.students.map((st, i) => {
+      const active = i === this.state.sel;
+      const rowSealed = !!this.state.sealed[i];
+      const ab = !!st.abstain;
+      return {
+        name: st.name, task: st.task, band: st.band,
+        onSelect: () => this.setState({ sel: i }),
+        style: "padding:12px 18px;cursor:pointer;border-bottom:1px solid rgba(28,25,34,0.06);border-left:3px solid " + (active ? 'var(--ac)' : 'transparent') + ";background:" + (active ? 'rgba(122,18,48,0.05)' : 'transparent') + ";",
+        bandStyle: "font-family:'IBM Plex Mono',monospace;font-size:12px;padding:2px 7px;border-radius:3px;color:" + (ab ? '#7A5A22' : (active ? '#FBEFE9' : 'var(--ac)')) + ";background:" + (ab ? 'rgba(227,200,139,0.35)' : (active ? 'var(--ac)' : 'rgba(122,18,48,0.08)')) + ";",
+        dotStyle: "width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:" + (rowSealed ? '#B08D4C' : (ab ? '#E3C88B' : '#C9C2B4')) + ";",
+      };
+    });
+
+    const critLabels = ['Task Response', 'Coherence & Cohesion', 'Lexical Resource', 'Grammatical Range'];
+    const crit = critLabels.map((label, i) => {
+      const low = abstain && s.bands[i] === 'low conf.';
+      return {
+        label: label,
+        pct: s.crit[i] + '%',
+        band: s.bands[i],
+        fill: low ? 'repeating-linear-gradient(90deg,#E3C88B 0 6px,rgba(227,200,139,0.35) 6px 12px)' : 'linear-gradient(90deg,var(--acBright),var(--ac))',
+        color: low ? '#80632C' : '#1C1B24',
+      };
+    });
+
+    const read = this.state.read;
+    const markOn = "color:var(--ac);border-bottom:2px solid var(--acBright);transition:color .5s,border-color .5s;";
+    const markOff = "color:#2A2732;border-bottom:1px dashed rgba(28,25,34,0.25);transition:color .5s,border-color .5s;";
+    const ci = this.ciSteps[this.state.ciStep] || this.ciSteps[0];
+
+    return {
+      setRoot: (el) => { if (el) this.root = el; },
+      trustStack: this.trustStack.map((p, i) => ({ ...p, visual: this.pillarVisual(i) })),
+      integrations: this.integrations,
+      logoTrack: (() => {
+        const h = React.createElement;
+        const items = [];
+        const loop = [...this.stack, ...this.stack];
+        loop.forEach((s, i) => {
+          const inner = s.isLogo
+            ? h('img', { src: s.src, alt: s.name, title: s.name, style: { height: '26px', width: 'auto', display: 'block', filter: 'grayscale(1)', opacity: 0.5, transition: 'opacity .35s ease, filter .35s ease' },
+                onMouseEnter: (e) => { e.currentTarget.style.filter = 'grayscale(0)'; e.currentTarget.style.opacity = 1; },
+                onMouseLeave: (e) => { e.currentTarget.style.filter = 'grayscale(1)'; e.currentTarget.style.opacity = 0.5; } })
+            : h('span', { style: { display: 'inline-flex', alignItems: 'baseline', gap: '8px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '13px', fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#696571', whiteSpace: 'nowrap' } },
+                s.name, h('span', { style: { fontSize: '10px', letterSpacing: '0.1em', color: '#696571' } }, 'standard'));
+          items.push(h('span', { key: 'i' + i, style: { display: 'inline-flex', alignItems: 'center', height: '46px', padding: '0 36px' } }, inner));
+          items.push(h('span', { key: 'd' + i, style: { width: '1px', height: '24px', background: 'rgba(28,25,34,0.12)', flex: '0 0 auto' } }));
+        });
+        return h(React.Fragment, null, items);
+      })(),
+      arithmetic: this.arithmetic,
+      dataRows: this.dataRows,
+      goto02: () => this.go('02'), goto03: () => this.go('03'), goto04: () => this.go('04'),
+      goto06: () => this.go('06'), goto07: () => this.go('07'), gotoTrust: () => this.go('trust'),
+      keyboardActivate: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } },
+      gotoPortal: () => { window.location.href = 'Gnomon Portal.dc.html'; },
+      isTeacher: this.state.mode === 'teacher',
+      isStudent: this.state.mode === 'student',
+      tTabStyle: this.state.mode === 'teacher' ? this.tabActive : this.tabIdle,
+      sTabStyle: this.state.mode === 'student' ? this.tabActive : this.tabIdle,
+      setTeacher: () => this.setState({ mode: 'teacher' }),
+      setStudent: () => this.setState({ mode: 'student' }),
+      queue,
+      selName: s.name, selTask: s.task,
+      selBand: abstain ? '\u2014' : s.band,
+      selCI: s.ci || '',
+      selNormal: !abstain, selAbstain: abstain,
+      reasonTitle: abstain ? 'Why it abstained' : "Gnomon's reasoning",
+      crit,
+      reasons: s.reasons.map(r => ({ r })),
+      sealed: isSealed, notSealed: !isSealed,
+      approve: () => this.setState({ sealed: Object.assign({}, this.state.sealed, { [this.state.sel]: true }) }),
+      approveLabel: abstain ? 'Mark & countersign \u2014 your band stands' : ('Approve & countersign band ' + s.band),
+      approveNote: abstain ? 'It declined to guess. Your judgment completes the record.' : 'You hold the authority. Gnomon proposes; you decide.',
+      // hero CI narrowing
+      heroCI: ci.t, ciL: ci.l, ciW: ci.w,
+      // student
+      read: read, notRead: !read,
+      askRead: () => this.setState({ read: true }),
+      markA: read ? markOn : markOff,
+      markB: read ? markOn : markOff,
+      schips: [
+        { l: 'Task', p: read ? '78%' : '0%' },
+        { l: 'Cohesion', p: read ? '72%' : '0%' },
+        { l: 'Lexis', p: read ? '82%' : '0%' },
+        { l: 'Grammar', p: read ? '70%' : '0%' },
+      ],
+      bandDotLeft: read ? '70%' : '40%',
+      bandNow: read ? '7.0' : '6.5',
+      bandCI: read ? '90% CI 6.5\u20137.5' : '90% CI 6.0\u20137.0',
+      // front desk
+      showDesk: this.props.frontDesk !== false,
+      deskOpen: this.state.deskOpen,
+      deskClosed: !this.state.deskOpen,
+      toggleDesk: () => this.setState({ deskOpen: !this.state.deskOpen }),
+      deskLine: this.state.deskLine,
+      deskQs: this.deskFaq.map(item => ({
+        q: item.q,
+        onPick: () => {
+          const st = { deskLine: item.a };
+          if (item.abstain) { st.mode = 'teacher'; st.sel = 2; }
+          this.setState(st);
+          this.go(item.go);
+        },
+      })),
+    };
+  }
+
+  componentDidMount() {
+    const root = this.root || document;
+    const map = {
+      'Oxblood': ['#7A1230', '#5E0F2C', '#8A1538'],
+      'Racing Green': ['#1F5136', '#163B27', '#256B45'],
+      'Registrar Blue': ['#24425E', '#1A3247', '#2E5578'],
+    };
+    const a = map[this.props.accent] || map['Oxblood'];
+    if (this.root) {
+      this.root.style.setProperty('--ac', a[0]);
+      this.root.style.setProperty('--acDeep', a[1]);
+      this.root.style.setProperty('--acBright', a[2]);
+    }
+
+    // hero CI narrowing — certainty earned as evidence accumulates
+    this._ciT1 = setTimeout(() => this.setState({ ciStep: 1 }), 1600);
+    this._ciT2 = setTimeout(() => this.setState({ ciStep: 2 }), 3100);
+
+    this.railSvg = root.querySelector('[data-rail-svg]');
+    this.railTrack = root.querySelector('[data-rail-track]');
+    this.railReveal = root.querySelector('[data-rail-reveal]');
+    this.railCurrent = root.querySelector('[data-rail-current]');
+
+    const measure = () => {
+      const host = this.root || document.documentElement;
+      const H = Math.max(host.scrollHeight, document.body.scrollHeight, window.innerHeight);
+      this.docH = H;
+      if (this.railSvg) this.railSvg.setAttribute('viewBox', '0 0 4 ' + H);
+      [this.railTrack, this.railReveal, this.railCurrent].forEach(l => { if (l) l.setAttribute('y2', H); });
+      if (this.railReveal) this.railReveal.setAttribute('stroke-dasharray', H);
+      this.onScroll();
+    };
+    this.measure = measure;
+
+    this._ticking = false;
+    this.scrollHandler = () => {
+      if (this._ticking) return;
+      this._ticking = true;
+      requestAnimationFrame(() => { this.onScroll(); this._ticking = false; });
+    };
+    window.addEventListener('scroll', this.scrollHandler, { passive: true });
+    this.resizeHandler = () => measure();
+    window.addEventListener('resize', this.resizeHandler);
+
+    // Reveal engine: sections fade in; those marked [data-stagger-children] cascade
+    // their top-level children (editorial choreography, like §01/§02). Reduced-motion safe.
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    root.querySelectorAll('[data-stagger-children]').forEach(sec => {
+      sec.style.transform = 'none'; // section carries opacity only; children carry the movement
+      if (!reduce) Array.from(sec.children).forEach(c => {
+        c.style.opacity = '0';
+        c.style.transform = 'translateY(22px)';
+        c.style.transition = 'opacity .75s cubic-bezier(.16,.8,.3,1), transform .75s cubic-bezier(.16,.8,.3,1)';
+      });
+    });
+    const revealSection = (t) => {
+      t.style.opacity = '1';
+      t.style.transform = 'none';
+      if (!reduce && t.hasAttribute('data-stagger-children')) {
+        Array.from(t.children).forEach((c, i) => {
+          c.style.transitionDelay = (i * 105) + 'ms';
+          c.style.opacity = '1';
+          c.style.transform = 'none';
+        });
+      } else if (t.hasAttribute('data-stagger-children')) {
+        Array.from(t.children).forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+      }
+    };
+    this.revealSection = revealSection;
+
+    if ('IntersectionObserver' in window) {
+      this.io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            revealSection(e.target);
+            this.io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+      root.querySelectorAll('[data-reveal]').forEach(sec => this.io.observe(sec));
+    } else {
+      root.querySelectorAll('[data-reveal]').forEach(revealSection);
+    }
+
+    if (this.props.ambient === false) {
+      if (this.railCurrent) this.railCurrent.style.display = 'none';
+      const dl = root.querySelector('[data-drift-light]');
+      if (dl) dl.style.animation = 'none';
+    }
+
+    measure();
+    setTimeout(measure, 300);
+    setTimeout(measure, 900);
+    setTimeout(measure, 1800);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+    setTimeout(() => {
+      root.querySelectorAll('[data-reveal]').forEach(sec => {
+        const r = sec.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.92) {
+          this.revealSection ? this.revealSection(sec) : (sec.style.opacity = '1', sec.style.transform = 'none');
+        }
+      });
+      measure();
+    }, 3200);
+  }
+
+  componentDidUpdate() {
+    if (this.measure) this.measure();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.scrollHandler);
+    window.removeEventListener('resize', this.resizeHandler);
+    if (this.io) this.io.disconnect();
+    clearTimeout(this._ciT1);
+    clearTimeout(this._ciT2);
+  }
+
+  onScroll() {
+    if (!this.docH || !this.railReveal) return;
+    const denom = (this.docH - window.innerHeight) || 1;
+    const prog = Math.min(1, Math.max(0, window.scrollY / denom));
+    this.railReveal.setAttribute('stroke-dashoffset', String(this.docH * (1 - prog)));
+  }
+}
+</script>
+</body>
+</html>

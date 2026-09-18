@@ -1,0 +1,44 @@
+Vanta TOPOLOGY static artwork
+
+The decorative image assets/vanta-topology-static.webp is a static browser rendering of Vanta.js TOPOLOGY0.5.24 by Teng Bao, based on the topology effect by Kjetil Midtgarden Golid.
+
+Vanta source: https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.topology.min.js
+Original effect: https://github.com/kgolid/p5ycho/blob/master/topology/sketch.js
+Palette: #A8461F on #FCFCFB. Captured directly from the684x550 canvas after a bounded4.5-second rendering interval, without text overlays. No image repainting or custom noise implementation.
+
+The renderer used p5.js1.9.0 (LGPL-2.1) during asset creation. p5.js and Vanta runtime code are not distributed with this portfolio; the page serves a static WebP. The original canvas pixels were encoded through native browser WebP at quality0.88, without repainting or resizing.
+
+Vanta license follows:
+
+Copyright 2020 Teng Bao
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+Original topology source license follows:
+
+MIT License
+
+Copyright (c) 2017 Kjetil Midtgarden Golid
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#FAF7F0}
+  @keyframes riseWord{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes narRise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+  @keyframes beatIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes pop{0%{opacity:0;transform:scale(.9)}60%{opacity:1;transform:scale(1.03)}100%{opacity:1;transform:scale(1)}}
+  @keyframes glideInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @keyframes hlDraw{from{background-size:0% 100%}to{background-size:100% 100%}}
+  @keyframes lineDraw{from{background-size:0% 2px}to{background-size:100% 2px}}
+  @keyframes sealStamp{0%{opacity:0;transform:scale(1.6) rotate(-10deg)}55%{opacity:1;transform:scale(.92) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(-10deg)}}
+  @keyframes liftAway{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-22px) scale(.97)}}
+  @keyframes pulseGold{0%,100%{box-shadow:0 0 0 0 rgba(176,141,76,0)}50%{box-shadow:0 0 0 4px rgba(176,141,76,.28)}}
+  [data-noscroll]::-webkit-scrollbar{width:0;height:0;display:none}
+  @keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+  @keyframes areaFade{from{opacity:0}to{opacity:1}}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important}}
+  :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+</style>
+</helmet>
+
+<div style="--ac:#7A1230;--acD:#5E0F2C;--acB:#8A1538;--gold:#B08D4C;--goldL:#E3C88B;--ink:#1C1922;--seal:#3F6B4A;--err:#A23A2A;height:100%;min-height:0;display:flex;flex-direction:column;background:transparent;font-family:'Public Sans',system-ui,sans-serif;color:#1C1922">
+
+    <div style="width:100%;flex:1;min-height:0;background:#FFF;border:1px solid rgba(28,25,34,.1);border-radius:14px;box-shadow:0 40px 90px -60px rgba(28,25,34,.5),0 2px 0 rgba(255,255,255,.7) inset;overflow:hidden;display:flex;flex-direction:column">
+      <!-- tab bar + controls -->
+      <div style="display:flex;align-items:center;gap:6px;padding:9px 16px;border-bottom:1px solid rgba(28,25,34,.08);background:linear-gradient(180deg,#FCFAF5,#F6F2E9);flex:none">
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.14em;color:#3F6B4A;margin-right:8px"><span style="width:6px;height:6px;border-radius:50%;background:#3F6B4A"></span>LIVE</span>
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><span onClick="{{ t.on }}" style="{{ t.style }}">{{ t.label }}</span></sc-for>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#9A96A1">{{ tourLabel }}</span>
+          <span onClick="{{ onToggle }}" style="width:24px;height:24px;border-radius:50%;border:1px solid rgba(28,25,34,.2);display:flex;align-items:center;justify-content:center;font-size:9px;color:#4A4650;cursor:pointer">{{ playIcon }}</span>
+          <span onClick="{{ onReplay }}" style="width:24px;height:24px;border-radius:50%;border:1px solid rgba(28,25,34,.2);display:flex;align-items:center;justify-content:center;font-size:11px;color:#4A4650;cursor:pointer">↻</span>
+        </div>
+      </div>
+      <div style="height:2px;background:rgba(28,25,34,.06);flex:none"><div style="{{ barStyle }}"></div></div>
+
+      <!-- narrator strip -->
+      <div style="{{ narWrapStyle }}">
+        <span style="{{ narDotStyle }}"></span>
+        <span style="{{ narKey }}font-family:'Newsreader',serif;font-size:14.5px;color:#3A3641;animation:narRise .55s ease both">{{ narrator }}</span>
+      </div>
+
+      <div style="flex:1;min-height:0;position:relative;text-align:left">
+        <div style="{{ stageKey }}position:absolute;inset:0;padding:clamp(14px,2.1vw,24px) clamp(16px,2.4vw,28px);display:flex;flex-direction:column;animation:beatIn .5s ease both">
+
+          <!-- SCENE 0 — WRITE -->
+          <sc-if value="{{ scWrite }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#3F6B4A">Student · An Bui · Writing Task 2</div>
+              <div style="font-size:10.5px;color:#80632C">{{ writeHint }}</div>
+            </div>
+            <div style="border:1px solid #ECE4D3;border-radius:9px;padding:9px 15px;background:#FBF8F1;font-family:'Newsreader',serif;font-style:italic;font-size:13px;line-height:1.5;color:#3A3641;margin-bottom:10px">“Some people believe that remote work benefits everyone. To what extent do you agree or disagree?”</div>
+            <div style="{{ paperStyle }}" tabindex="0" role="region" aria-label="The student's draft, scrollable">
+              <p style="margin:0;font-family:'Newsreader',serif;font-size:15.5px;line-height:1.95;color:#26242E;font-weight:300">{{ typedText }}<span style="{{ caretStyle }}">▍</span></p>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:11px">
+              <div style="display:flex;align-items:center;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#696571">
+                <span>{{ wc }} words</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;color:#696571"><span style="width:6px;height:6px;border-radius:50%;background:{{ saveDot }}"></span>{{ saveState }}</span>
+              </div>
+              <span onClick="{{ onSubmit }}" style="{{ submitStyle }}">{{ submitLabel }}</span>
+            </div>
+          </sc-if>
+
+          <!-- SCENE 1 — GRADES -->
+          <sc-if value="{{ scGrades }}" hint-placeholder-val="">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#3F6B4A">Student · your countersigned read</div>
+              <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--seal);background:rgba(63,107,74,.12);padding:3px 9px;border-radius:9px">Countersigned ◆</span>
+            </div>
+            <div style="flex:1;display:grid;grid-template-columns:250px 1fr;gap:16px;min-height:0">
+              <div style="background:linear-gradient(180deg,#FFFEFB,#F6ECD8);border:1px solid rgba(176,141,76,.32);border-radius:12px;padding:18px 20px;box-shadow:0 30px 70px -46px rgba(94,15,44,.4);display:flex;flex-direction:column;animation:pop .55s ease both">
+                <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#696571">Overall band</div><div style="width:28px;height:28px;border-radius:50%;background:conic-gradient(from 0deg,#E3C88B,#80632C,#E3C88B,#B08D4C);display:grid;place-items:center"><span style="font-family:'Newsreader',serif;font-style:italic;font-size:13px;color:var(--acD)">S</span></div></div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:52px;color:var(--ac);line-height:1;margin-top:6px;animation:pop .6s ease .1s both">{{ gradeOverall }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#80632C;margin-top:5px">90% CI {{ gradeCI }}</div>
+                <div style="margin-top:16px">
+                  <div style="font-size:8.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9A96A1;margin-bottom:9px">Your path to target</div>
+                  <div style="position:relative;padding:0 6px">
+                    <div style="position:absolute;left:6px;right:6px;top:6px;height:2px;background:rgba(28,25,34,.12)"></div>
+                    <div style="position:absolute;left:6px;top:6px;height:2px;width:34%;background:var(--ac);transform-origin:left;animation:grow 1s cubic-bezier(.2,.7,.2,1) .3s both"></div>
+                    <div style="position:relative;display:flex;justify-content:space-between">
+                      <sc-for list="{{ pathNodes }}" as="p" hint-placeholder-count="4"><span style="{{ p.dot }}"></span></sc-for>
+                    </div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;margin-top:6px"><sc-for list="{{ pathNodes }}" as="p" hint-placeholder-count="4"><span style="{{ p.lblStyle }}">{{ p.lbl }}</span></sc-for></div>
+                </div>
+                <div style="font-family:'Newsreader',serif;font-size:12.5px;line-height:1.55;color:#3A3844;margin-top:auto;padding-top:14px;border-top:1px solid rgba(28,25,34,.08)">{{ gradeSummary }}<span style="{{ summaryCaret }}">▍</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:7px;overflow:auto;padding-right:2px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#696571;margin-bottom:1px">Her read, criterion by criterion</div>
+                <sc-for list="{{ gradeCards }}" as="g" hint-placeholder-count="4">
+                  <div style="{{ g.cardStyle }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                      <div style="display:flex;align-items:center;gap:7px;min-width:0"><span style="font-size:11.5px;font-weight:600;color:#2A2732">{{ g.label }}</span><span style="{{ g.tagStyle }}">{{ g.tag }}</span></div>
+                      <div style="display:flex;align-items:center;gap:8px;flex:none"><span style="font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:{{ g.srcColor }}">{{ g.src }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#1C1922">{{ g.band }}</span></div>
+                    </div>
+                    <div style="height:6px;background:rgba(28,25,34,.11);border-radius:4px;overflow:hidden;margin-top:6px"><div style="{{ g.bar }}"></div></div>
+                    <div style="font-family:'Newsreader',serif;font-style:italic;font-size:11.5px;color:#696571;margin-top:7px;line-height:1.4">“{{ g.quote }}”</div>
+                    <div style="font-size:11px;color:#4A4650;margin-top:3px;line-height:1.45">{{ g.note }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- SCENE 2 — MARKING (ported from the Teacher Desk) -->
+          <sc-if value="{{ scMarking }}" hint-placeholder-val="">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:9px;padding-bottom:8px;border-bottom:1px solid rgba(28,25,34,.1)">
+              <span style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#696571;flex:none">Annotate</span>
+              <div style="display:flex;align-items:center;gap:5px">
+                <sc-for list="{{ tools }}" as="tl" hint-placeholder-count="5"><span onClick="{{ tl.on }}" title="{{ tl.title }}" style="{{ tl.style }}"><span style="{{ tl.glyphStyle }}">{{ tl.glyph }}</span></span></sc-for>
+              </div>
+              <span style="width:1px;height:16px;background:rgba(28,25,34,.15)"></span>
+              <span style="font-size:9px;color:#696571">tag</span>
+              <div style="display:flex;gap:2px"><sc-for list="{{ critSeg }}" as="cs" hint-placeholder-count="4"><span onClick="{{ cs.on }}" style="{{ cs.style }}">{{ cs.label }}</span></sc-for></div>
+              <span style="font-size:10.5px;color:#9A96A1;margin-left:2px">{{ annHint }}</span>
+            </div>
+            <div style="flex:1;display:grid;grid-template-columns:minmax(0,1fr) 286px;gap:16px;min-height:0">
+              <div style="display:flex;flex-direction:column;min-height:0">
+                <div data-noscroll style="flex:1;min-height:0;overflow:auto;scrollbar-width:none;padding-right:2px">
+                  <p style="margin:0;font-family:'Newsreader',serif;font-size:14.5px;line-height:1.95;color:#26242E;font-weight:300"><sc-for list="{{ scriptSegs }}" as="sg" hint-placeholder-count="7"><sc-if value="{{ sg.mark }}" hint-placeholder-val=""><span onClick="{{ sg.on }}" style="{{ sg.style }}">{{ sg.x }}</span></sc-if><sc-if value="{{ sg.plain }}" hint-placeholder-val="{{ true }}"><span>{{ sg.x }}</span></sc-if></sc-for></p>
+                </div>
+                <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(28,25,34,.1);flex:none">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px"><span style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#696571">Per criterion — her bands</span><div style="display:flex;align-items:center;gap:8px"><span style="font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9A96A1">Overall</span><span style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:{{ overallColor }}">{{ overallShow }}</span><span onClick="{{ onSeal }}" style="{{ sealStyle }}">{{ sealLabel }}</span></div></div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+                    <sc-for list="{{ criteria }}" as="cr" hint-placeholder-count="4">
+                      <div style="{{ cr.cardStyle }}">
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:4px"><span style="display:flex;align-items:baseline;gap:6px"><span style="font-size:9.5px;font-weight:700;color:{{ cr.labelColor }}">{{ cr.abbr }}</span><span style="{{ cr.srcStyle }}">{{ cr.src }}</span></span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:{{ cr.bandColor }}">{{ cr.bandShow }}</span></div>
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:#80632C;margin-top:2px">{{ cr.ci }}</div>
+                        <div style="display:flex;align-items:center;gap:5px;margin-top:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#B4AB92">4</span><div style="flex:1;display:flex;gap:1.5px"><sc-for list="{{ cr.scale }}" as="v" hint-placeholder-count="11"><span onClick="{{ v.on }}" title="{{ v.title }}" style="{{ v.style }}"></span></sc-for></div><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#B4AB92">9</span></div>
+                        <div style="font-size:10px;color:#5A5648;margin-top:6px;line-height:1.35">{{ cr.fb }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+              <div style="border-left:1px solid rgba(28,25,34,.12);padding-left:16px;display:flex;flex-direction:column;min-height:0">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px"><span style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#696571">Breakdown &amp; errors · {{ noteCount }}</span><span style="font-size:9px;color:#B4AB92">type over</span></div>
+                <div style="display:flex;gap:4px;margin-bottom:9px;flex-wrap:wrap"><sc-for list="{{ breakdown }}" as="bd" hint-placeholder-count="4"><span onClick="{{ bd.on }}" style="{{ bd.style }}">{{ bd.label }} <span style="{{ bd.countStyle }}">{{ bd.count }}</span></span></sc-for></div>
+                <div data-noscroll style="flex:1;min-height:0;overflow:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:7px">
+                  <sc-for list="{{ notes }}" as="n" hint-placeholder-count="3">
+                    <div style="{{ n.rowStyle }}">
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                        <div style="display:flex;align-items:center;gap:6px;min-width:0"><span style="{{ n.badgeStyle }}">{{ n.type }}</span><span style="font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#696571">{{ n.crit }}</span></div>
+                        <div style="display:flex;align-items:center;gap:9px;flex:none"><span onClick="{{ n.onEdit }}" style="font-size:9.5px;font-weight:600;color:#7A1230;cursor:pointer">{{ n.editLabel }}</span><span onClick="{{ n.onDelete }}" style="font-size:14px;color:#696571;cursor:pointer;line-height:1" title="Remove">×</span></div>
+                      </div>
+                      <div style="font-family:'Newsreader',serif;font-style:italic;font-size:11px;color:#4A4650;margin-top:4px;line-height:1.4">“{{ n.quote }}”</div>
+                      <sc-if value="{{ n.editing }}" hint-placeholder-val="">
+                        <textarea onInput="{{ n.onInput }}" defaultValue="{{ n.fbValue }}" placeholder="Type your feedback…" style="width:100%;box-sizing:border-box;min-height:48px;resize:none;margin-top:6px;font-family:'Newsreader',serif;font-size:11.5px;line-height:1.45;color:#2A2732;padding:7px 9px;border-radius:6px;border:1px solid rgba(122,18,48,.35);background:#FFFDF9"></textarea>
+                        <div style="display:flex;justify-content:flex-end;margin-top:5px"><span onClick="{{ n.onSave }}" style="padding:4px 12px;border-radius:5px;background:linear-gradient(180deg,#8A1538,#5E0F2C);color:#FBEFE9;font-size:9.5px;font-weight:600;cursor:pointer">Save</span></div>
+                      </sc-if>
+                      <sc-if value="{{ n.showFb }}" hint-placeholder-val="{{ true }}">
+                        <div style="font-size:11px;color:#5A5648;margin-top:4px;line-height:1.45">{{ n.fbShow }}<span style="{{ n.caret }}">▍</span></div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ notesEmpty }}" hint-placeholder-val=""><div style="padding:11px;border:1px dashed rgba(28,25,34,.14);border-radius:8px;font-size:11px;color:#9A96A1;text-align:center">Marks land here as she reads.</div></sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- SCENE 3 — DASHBOARD -->
+          <sc-if value="{{ scDash }}" hint-placeholder-val="">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ac);margin-bottom:10px">Dashboard · IELTS Evening 7A</div>
+            <div style="flex:1;min-height:0;overflow:auto;scrollbar-width:none;display:grid;grid-template-columns:1.5fr 1fr;grid-auto-rows:minmax(174px,auto);gap:12px">
+              <div style="grid-row:span 2;min-height:360px;border:1px solid rgba(28,25,34,.1);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;background:#FFFEFB;animation:fadeUp .45s ease .05s both">
+                <div><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#2A2732">Class trajectory</div><div style="font-size:9.5px;color:#9A96A1;margin-top:1px">Mean band (line) against scripts marked per week (bars) · 6 wks</div></div>
+                <svg viewBox="0 0 340 172" style="width:100%;flex:1;margin-top:6px;font-family:'IBM Plex Mono',monospace">
+                  <g stroke="rgba(28,25,34,.08)" stroke-width="1"><line x1="34" y1="12" x2="306" y2="12"></line><line x1="34" y1="52" x2="306" y2="52"></line><line x1="34" y1="92" x2="306" y2="92"></line></g>
+                  <line x1="34" y1="132" x2="306" y2="132" stroke="rgba(28,25,34,.28)" stroke-width="1"></line><line x1="34" y1="12" x2="34" y2="132" stroke="rgba(28,25,34,.28)" stroke-width="1"></line><line x1="306" y1="12" x2="306" y2="132" stroke="rgba(195,183,156,.75)" stroke-width="1"></line>
+                  <g fill="#9A96A1" font-size="8" text-anchor="end"><text x="29" y="15">7.5</text><text x="29" y="55">7.0</text><text x="29" y="95">6.5</text><text x="29" y="135">6.0</text></g>
+                  <g fill="#C3B79C" font-size="8" text-anchor="start"><text x="311" y="135">0</text><text x="311" y="75">50</text><text x="311" y="16">100</text></g>
+                  <text x="9" y="72" fill="#9A96A1" font-size="7" text-anchor="middle" transform="rotate(-90 9 72)">mean band</text><text x="333" y="72" fill="#C3B79C" font-size="7" text-anchor="middle" transform="rotate(90 333 72)">scripts / wk</text>
+                  <g fill="rgba(176,141,76,.5)">
+                    <rect x="44" y="84" width="26" height="48" style="transform-box:fill-box;transform-origin:bottom;animation:growY .55s ease .10s both"></rect>
+                    <rect x="89" y="66" width="26" height="66" style="transform-box:fill-box;transform-origin:bottom;animation:growY .55s ease .18s both"></rect>
+                    <rect x="134" y="60" width="26" height="72" style="transform-box:fill-box;transform-origin:bottom;animation:growY .55s ease .26s both"></rect>
+                    <rect x="179" y="46" width="26" height="86" style="transform-box:fill-box;transform-origin:bottom;animation:growY .55s ease .34s both"></rect>
+                    <rect x="224" y="36" width="26" height="96" style="transform-box:fill-box;transform-origin:bottom;animation:growY .55s ease .42s both"></rect>
+                    <rect x="269" y="18" width="26" height="114" style="transform-box:fill-box;transform-origin:bottom;animation:growY .55s ease .50s both"></rect>
+                  </g>
+                  <polygon points="57,108 102,100 147,84 192,76 237,60 282,44 282,132 57,132" fill="rgba(122,18,48,.06)" style="opacity:0;animation:areaFade .7s ease .55s forwards"></polygon><polyline points="57,108 102,100 147,84 192,76 237,60 282,44" fill="none" stroke="#7A1230" stroke-width="2.5" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" style="animation:draw .9s ease .5s forwards"></polyline>
+                  <g fill="#FFFEFB" stroke="#7A1230" stroke-width="1.6"><circle cx="57" cy="108" r="2.6"></circle><circle cx="102" cy="100" r="2.6"></circle><circle cx="147" cy="84" r="2.6"></circle><circle cx="192" cy="76" r="2.6"></circle><circle cx="237" cy="60" r="2.6"></circle><circle cx="282" cy="44" r="3.2"></circle></g>
+                  <text x="282" y="36" fill="#7A1230" font-size="10" font-weight="600" text-anchor="middle">7.1</text>
+                  <g fill="#9A96A1" font-size="8" text-anchor="middle"><text x="57" y="147">W1</text><text x="102" y="147">W2</text><text x="147" y="147">W3</text><text x="192" y="147">W4</text><text x="237" y="147">W5</text><text x="282" y="147">W6</text></g>
+                </svg>
+                <div style="display:flex;align-items:center;gap:14px;margin-top:4px;font-size:9.5px;color:#696571"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:2px;background:#7A1230"></span>mean band</span><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:1px;background:rgba(176,141,76,.55)"></span>scripts / wk</span><span style="margin-left:auto;color:#3F6B4A;font-weight:600">▲ +0.6 band</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0">
+                <div style="border:1px solid rgba(28,25,34,.1);border-radius:10px;padding:11px 12px;background:#FFFEFB;display:flex;flex-direction:column;align-items:center;animation:fadeUp .45s ease .16s both">
+                  <div style="font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9A96A1;align-self:flex-start">Band spread</div>
+                  <div style="position:relative;width:64px;height:64px;margin-top:7px;border-radius:50%;background:conic-gradient(#E7C7CF 0 10%,#CE93A3 10% 34%,#A94A62 34% 68%,#7A1230 68% 90%,#5E0F2C 90% 100%);animation:pop .5s ease .3s both"><div style="position:absolute;inset:15px;border-radius:50%;background:#FFFEFB;display:grid;place-items:center"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7A1230">6.5</span></div></div>
+                  <div style="font-size:8px;color:#696571;margin-top:5px">median band</div>
+                  <div style="display:flex;flex-direction:column;gap:3px;margin-top:9px;width:100%;font-size:8px;color:#696571">
+                    <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:1px;background:#E7C7CF;flex:none"></span>5.5 <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;color:#696571">10%</span></div>
+                    <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:1px;background:#CE93A3;flex:none"></span>6.0 <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;color:#696571">24%</span></div>
+                    <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:1px;background:#A94A62;flex:none"></span>6.5 <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;color:#696571">34%</span></div>
+                    <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:1px;background:#7A1230;flex:none"></span>7.0 <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;color:#696571">22%</span></div>
+                    <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:1px;background:#5E0F2C;flex:none"></span>7.5 <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;color:#696571">10%</span></div>
+                  </div>
+                </div>
+                <div style="border:1px solid rgba(28,25,34,.1);border-radius:10px;padding:11px 12px;background:#FFFEFB;display:flex;flex-direction:column;animation:fadeUp .45s ease .22s both"><div style="font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9A96A1;margin-bottom:8px">Per criterion</div><div style="display:flex;flex-direction:column;gap:9px;flex:1;justify-content:space-between;font-size:9.5px;color:#696571"><div style="display:grid;grid-template-columns:28px 1fr 26px;gap:6px;align-items:center"><span>TR</span><span style="height:6px;background:rgba(28,25,34,.09);border-radius:4px;overflow:hidden"><span style="display:block;height:100%;width:72%;background:#7A1230;transform-origin:left;animation:grow .7s ease .3s both"></span></span><span style="font-family:'IBM Plex Mono',monospace;color:#2A2732;text-align:right">6.5</span></div><div style="display:grid;grid-template-columns:28px 1fr 26px;gap:6px;align-items:center"><span>CC</span><span style="height:6px;background:rgba(28,25,34,.09);border-radius:4px;overflow:hidden"><span style="display:block;height:100%;width:67%;background:#7A1230;transform-origin:left;animation:grow .7s ease .38s both"></span></span><span style="font-family:'IBM Plex Mono',monospace;color:#2A2732;text-align:right">6.0</span></div><div style="display:grid;grid-template-columns:28px 1fr 26px;gap:6px;align-items:center"><span>LR</span><span style="height:6px;background:rgba(28,25,34,.09);border-radius:4px;overflow:hidden"><span style="display:block;height:100%;width:78%;background:#7A1230;transform-origin:left;animation:grow .7s ease .46s both"></span></span><span style="font-family:'IBM Plex Mono',monospace;color:#2A2732;text-align:right">7.0</span></div><div style="display:grid;grid-template-columns:28px 1fr 26px;gap:6px;align-items:center"><span>GRA</span><span style="height:6px;background:rgba(28,25,34,.09);border-radius:4px;overflow:hidden"><span style="display:block;height:100%;width:72%;background:#7A1230;transform-origin:left;animation:grow .7s ease .54s both"></span></span><span style="font-family:'IBM Plex Mono',monospace;color:#2A2732;text-align:right">6.5</span></div></div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0">
+                <div style="border:1px solid rgba(28,25,34,.1);border-radius:10px;padding:11px 12px;background:#FFFEFB;animation:fadeUp .45s ease .28s both"><div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9A96A1">Examiner agreement</div><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.08em;color:#80632C;background:rgba(227,200,139,.34);padding:2px 7px;border-radius:2px">TARGET</span></div><div style="display:flex;align-items:baseline;gap:6px;margin-top:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:24px;color:var(--seal)">0.86</span><span style="font-size:9px;color:#696571">QWK, illustrative</span></div><div style="position:relative;height:7px;background:rgba(28,25,34,.09);border-radius:4px;margin-top:8px"><div style="height:100%;width:86%;background:var(--seal);border-radius:4px;transform-origin:left;animation:grow .7s ease .4s both"></div><div style="position:absolute;left:70%;top:-3px;bottom:-3px;width:2px;background:#7A1230"></div></div><div style="display:flex;justify-content:space-between;font-size:8px;color:#9A96A1;margin-top:3px"><span>0</span><span style="color:#7A1230">bar 0.70</span><span>1.0</span></div><div style="font-size:9px;color:#696571;line-height:1.45;margin-top:10px">Target: at or above the <b style="color:#3F6B4A;font-weight:600">0.70</b> reliability bar — reserved until the blind study measures it against a human second examiner.</div></div>
+                <div style="border:1px solid rgba(28,25,34,.1);border-radius:10px;padding:11px 12px;background:#FFFEFB;animation:fadeUp .45s ease .34s both"><div style="font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9A96A1">Reclaimed this term</div><div style="display:flex;align-items:baseline;gap:5px;margin-top:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:24px;color:#1C1922">214</span><span style="font-size:11px;color:#9A96A1">hrs</span></div><div style="font-size:10px;color:#696571;margin-top:5px;line-height:1.4">≈ <b style="color:#7A1230;font-weight:600">£3,800</b> vs a junior second examiner</div><div style="display:flex;flex-direction:column;gap:5px;margin-top:11px;font-size:9px;color:#696571"><div style="display:flex;justify-content:space-between"><span>Scripts double-marked</span><span style="font-family:'IBM Plex Mono',monospace;color:#2A2732">1,240</span></div><div style="display:flex;justify-content:space-between"><span>Saved per script</span><span style="font-family:'IBM Plex Mono',monospace;color:#2A2732">~10 min</span></div><div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid rgba(28,25,34,.08)"><span style="color:#9A96A1">On track, term end</span><span style="font-family:'IBM Plex Mono',monospace;color:#3F6B4A">~260 hrs</span></div></div></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- SCENE 4 — CLASSES -->
+          <sc-if value="{{ scClasses }}" hint-placeholder-val="">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px"><div style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ac)">Classes · progress to target</div><div style="display:flex;gap:16px;font-size:9.5px;color:#696571"><span>4 classes</span><span>93 students</span><span>mean <b style="font-family:'IBM Plex Mono',monospace;color:#2A2732;font-weight:400">6.75</b></span><span style="color:#7A1230">8 flagged</span></div></div>
+            <div style="display:grid;grid-template-columns:190px 1fr 96px 92px;gap:14px;padding:0 14px 7px;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9A96A1;border-bottom:1px solid rgba(28,25,34,.08);margin-bottom:9px"><span>Class</span><span>Progress to target · pace ▮</span><span style="text-align:right">Mean band</span><span style="text-align:right">Review</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:9px;overflow:auto">
+              <sc-for list="{{ classes }}" as="c" hint-placeholder-count="4"><div style="{{ c.style }}"><div><div style="font-weight:600;font-size:13px;color:#2A2732">{{ c.name }}</div><div style="font-size:9px;color:#9A96A1;margin-top:2px">{{ c.students }} students</div></div><div><div style="position:relative;height:10px;background:rgba(28,25,34,.08);border-radius:5px;overflow:hidden"><div style="{{ c.bar }}"></div><div style="{{ c.paceStyle }}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#9A96A1;margin-top:4px">{{ c.pctLabel }}</div></div><div style="text-align:right"><div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#1C1922">{{ c.band }}</div><div style="font-size:9px;color:#3F6B4A;font-weight:600;margin-top:1px">{{ c.delta }}</div></div><div style="display:flex;justify-content:flex-end"><div style="{{ c.flagS }}">{{ c.flag }}</div></div></div></sc-for>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+      <div style="flex:none;padding:8px 16px;border-top:1px solid rgba(28,25,34,.07);background:#FBF8F1;font-size:11px;color:#696571;display:flex;justify-content:space-between"><span>{{ caption }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#696571">{{ stageNote }}</span></div>
+    </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 520, &quot;height&quot;: 560}}">
+class Component extends DCLogic {
+  state = {
+    scene: 0, playing: true, touring: true,
+    typed: 0, submitted: false, filled: false,
+    markStep: 0, typedFb: {}, feedback: {}, editNote: null, markFilter: null, removed: {},
+    bands: { TR: 6.0, CC: null, LR: 6.5, GRA: 6.0 },
+    activeTool: 'comment', activeCrit: 'CC',
+    sealed: false, override: {}
+  };
+  ESSAY = 'Remote work has become common, and many firms now let staff choose where they sit. Firstly I want to say this essay will talk both sides then give my opinion. There are many reason why company like it, they save money and workers can working from home. Many people also feel more productive when they avoid a long commute each morning.';
+  MARKS = [
+    { id: 's1', type: 'comment', crit: 'CC', quote: 'Firstly I want to say this essay will talk both sides', note: 'Signposting stands in for a position — open with your own view, then defend it.' },
+    { id: 's2', type: 'underline', crit: 'GRA', quote: 'There are many reason why company like it', note: 'Agreement slips: “many reasons”, “a company likes it”.' },
+    { id: 's3', type: 'strike', crit: 'GRA', quote: 'can working', note: 'Verb form: use the base form after a modal — “can work”.' }
+  ];
+
+  componentDidMount() { if (this.state.playing) this.enterScene(0); }
+  componentWillUnmount() { this.stopAll(); }
+  stopAll() { clearInterval(this._type); clearInterval(this._fb); (this._timers || []).forEach(clearTimeout); this._timers = []; }
+  later(fn, ms) { (this._timers = this._timers || []).push(setTimeout(fn, ms)); }
+  now() { return (typeof performance !== 'undefined' ? performance.now() : Date.now()); }
+
+  enterScene(scene) {
+    this.stopAll();
+    this.setState({ scene, touring: true });
+    if (scene === 0) this.runTyping();
+    else if (scene === 1) this.later(() => { if (this.state.playing) this.enterScene(2); }, 1700);
+    else if (scene === 2) this.runMarking();
+    else if (scene === 3) this.later(() => { if (this.state.playing) this.enterScene(4); }, 1500);
+    else if (scene === 4) this.later(() => { if (this.state.playing) this.loopBack(); }, 1600);
+  }
+  freshState(extra) { return Object.assign({ scene: 0, typed: 0, submitted: false, filled: false, markStep: 0, typedFb: {}, feedback: {}, editNote: null, markFilter: null, removed: {}, bands: { TR: 6.0, CC: null, LR: 6.5, GRA: 6.0 }, activeTool: 'comment', activeCrit: 'CC', sealed: false, override: {} }, extra || {}); }
+  loopBack() { this.stopAll(); this.setState(this.freshState({ playing: true, touring: true }), () => this.enterScene(0)); }
+
+  runTyping() {
+    const len = this.ESSAY.length, prefix = Math.round(len * 0.66);
+    this.setState({ typed: prefix });
+    const startAt = this.now(), DURMS = 1150;
+    this._type = setInterval(() => {
+      this.setState(s => {
+        if (!s.playing) return {};
+        const n = Math.min(len, prefix + Math.round(((this.now() - startAt) / DURMS) * (len - prefix)));
+        if (n >= len) {
+          clearInterval(this._type);
+          this.later(() => { if (this.state.playing) { this.setState({ submitted: true }); this.later(() => { if (this.state.playing) this.enterScene(1); }, 320); } }, 300);
+        }
+        return { typed: n };
+      });
+    }, 40);
+  }
+  runMarking() {
+    this.setState({ markStep: 0, typedFb: {}, feedback: {}, editNote: null, markFilter: null, removed: {}, bands: { TR: 6.0, CC: null, LR: 6.5, GRA: 6.0 }, sealed: false });
+    this.revealMark(1);
+  }
+  revealMark(i) {
+    if (i > this.MARKS.length) {
+      this.later(() => { if (this.state.playing) this.setState({ bands: { TR: 6.0, CC: 6.5, LR: 6.5, GRA: 6.0 } }); }, 250);
+      this.later(() => { if (this.state.playing) this.setState({ sealed: true }); }, 650);
+      this.later(() => { if (this.state.playing) this.enterScene(3); }, 1250);
+      return;
+    }
+    this.later(() => {
+      if (!this.state.playing) return;
+      this.setState({ markStep: i });
+      const id = this.MARKS[i - 1].id;
+      this.typeNote(id, () => this.revealMark(i + 1));
+    }, 210);
+  }
+  typeNote(id, cb) {
+    const m = this.MARKS.find(x => x.id === id), txt = m ? m.note : '';
+    const start = this.now(), DUR = Math.max(240, txt.length * 7);
+    clearInterval(this._fb);
+    this._fb = setInterval(() => {
+      this.setState(s => {
+        if (!s.playing) return {};
+        const n = Math.min(txt.length, Math.round(((this.now() - start) / DUR) * txt.length));
+        if (n >= txt.length) { clearInterval(this._fb); this.later(cb, 90); }
+        return { typedFb: Object.assign({}, s.typedFb, { [id]: n }) };
+      });
+    }, 40);
+  }
+
+  onToggle = () => {
+    if (this.state.playing) { this.stopAll(); this.setState({ playing: false }); }
+    else this.setState({ playing: true }, () => this.enterScene(this.state.scene));
+  };
+  onReplay = () => { this.stopAll(); this.setState(this.freshState({ playing: true, touring: true }), () => this.enterScene(0)); };
+  jump = (scene) => () => {
+    this.stopAll();
+    const patch = { scene, touring: false };
+    if (scene === 0) { patch.typed = this.ESSAY.length; patch.submitted = false; patch.filled = true; }
+    if (scene === 2) { patch.markStep = this.MARKS.length; patch.typedFb = {}; patch.feedback = {}; patch.editNote = null; patch.markFilter = null; patch.removed = {}; patch.bands = { TR: 6.0, CC: null, LR: 6.5, GRA: 6.0 }; patch.sealed = false; }
+    this.setState(patch);
+  };
+  onSubmit = () => { this.stopAll(); this.setState({ submitted: true, typed: this.ESSAY.length, filled: true, playing: false, touring: false }); this.later(() => this.setState({ scene: 1 }), 850); };
+
+  pickTool = (k) => () => this.setState({ activeTool: k });
+  pickCrit = (k) => () => this.setState({ activeCrit: k });
+  clickSpan = (id) => () => this.setState(s => ({ override: Object.assign({}, s.override, { [id]: { type: s.activeTool, crit: s.activeCrit } }), removed: Object.assign({}, s.removed, { [id]: false }) }));
+  setBand = (crit, v) => () => this.setState(s => ({ bands: Object.assign({}, s.bands, { [crit]: v }), sealed: false }));
+  onSeal = () => { const s = this.state; if (s.bands.CC == null || s.sealed) return; this.setState({ sealed: true }); };
+  setMarkFilter = (k) => () => this.setState(s => ({ markFilter: s.markFilter === k ? null : k }));
+  editNoteFn = (id) => () => this.setState(s => ({ editNote: s.editNote === id ? null : id }));
+  onFeedbackInput = (id) => (e) => { const v = e.target.value; this.setState(s => ({ feedback: Object.assign({}, s.feedback, { [id]: v }) })); };
+  saveNote = () => this.setState({ editNote: null });
+  deleteNote = (id) => () => this.setState(s => ({ removed: Object.assign({}, s.removed, { [id]: true }), editNote: s.editNote === id ? null : s.editNote }));
+
+  fmt(n) { return (Math.round(n * 2) / 2).toFixed(1); }
+  markVisual(type, revealed, selected) {
+    if (!revealed) return 'cursor:pointer;transition:background .2s';
+    let s = 'cursor:pointer;background-repeat:no-repeat;';
+    if (type === 'highlight' || type === 'comment') s += 'background-image:linear-gradient(rgba(227,200,139,.62),rgba(227,200,139,.62));background-position:left center;background-size:100% 100%;border-radius:2px;padding:1px 2px;animation:hlDraw .55s ease both;';
+    else if (type === 'underline') s += 'background-image:linear-gradient(#A0561E,#A0561E);background-position:left 100%;background-size:100% 2px;animation:lineDraw .55s ease both;padding-bottom:2px;';
+    else if (type === 'strike') s += 'background-image:linear-gradient(#A0561E,#A0561E);background-position:left 58%;background-size:100% 2px;animation:lineDraw .55s ease both;color:#8A8478;';
+    else if (type === 'error') s += 'background-image:linear-gradient(rgba(162,58,42,.14),rgba(162,58,42,.14));background-position:left center;background-size:100% 100%;border-bottom:2px solid #A23A2A;border-radius:2px;padding:1px 2px;animation:hlDraw .55s ease both;';
+    if (selected) s += 'box-shadow:0 0 0 2px rgba(176,141,76,.6);border-radius:3px;';
+    return s;
+  }
+
+  renderVals() {
+    const s = this.state, sc = s.scene, tour = s.touring && s.playing;
+    const scWrite = sc === 0, scGrades = sc === 1, scMarking = sc === 2, scDash = sc === 3, scClasses = sc === 4;
+    const tabIdx = sc <= 1 ? 0 : sc === 2 ? 1 : sc === 3 ? 2 : 3;
+    const names = ['Student', 'Marking', 'Dashboard', 'Classes'];
+    const jumpScene = [0, 2, 3, 4];
+    const tabs = names.map((n, i) => ({ label: n, on: this.jump(jumpScene[i]), style: 'font-size:12px;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;' + (i === tabIdx ? 'background:#fff;color:#7A1230;font-weight:600;box-shadow:0 1px 3px rgba(28,25,34,.15)' : 'color:#696571') }));
+
+    const narText = { 0: 'A student sits the paper, under exam conditions.', 1: 'Marked twice — here is the read they receive.', 2: 'Let’s see how this essay was graded. Every band traces to the script.', 3: 'Across the class, the second mark compounds.', 4: 'Every cohort, one spine — progress to target.' };
+    const caps = { 0: 'The student writes; nothing leaves the room until they submit', 1: 'A calibrated band with its confidence interval — never a bare number', 2: 'Annotate · a note in the margin · abstention · countersign & seal', 3: 'Performance over time, examiner-agreement, hours reclaimed', 4: 'Every cohort, progress to target, flagged for review' };
+
+    // ---- SCENE 0 write ----
+    const full = this.ESSAY.length;
+    const typedText = this.ESSAY.slice(0, s.typed || 0);
+    const writing = (s.typed || 0) < full;
+    const wc = typedText.trim() ? typedText.trim().split(/\s+/).length : 0;
+    const caretStyle = writing ? 'display:inline-block;color:#7A1230;animation:caret 1s steps(1,end) infinite' : 'display:none';
+    const submitReady = !writing;
+    const paperStyle = 'flex:1;background:#FFFEFB;border:1px solid #ECE4D3;border-radius:9px;padding:18px 24px;overflow:auto;min-height:0;box-shadow:0 1px 0 rgba(255,255,255,.6) inset;' + (s.submitted ? 'animation:liftAway .5s ease forwards' : '');
+    const submitStyle = 'padding:9px 17px;border-radius:7px;font-size:11.5px;font-weight:600;transition:all .2s;' + (submitReady ? 'background:linear-gradient(180deg,var(--acB),var(--acD));color:#FBEFE9;cursor:pointer;box-shadow:0 8px 18px -9px rgba(94,15,44,.6)' : 'background:rgba(28,25,34,.06);color:#9A96A1;border:1px solid rgba(28,25,34,.1);cursor:default');
+
+    // ---- SCENE 1 grades ----
+    const tagStyleFor = (t) => { const m = { strength: ['strength', '#3F6B4A', 'rgba(63,107,74,.12)'], fix: ['to lift', '#A0561E', 'rgba(160,86,30,.12)'], held: ['held → teacher', '#80632C', 'rgba(227,200,139,.34)'] }; return m[t] || m.fix; };
+    const gcDefs = [
+      { label: 'Task Response', band: 6.0, src: 'her read', tag: 'fix', quote: 'Firstly I want to say this essay will talk both sides', note: 'Your position arrives late and hedged — state it in the first line.' },
+      { label: 'Coherence & Coh.', band: 6.5, src: 'teacher mark', tag: 'held', quote: '…both sides then give my opinion', note: 'Linking leans on one connective and the register slips — below her bar, so L. Nguyen marked it by hand.' },
+      { label: 'Lexical Resource', band: 6.5, src: 'her read', tag: 'strength', quote: 'more productive … avoid a long commute', note: 'Range and precision are here; a couple of slips cost the half-band.' },
+      { label: 'Grammatical R.', band: 6.0, src: 'her read', tag: 'fix', quote: 'can working', note: 'Modal + base form, and plural agreement (“many reasons”).' }
+    ];
+    const gradeCards = gcDefs.map((g, i) => {
+      const tb = tagStyleFor(g.tag), pct = Math.round(g.band / 9 * 100);
+      return {
+        label: g.label, band: this.fmt(g.band), quote: g.quote, note: g.note,
+        src: g.src, srcColor: g.src === 'teacher mark' ? '#7A1230' : '#80632C',
+        tag: tb[0], tagStyle: 'font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:7px;white-space:nowrap;color:' + tb[1] + ';background:' + tb[2],
+        cardStyle: 'border:1px solid ' + (g.tag === 'held' ? 'rgba(176,141,76,.5)' : 'rgba(28,25,34,.1)') + ';border-radius:10px;padding:10px 13px;background:' + (g.tag === 'held' ? 'rgba(227,200,139,.13)' : '#FFFDF9') + ';animation:fadeUp .42s ease ' + (0.08 + i * 0.17) + 's both',
+        bar: 'height:100%;width:' + pct + '%;background:' + (g.tag === 'strength' ? '#3F6B4A' : 'var(--ac)') + ';border-radius:4px;transform-origin:left;animation:grow .55s cubic-bezier(.2,.7,.2,1) ' + (0.18 + i * 0.17) + 's both'
+      };
+    });
+    const pathDefs = [{ v: '6.0', s: 'mock' }, { v: '6.5', s: 'now' }, { v: '7.0', s: '' }, { v: '7.5', s: 'target' }];
+    const pathNodes = pathDefs.map((p, i) => {
+      const now = i === 1, target = i === 3, done = i === 0;
+      return {
+        lbl: p.v + (p.s ? '' : ''),
+        dot: 'width:14px;height:14px;border-radius:50%;box-sizing:border-box;' + (now ? 'background:var(--ac);box-shadow:0 0 0 3px rgba(122,18,48,.18)' : target ? 'background:#FFFDF9;border:2px solid var(--gold)' : done ? 'background:var(--ac)' : 'background:#FFFDF9;border:2px solid rgba(28,25,34,.2)'),
+        lblStyle: 'font-family:IBM Plex Mono,monospace;font-size:9px;' + (now ? 'color:var(--ac);font-weight:700' : target ? 'color:#A8823C;font-weight:600' : 'color:#9A96A1')
+      };
+    });
+    const gradeSummary = 'Half a band from your Aldridge target — the lift lives in Coherence: vary how your sentences join.';
+
+    // ---- SCENE 2 marking ----
+    const ov = s.override || {}, removed = s.removed || {};
+    const shownCount = tour ? s.markStep : (s.markStep < this.MARKS.length ? s.markStep : this.MARKS.length);
+    const revealedIds = this.MARKS.slice(0, shownCount).map(m => m.id);
+    const markOf = {}; this.MARKS.forEach(m => { markOf[m.id] = Object.assign({}, m, ov[m.id] || {}); });
+    const segDefs = [
+      { t: 't', x: 'Remote work has become common, and many firms now let staff choose where they sit. ' },
+      { t: 'm', id: 's1', x: 'Firstly I want to say this essay will talk both sides' },
+      { t: 't', x: ' then give my opinion. ' },
+      { t: 'm', id: 's2', x: 'There are many reason why company like it' },
+      { t: 't', x: ', they save money and workers ' },
+      { t: 'm', id: 's3', x: 'can working' },
+      { t: 't', x: ' from home. Many people also feel more productive when they avoid a long commute each morning.' }
+    ];
+    const scriptSegs = segDefs.map(g => {
+      if (g.t === 't') return { plain: true, mark: false, x: g.x };
+      const revealed = revealedIds.indexOf(g.id) >= 0 && !removed[g.id];
+      return { plain: false, mark: true, x: g.x, on: this.clickSpan(g.id), style: this.markVisual(markOf[g.id].type, revealed, false) };
+    });
+    const toolDefs = [{ k: 'highlight', t: 'Highlight', g: '✎' }, { k: 'underline', t: 'Underline', g: 'U' }, { k: 'strike', t: 'Strikethrough', g: 'S̶' }, { k: 'comment', t: 'Comment', g: '❝' }, { k: 'error', t: 'Tag an error', g: '△' }];
+    const tools = toolDefs.map(t => { const on = s.activeTool === t.k; return { title: t.t, glyph: t.g, on: this.pickTool(t.k), style: 'display:inline-flex;align-items:center;justify-content:center;width:30px;height:28px;border-radius:7px;cursor:pointer;transition:all .15s;border:1px solid ' + (on ? 'transparent' : 'rgba(28,25,34,.14)') + ';background:' + (on ? (t.k === 'error' ? 'rgba(162,58,42,.14)' : 'rgba(227,200,139,.55)') : '#FBF8F1'), glyphStyle: 'font-family:' + (t.k === 'comment' ? "'Newsreader',serif" : "'Public Sans',sans-serif") + ';font-size:13px;font-weight:600;color:' + (t.k === 'error' ? '#A23A2A' : '#7A1230') }; });
+    const critList = ['TR', 'CC', 'LR', 'GRA'];
+    const critSeg = critList.map(c => { const on = s.activeCrit === c; return { label: c, on: this.pickCrit(c), style: 'font-family:IBM Plex Mono,monospace;font-size:9.5px;padding:3px 6px;border-radius:5px;cursor:pointer;transition:all .15s;' + (on ? 'background:var(--ac);color:#FBEFE9;font-weight:600' : 'background:rgba(28,25,34,.06);color:#696571') }; });
+    const annHint = tour ? 'reading…' : 'Pick a tool, click a phrase, then type your note.';
+    const badgeFor = (type) => { const map = { highlight: ['Highlight', '#80632C', 'rgba(227,200,139,.4)'], comment: ['Comment', '#80632C', 'rgba(227,200,139,.4)'], underline: ['Underline', '#A0561E', 'rgba(160,86,30,.12)'], strike: ['Strike', '#A0561E', 'rgba(160,86,30,.12)'], error: ['Error', '#A23A2A', 'rgba(162,58,42,.12)'] }; return map[type] || map.comment; };
+    const activeNotes = this.MARKS.filter(m => revealedIds.indexOf(m.id) >= 0 && !removed[m.id]);
+    const bdCounts = { TR: 0, CC: 0, LR: 0, GRA: 0 };
+    activeNotes.forEach(m => { const cr = markOf[m.id].crit; bdCounts[cr] = (bdCounts[cr] || 0) + 1; });
+    const breakdown = critList.map(k => { const on = s.markFilter === k; return { label: k, count: bdCounts[k], on: this.setMarkFilter(k), style: 'display:inline-flex;align-items:center;gap:4px;font-family:IBM Plex Mono,monospace;font-size:9px;padding:3px 7px;border-radius:6px;cursor:pointer;transition:all .15s;' + (on ? 'background:var(--ac);color:#FBEFE9' : 'background:rgba(28,25,34,.05);color:#696571'), countStyle: 'font-weight:700;color:' + (on ? '#FBEFE9' : '#9A96A1') }; });
+    const notes = activeNotes.filter(m => !s.markFilter || markOf[m.id].crit === s.markFilter).map((m0) => {
+      const m = markOf[m0.id], id = m0.id, bd = badgeFor(m.type);
+      const preset = m0.note, edited = s.feedback[id], editing = s.editNote === id;
+      const typedN = s.typedFb[id];
+      const isTyping = tour && !editing && (typedN == null || typedN < preset.length);
+      const fbFull = edited != null ? edited : preset;
+      const fbShow = isTyping ? preset.slice(0, typedN || 0) : fbFull;
+      return {
+        type: bd[0], crit: m.crit, quote: m.quote,
+        rowStyle: 'border:1px solid ' + (editing ? 'rgba(122,18,48,.3)' : 'rgba(28,25,34,.1)') + ';border-radius:9px;padding:9px 11px;background:#FFFDF9;animation:glideInRight .4s ease both',
+        badgeStyle: 'font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:7px;color:' + bd[1] + ';background:' + bd[2],
+        editing, showFb: !editing, fbShow, fbValue: fbFull,
+        caret: isTyping ? 'display:inline;color:#7A1230;animation:caret 1s steps(1,end) infinite' : 'display:none',
+        editLabel: editing ? 'editing' : (edited != null ? 'edited ·' : 'edit'),
+        onEdit: this.editNoteFn(id), onDelete: this.deleteNote(id), onInput: this.onFeedbackInput(id), onSave: this.saveNote
+      };
+    });
+    const noteCount = activeNotes.length + (activeNotes.length === 1 ? ' mark' : ' marks');
+    const notesEmpty = notes.length === 0;
+
+    const critDefs = [{ k: 'TR', abbr: 'TR' }, { k: 'CC', abbr: 'CC' }, { k: 'LR', abbr: 'LR' }, { k: 'GRA', abbr: 'GRA' }];
+    const scaleVals = [5.5, 6.0, 6.5, 7.0, 7.5];
+    const scaleVals49 = [4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9];
+    const criteria = critDefs.map((c, i) => {
+      const band = s.bands[c.k], abstain = band == null;
+      return {
+        abbr: c.abbr, labelColor: abstain ? '#80632C' : '#2A2732', noteN: bdCounts[c.k] || 0,
+        fb: (abstain ? 'Held → L. Nguyen marked it.' : ({ TR: 'Position stated late; open with your view.', CC: 'Linking thin; register slips.', LR: 'Range solid — a few slips.', GRA: 'Modal + base form; agreement.' })[c.k]),
+        src: abstain ? 'teacher' : 'engine',
+        srcStyle: 'font-size:7.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:' + (abstain ? '#7A1230' : '#80632C'),
+        ci: abstain ? 'held · low confidence' : ('90% CI ' + this.fmt(band - 0.5) + '–' + this.fmt(band + 0.5)),
+        bandShow: abstain ? '—' : this.fmt(band), bandColor: abstain ? '#80632C' : '#1C1922',
+        cardStyle: 'animation:fadeUp .45s ease ' + (0.05 + i * 0.07) + 's both;border:1px solid ' + (abstain ? 'rgba(176,141,76,.55)' : 'rgba(28,25,34,.12)') + ';border-radius:8px;padding:8px 10px;background:' + (abstain ? 'rgba(227,200,139,.16)' : '#FFFEFB'),
+        scale: scaleVals49.map(v => { const on = band != null && v <= band + 0.01; return { title: this.fmt(v), on: this.setBand(c.k, v), style: 'flex:1;height:7px;border-radius:1.5px;cursor:pointer;transition:background .45s ease;background:' + (on ? 'var(--ac)' : 'rgba(28,25,34,.09)') }; })
+      };
+    });
+    const vals = critDefs.map(c => s.bands[c.k]);
+    const ready = vals.every(v => v != null);
+    const overallNum = ready ? Math.round(vals.reduce((a, x) => a + x, 0) / vals.length * 2) / 2 : null;
+    const overallShow = ready ? this.fmt(overallNum) : '—';
+    const overallColor = ready ? '#7A1230' : '#696571';
+    const sealLabel = s.sealed ? '✓ Countersigned' : 'Countersign';
+    const sealStyle = 'padding:8px 14px;border-radius:7px;font-size:11px;font-weight:600;transition:all .2s;' + (s.sealed ? 'background:transparent;color:#3F6B4A;cursor:default' : ready ? 'background:linear-gradient(180deg,var(--acB),var(--acD));color:#FBEFE9;cursor:pointer;box-shadow:0 6px 14px -8px rgba(94,15,44,.55)' : 'background:rgba(28,25,34,.08);color:#9A96A1;cursor:not-allowed');
+
+    const gradeOverall = '6.5', gradeCI = '6.0–7.0';
+
+    const cd = [
+      { name: 'IELTS Evening 7A', students: 24, pct: 82, pace: 78, band: '7.0', delta: '▲ +0.4', flag: '3 flagged', fk: 1 },
+      { name: 'IELTS Morning 3B', students: 22, pct: 68, pace: 74, band: '6.5', delta: '▲ +0.2', flag: '5 flagged', fk: 1 },
+      { name: 'Foundation 1A', students: 28, pct: 54, pace: 50, band: '6.0', delta: '▲ +0.6', flag: 'on track', fk: 0 },
+      { name: 'Advanced 9C', students: 19, pct: 91, pace: 85, band: '7.5', delta: '▲ +0.3', flag: 'clear', fk: 0 }
+    ];
+    const classes = cd.map((c, i) => ({ name: c.name, band: c.band, flag: c.flag, students: c.students, delta: c.delta,
+      pctLabel: c.pct + '% to target · pace ' + c.pace + '%',
+      style: 'display:grid;grid-template-columns:190px 1fr 96px 92px;gap:14px;align-items:center;padding:11px 14px;border:1px solid rgba(28,25,34,.1);border-radius:9px;animation:glideInRight .45s ease ' + (0.1 + i * 0.09) + 's both',
+      bar: 'height:100%;width:' + c.pct + '%;background:var(--ac);border-radius:5px;transform-origin:left;animation:grow .8s ease ' + (0.2 + i * 0.09) + 's both',
+      paceStyle: 'position:absolute;top:0;bottom:0;left:' + c.pace + '%;width:2px;background:rgba(28,25,34,.45)',
+      flagS: 'font-size:10px;padding:3px 8px;border-radius:8px;white-space:nowrap;' + (c.fk ? 'color:#7A1230;background:rgba(122,18,48,.09)' : 'color:#3F6B4A;background:rgba(63,107,74,.12)') }));
+
+    const barBase = 'height:100%;transform-origin:left;background:linear-gradient(90deg,var(--goldL),var(--gold));';
+    let barStyle;
+    if (scWrite) barStyle = barBase + 'transition:transform .2s ease;transform:scaleX(' + (full ? Math.min(1, (s.typed || 0) / full) : 0) + ')';
+    else barStyle = barBase + 'transition:transform .6s ease;transform:scaleX(' + ((tabIdx + 1) / 4) + ')';
+
+    return {
+      scWrite, scGrades, scMarking, scDash, scClasses, stageKey: 'key:sc-' + sc + ';',
+      tabs, caption: caps[sc], classes, nothing: '',
+      narrator: narText[sc], narKey: 'key:nar-' + sc + ';',
+      narWrapStyle: 'flex:none;display:flex;align-items:center;gap:9px;padding:8px 18px;background:linear-gradient(90deg,rgba(227,200,139,.14),rgba(255,255,255,0));border-bottom:1px solid rgba(28,25,34,.05)',
+      narDotStyle: 'width:7px;height:7px;border-radius:50%;flex:none;background:var(--ac)',
+      stageNote: scWrite ? (writing ? 'live · typing' : 'ready to submit') : scMarking ? (tour ? 'reading the script' : 'interactive · try the tools') : tour ? 'playing' : 'click the tabs',
+      tourLabel: tour ? 'demo playing' : (s.playing ? 'click a tab' : 'paused'),
+      playIcon: s.playing ? '❚❚' : '▶', onToggle: this.onToggle, onReplay: this.onReplay,
+      barStyle,
+      typedText, caretStyle, wc, writeHint: writing ? 'writing…' : 'ready to submit', saveState: writing ? 'Autosaving…' : 'Saved just now', saveDot: writing ? '#B08D4C' : '#3F6B4A', submitLabel: submitReady ? 'Submit to the second marker →' : 'Writing…', submitStyle, onSubmit: this.onSubmit, paperStyle,
+      gradeCards, pathNodes, gradeSummary, summaryCaret: 'display:none', gradeOverall, gradeCI,
+      tools, critSeg, annHint, scriptSegs, breakdown, notes, noteCount, notesEmpty, criteria, overallShow, overallColor, sealLabel, sealStyle, onSeal: this.onSeal
+    };
+  }
+}
+
+</script>
+</body>
+</html>

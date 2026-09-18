@@ -23,3 +23,6 @@ copy?.addEventListener('click', async () => {
     if (status) status.textContent = 'Select the email address to copy it, or open the email link.';
   }
 });
+
+import { initConcurrencyExplorer } from './concurrency-explorer';
+initConcurrencyExplorer();

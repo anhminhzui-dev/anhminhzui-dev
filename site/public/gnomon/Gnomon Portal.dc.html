@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"><title>Gnomon Portal — school-network demonstration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<aside style="padding:12px 24px;background:#FAF7F0;font:13px system-ui;line-height:1.5">Private institutional software · school local network<br>Portfolio demonstration uses simulated data. <a href="../#product">Back to portfolio</a></aside>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ac:#7A1230; --ac-deep:#5E0F2C; --ac-bright:#8A1538; --gold:#B08D4C; --gold-lt:#E3C88B; --ink:#1C1B24; --ivory:#FAF7F0; --ivory-hi:#FDFCF9; --paper:#EBE6DB; --green:#35593E; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); font-family:'Public Sans',system-ui,sans-serif; color:var(--ink); }
+  a { color:var(--ac); text-decoration:none; }
+  a:hover { color:var(--ac-deep); }
+  .lbl { font-family:'Public Sans',sans-serif; text-transform:uppercase; letter-spacing:.18em; font-size:10px; font-weight:700; }
+  .mono { font-family:'IBM Plex Mono',monospace; }
+  @keyframes gkRise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media(max-width:700px){.portal-gate{grid-template-columns:1fr!important}.portal-gate>div{padding:26px!important}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:88px 24px 40px;background:radial-gradient(120% 90% at 50% -10%, #F1ECE1 0%, var(--paper) 60%);">
+
+  <!-- top brand bar -->
+  <a href="./" style="position:absolute;top:92px;left:24px;display:flex;align-items:center;gap:11px;z-index:5">
+    <svg viewBox="0 0 200 200" style="width:26px;height:26px;flex:none" aria-label="Gnomon Kanon — the cast"><line x1="30" y1="150" x2="158" y2="150" stroke="#7A1230" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="#7A1230"></path><line x1="78" y1="150" x2="138" y2="78" stroke="#B08D4C" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="#B08D4C"></circle></svg>
+    <span style="font-family:'Newsreader',serif;font-size:19px;font-weight:500;color:#1C1B24">Gnomon&nbsp;Kanon</span>
+  </a>
+  <a href="./" class="lbl" style="position:absolute;top:98px;right:24px;color:rgba(28,27,36,.63);z-index:5">← Back to site</a>
+
+  <!-- the gate card -->
+  <div class="portal-gate" style="width:100%;max-width:1000px;display:grid;grid-template-columns:0.92fr 1.08fr;background:var(--ivory-hi);border:1px solid rgba(28,27,36,.1);box-shadow:0 40px 90px -40px rgba(28,27,36,.42),0 4px 14px -8px rgba(28,27,36,.2);overflow:hidden;animation:gkRise .6s ease both">
+
+    <!-- LEFT · the idea, on the dark ground -->
+    <div style="position:relative;background:linear-gradient(160deg,#2A0E1C 0%,#1C1B24 100%);color:#F3E6EA;padding:44px 40px 38px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden">
+      <!-- reading-field ruled texture -->
+      <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(180deg, rgba(227,200,139,.05) 0 1px, transparent 1px 26px);pointer-events:none"></div>
+      <div style="position:relative">
+        <div class="lbl" style="color:var(--gold);margin-bottom:24px">The gate</div>
+        <svg viewBox="0 0 200 200" width="44" height="44" style="display:block;margin-bottom:26px"><line x1="30" y1="150" x2="158" y2="150" stroke="#ECE3D7" stroke-width="11" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="#ECE3D7"></path><line x1="78" y1="150" x2="138" y2="78" stroke="#E3C88B" stroke-width="11" stroke-linecap="round"></line><circle cx="138" cy="78" r="13" fill="#E3C88B"></circle></svg>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:33px;line-height:1.1;margin:0 0 16px;letter-spacing:-.01em">One door.<br>Your room opens behind it.</h1>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:#D6C4CB;max-width:340px">Everyone at your institution signs in here — student, teacher, director, admin. We read who you are, then open only your room. No one sees another's.</p>
+      </div>
+      <div style="position:relative;margin-top:32px;padding-top:18px;border-top:1px solid rgba(227,200,139,.18)">
+        <div class="lbl mono" style="color:#C79A7E;font-size:9.5px;letter-spacing:.14em;margin-bottom:7px">Signed-in institution</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--gold-lt)"></span>
+          <span style="font-family:'Newsreader',serif;font-size:16px;color:#F3E6EA">School local network</span>
+          <span class="mono" style="font-size:9px;letter-spacing:.1em;color:#9C7C86;border:1px solid rgba(156,124,134,.5);padding:2px 6px;border-radius:2px">DEMO</span>
+        </div>
+        <div class="mono" style="font-size:10.5px;color:#9C7C86;margin-top:9px;line-height:1.5">one sign-in reaches only this school's record · access scoped by role (RBAC)</div>
+      </div>
+    </div>
+
+    <!-- RIGHT · the sign-in + demo doors -->
+    <div style="padding:44px 44px 38px">
+      <div class="lbl" style="color:var(--ac);margin-bottom:18px">Institution sign-in</div>
+      <p style="font-size:14px;line-height:1.6">Sign-in is available on the school local network. This portfolio does not connect to school accounts or collect credentials.</p>
+      <label for="gk-portal-email">Institution email</label>
+      <input id="gk-portal-email" type="email" disabled="{{ true }}" placeholder="School-network sign-in only" style="width:100%;height:44px;margin:8px 0 14px;padding:0 12px" />
+      <label for="gk-portal-password">Password</label>
+      <input id="gk-portal-password" type="password" disabled="{{ true }}" placeholder="Unavailable in portfolio demonstration" style="width:100%;height:44px;margin:8px 0;padding:0 12px" />
+      <!-- the demo doors — view-as -->
+      <div style="margin-top:26px;padding-top:20px;border-top:1px solid rgba(28,27,36,.1)">
+        <div style="display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px">
+          <span class="lbl" style="color:rgba(28,27,36,.63)">Inspect an interface</span>
+          <span class="lbl" style="color:var(--gold);font-size:9px">Prototype images</span>
+        </div>
+        <p class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin:0 0 14px;line-height:1.5">The student and teacher links open existing full-size prototype images. These are visual examples, not working school accounts.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <a data-demo-role="student" href="../assets/gnomon/student_workspace.webp" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--gold);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Student</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Learner</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">View student prototype image</div>
+          </a>
+          <a data-demo-role="teacher" href="../assets/gnomon/teacher_desk.webp" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--ac);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Teacher</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Staff</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">View teacher prototype image</div>
+          </a>
+          <a data-demo-role="director" href="#unavailable" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--ac);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Director</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Admin</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">Unavailable in this portfolio demo</div>
+          </a>
+          <a data-demo-role="admin" href="#unavailable" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--ac);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Admin</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Ops</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">Unavailable in this portfolio demo</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p id="unavailable" tabindex="-1" style="max-width:1000px;margin:20px auto;font:14px/1.6 system-ui">Director and administrator services are not connected in this portfolio demonstration. <a href="./">Return to the running landing demo</a>.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>class Component extends DCLogic { render(){return {institutionName:"School local network"};} }</script>
+</body>
+</html>
