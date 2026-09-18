@@ -41,6 +41,17 @@ REQUIRED_IN_CV = [
     "Hackathon and competition entries",
     "Kaggle",
     "lm-evaluation-harness",
+    # r20 restorations (2026-09-18): the facts the ledger found dropped between r15 and the 13 Sep rebuild
+    "facts-not-grades",
+    "2,232 criterion units",
+    "27B",
+    "policy-as-code",
+    "1,117 backend tests",
+    "239 tests",
+    "455 tests",
+    "0.94151",
+    "Sparta VFX",
+    "Sofitel Saigon Plaza",
     "FPT University | Bachelor's degree.",
 ]
 # Employers the site timeline must also carry (the page and the CV never disagree).
