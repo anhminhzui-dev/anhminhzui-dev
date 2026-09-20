@@ -5,6 +5,14 @@ tag `cv-r<N>` on the commit that published it. Working builds that never shipped
 fact inventory every version is cut from is `cv/MASTER_CV.md`; the audit trail of every earlier file is
 `M:/AGENT_VAULT/PORTFOLIO/cv/CV_REGISTER.md` (private).
 
+## [r22] - 2026-09-20
+### Changed
+- Banner line, hiring-manager judge fix (`M:/AGENT_VAULT/PORTFOLIO/hiring_systems/PROFILE_JUDGE_2026-09-20.md`): "AI ENGINEER
+  | EVALUATION, AGENTS & RETRIEVAL" replaced with "AI EVALUATOR | TEXT, RUBRIC & CHART REVIEW, DATA QUALITY | REMOTE, UTC+7 |
+  $35-60/HR" — the judge's shortlist note said the old banner "never says the words I search on (text evaluation, rubric
+  grading, RLHF rating, chart review) and it carries no availability, no time-zone line beyond the address, no rate."
+  Nothing else changed.
+
 ## [r21] - 2026-09-20
 ### Added
 - Gnomon: one line of deck/presentation-design work ("Presentation design and slide reconstruction of a ten-slide

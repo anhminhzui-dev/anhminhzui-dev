@@ -22,7 +22,7 @@ Open pull request to EleutherAI's lm-evaluation-harness: [#4115](https://github.
 [uh-huh](https://github.com/anhminhzui-dev/uh-huh) voice-agent hackathon entry (lablab.ai) · [arc-whest](https://github.com/anhminhzui-dev/arc-whest) scored submission, ARC White-Box Estimation (AIcrowd) · Kaggle Playground S6E9, public score 0.94151 · [opencv-entry](https://github.com/anhminhzui-dev/opencv-entry) registered.
 
 ## Before AI
-Forward-deployed 3D generalist at OTSU Labs with Sparta VFX (2025); creative lead on FPT's Unreal Engine short "Fragments of the Deep" (2024–2025); embedded 3D artist at Dihaan Media (2023). Frame-by-frame judgment to a studio standard, on deadline, is where the evaluation habit comes from.
+Applied AI Operations for VFX production at OTSU Labs with Sparta VFX (2025); Applied AI Operations Lead on FPT's Unreal Engine short "Fragments of the Deep" (2024–2025); Applied AI Operations at Dihaan Media (2023). Frame-by-frame judgment to a studio standard, on deadline, is where the evaluation habit comes from.
 
 ## Contact
 minhhoang250803@gmail.com · [LinkedIn](https://www.linkedin.com/in/minh-v%C3%B5-b%C3%A1-ho%C3%A0ng-287942366/)
