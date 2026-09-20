@@ -54,7 +54,9 @@ SECTIONS = [
      'loss and chunked vocabulary projection; a separate 8B run processed 9,325 examples, 2,134 with images.',
      'Directed a two-provider coding-agent fleet under policy-as-code guardrails (resource-aware admission, '
      'spend/irreversibility classifier scored on a hash-pinned 1,219-case deck, output-hash delivery checks); '
-     'shipped the React/TypeScript and FastAPI/SQLite product: 43 router modules, 79 migrations, TOTP MFA, 1,117 backend tests.']),
+     'shipped the React/TypeScript and FastAPI/SQLite product: 43 router modules, 79 migrations, TOTP MFA, 1,117 backend tests.',
+     'Presentation design and slide reconstruction of a ten-slide Gnomon sales deck: action titles, data '
+     'visualization, rationale log.']),
    ('FPT Software | Data Science | 2025 - 2026',
     None,
     ['Consolidated customer and business data (missing records, inconsistencies, duplicates); analysed sales and '
@@ -63,16 +65,16 @@ SECTIONS = [
     None,
     ['Delivered paid instruction on applying AI to visual-effects workflows.'])]),
  ('FORWARD-DEPLOYED ENGINEERING - VFX AND AI | 2023 - 2025',
-  [('OTSU Labs | Forward-Deployed 3D Generalist | 2025',
+  [('OTSU Labs | Applied AI Operations, VFX Production | 2025',
     None,
-    ['Ran the 3D generalist workflow across projects in partnership with Sparta VFX and Sparx; owned render '
-     'passes, asset management and look development, delivering shots to studio standard on deadline; converted '
-     'realistic assets into stylised anime visuals with the 2D team.']),
-   ('FPT, "Fragments of the Deep" | Creative Lead | 07/2024 - 2025',
+    ['Ran Applied AI Operations across VFX production projects in partnership with Sparta VFX and Sparx; owned '
+     'render passes, asset management and look development, delivering shots to studio standard on deadline; '
+     'converted realistic assets into stylised anime visuals with the 2D team.']),
+   ('FPT, "Fragments of the Deep" | Applied AI Operations Lead | 07/2024 - 2025',
     None,
     ['Led the artist team on an Unreal Engine 5 animated short, owning storyboard and camera direction; '
      'optimised real-time models for a 30% performance gain.']),
-   ('Dihaan Media | Forward-Deployed 3D Artist | 2023',
+   ('Dihaan Media | Applied AI Operations | 2023',
     None,
     ['Embedded with the client production team on stage and booth environments for Sofitel Saigon Plaza; '
      'introduced IES-based lighting and new tools into their workflow.']),

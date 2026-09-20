@@ -5,6 +5,27 @@ tag `cv-r<N>` on the commit that published it. Working builds that never shipped
 fact inventory every version is cut from is `cv/MASTER_CV.md`; the audit trail of every earlier file is
 `M:/AGENT_VAULT/PORTFOLIO/cv/CV_REGISTER.md` (private).
 
+## [r21] - 2026-09-20
+### Added
+- Gnomon: one line of deck/presentation-design work ("Presentation design and slide reconstruction of a ten-slide
+  Gnomon sales deck: action titles, data visualization, rationale log."), added because an OpenTrain interviewer
+  (2026-09-19) said deck work wasn't on the resume although the candidate had spoken about it. No tool name (e.g.
+  PowerPoint) is claimed.
+### Changed
+- VFX role titles and lead-in wording, Founder order 2026-09-20 15:29 ("anything VFX related, it's applied AI ops
+  for VFX"; the CV of record must never say "3D artist" or "3D generalist"): OTSU Labs retitled "Applied AI
+  Operations, VFX Production" (was "Forward-Deployed 3D Generalist"), bullet now leads "Ran Applied AI Operations
+  across VFX production projects in partnership with Sparta VFX and Sparx"; FPT "Fragments of the Deep" retitled
+  "Applied AI Operations Lead" (was "Creative Lead"); Dihaan Media retitled "Applied AI Operations" (was
+  "Forward-Deployed 3D Artist"). All facts, numbers and gate markers (Sparta VFX, Sofitel Saigon Plaza, dates,
+  the anime-conversion and IES-lighting bullets) are unchanged.
+### Not used, by space
+- Client proposal board (three versions: sell, demo, quote), the written-spec detail (three fonts, thirteen canon
+  colours, zero banned words, script-checked) and the 25-design-violations count: every phrasing tested that
+  included any of these pushed the PDF to two pages. Page was already at its exact one-page limit at r20 (705
+  words); the shipped r21 draft is 723 words, still one page. These facts stay in `MASTER_CV.md` for a future
+  revision with room.
+
 ## cv-r20 — 2026-09-18 — commit d037f0b — sha256 723c589714531727 — audited against every earlier version (20 files, 107 facts)
 ### Added (restored from earlier versions; each corroborated in two or more files)
 - Gnomon: facts-not-grades architecture; fail-closed evaluation harness counts (2,232 criterion units, 629 essays,
