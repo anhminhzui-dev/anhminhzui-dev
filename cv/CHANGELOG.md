@@ -5,6 +5,12 @@ tag `cv-r<N>` on the commit that published it. Working builds that never shipped
 fact inventory every version is cut from is `cv/MASTER_CV.md`; the audit trail of every earlier file is
 `M:/AGENT_VAULT/PORTFOLIO/cv/CV_REGISTER.md` (private).
 
+## [r23] - 2026-09-26
+### Changed
+- Focused the headline, opening and first experience section on 3D/VFX production plus AI workflow engineering for current hybrid roles.
+- Restored the underlying production titles for OTSU Labs, Fragments of the Deep and Dihaan Media. The prior "Applied AI Operations" labels did not establish AI deployment at those studios.
+- Added verified 3D tools; removed two less relevant engineering projects and an unsupported 30% performance figure. PDF remains one page. Commit 4b2eeaa; SHA256 e47866fd25857251. GitHub Pages delivery is checked separately in the private register.
+
 ## [r22] - 2026-09-20
 ### Changed
 - Banner line, hiring-manager judge fix (`M:/AGENT_VAULT/PORTFOLIO/hiring_systems/PROFILE_JUDGE_2026-09-20.md`): "AI ENGINEER
