@@ -24,16 +24,16 @@ TAG = sys.argv[1] if len(sys.argv) > 1 else "untagged"
 OUT = Path(__file__).resolve().parent / "build" / TAG
 STEM = "Vo_Ba_Hoang_Minh_AI_Engineer_CV"
 NAME = "VO BA HOANG MINH"
-TITLE = "AI EVALUATOR | TEXT, RUBRIC & CHART REVIEW, DATA QUALITY | REMOTE, UTC+7 | $35-60/HR"
+TITLE = "3D / VFX ARTIST | AI WORKFLOW ENGINEER | REMOTE, UTC+7"
 PORTFOLIO = "https://anhminhzui-dev.github.io/anhminhzui-dev/"
-CONTACT = ('Ho Chi Minh City, Vietnam | Remote, worldwide | UTC+7<br/>'
+CONTACT = ('Ho Chi Minh City, Vietnam | Remote, UTC+7<br/>'
            '<a href="mailto:minhhoang250803@gmail.com">minhhoang250803@gmail.com</a> | '
            '<a href="tel:+84902391936">+84 902 391 936</a><br/>'
            '<a href="https://github.com/anhminhzui-dev" color="#24557a"><u>github.com/anhminhzui-dev</u></a> | '
            '<a href="' + PORTFOLIO + '" color="#24557a"><u>Portfolio (anhminhzui-dev.github.io)</u></a> | '
            '<a href="https://doi.org/10.5281/zenodo.22675789" color="#24557a"><u>Research (doi.org/10.5281/zenodo.22675789)</u></a>')
-INTRO = ("Founder of Gnomon, delivering paid writing-assessment work for teachers and clients. "
-         "Engineering experience spans data science, retrieval, multimodal training and evaluation.")
+INTRO = ("3D/VFX production experience in asset preparation, look development, render passes and studio delivery. "
+         "I also teach AI for VFX and build Python-based AI evaluation and review workflows.")
 REPORT = "https://doi.org/10.5281/zenodo.22675789"
 PR = "https://github.com/EleutherAI/lm-evaluation-harness/pull/4115"
 
@@ -64,17 +64,17 @@ SECTIONS = [
    ('FPT Education | Lecturer, AI for VFX | 2025 - 2026',
     None,
     ['Delivered paid instruction on applying AI to visual-effects workflows.'])]),
- ('FORWARD-DEPLOYED ENGINEERING - VFX AND AI | 2023 - 2025',
-  [('OTSU Labs | Applied AI Operations, VFX Production | 2025',
+ ('3D & VFX PRODUCTION | 2023 - 2025',
+  [('OTSU Labs | 3D Generalist | 2025',
     None,
-    ['Ran Applied AI Operations across VFX production projects in partnership with Sparta VFX and Sparx; owned '
-     'render passes, asset management and look development, delivering shots to studio standard on deadline; '
+    ['Worked in VFX production under Sparta VFX and Sparx supervision; handled '
+     'render passes, asset management and look development under studio deadlines; '
      'converted realistic assets into stylised anime visuals with the 2D team.']),
-   ('FPT, "Fragments of the Deep" | Applied AI Operations Lead | 07/2024 - 2025',
+   ('FPT, "Fragments of the Deep" | Creative Lead | 07/2024 - 2025',
     None,
     ['Led the artist team on an Unreal Engine 5 animated short, owning storyboard and camera direction; '
-     'optimised real-time models for a 30% performance gain.']),
-   ('Dihaan Media | Applied AI Operations | 2023',
+     'optimised real-time models.']),
+   ('Dihaan Media | 3D Artist | 2023',
     None,
     ['Embedded with the client production team on stage and booth environments for Sofitel Saigon Plaza; '
      'introduced IES-based lighting and new tools into their workflow.']),
@@ -91,12 +91,6 @@ SECTIONS = [
     'https://github.com/anhminhzui-dev/policy-deck',
     ['Benchmarked 11 command-classification rules: 8 false positives/0 false negatives on 1,260 fitted '
      'cases; 2/0 on 190 separate cases; 455 tests. Classifier, not an execution sandbox.']),
-   ('relay-gate | Completion-claim detection',
-    'https://github.com/anhminhzui-dev/relay-gate',
-    ['Built a detector for false agent completion claims; benchmarked on MAST and AgentRewardBench, with 81 tests.']),
-   ('mcp-trajectory-judge | Tool-trajectory evaluation',
-    'https://github.com/anhminhzui-dev/mcp-trajectory-judge',
-    ['Replays MCP-style tool trajectories in a deterministic sandbox to check actions against completion claims.']),
    ('Hackathon and competition entries | September 2026',
     'https://github.com/anhminhzui-dev',
     ['Submitted a voice-agent entry with public code (uh-huh, 2 companion tools); scored an ARC White-Box '
@@ -117,9 +111,13 @@ SECTIONS = [
    ('', None, ['Machine Learning: Large Language Model (LLM) SFT, QLoRA, data-quality and leakage checks.']),
    ('',
     None,
-    ['Languages, tools and serving: Python, PyTorch, PEFT/LoRA, TypeScript, React, FastAPI, SQLite.',
+    ['3D and VFX: Blender, Maya, Houdini, Unreal Engine 5, asset management, look development, lighting, render passes.',
+     'Engineering: Python, TypeScript, PyTorch, PEFT/LoRA, React, FastAPI, SQLite.',
      'Spoken languages: Vietnamese: native | English: professional proficiency | Japanese: intermediate.'])]),
  ('EDUCATION', [('', None, ["FPT University | Bachelor's degree."])])]
+
+# Lead with the work this campaign is applying to while retaining the full AI record.
+SECTIONS[0], SECTIONS[1] = SECTIONS[1], SECTIONS[0]
 
 
 def build():
