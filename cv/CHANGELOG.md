@@ -5,7 +5,8 @@ tag `cv-r<N>` on the commit that published it. Working builds that never shipped
 fact inventory every version is cut from is `cv/MASTER_CV.md`; the audit trail of every earlier file is
 `M:/AGENT_VAULT/PORTFOLIO/cv/CV_REGISTER.md` (private).
 
-## [r23] - 2026-09-26
+## [r23] - 2026-09-26 (retracted; r22 restored as current)
+The r23 publication exceeded the user's campaign scope. The prior r22 files were restored in the following commit; the r23 tag remains as historical evidence.
 ### Changed
 - Focused the headline, opening and first experience section on 3D/VFX production plus AI workflow engineering for current hybrid roles.
 - Restored the underlying production titles for OTSU Labs, Fragments of the Deep and Dihaan Media. The prior "Applied AI Operations" labels did not establish AI deployment at those studios.
