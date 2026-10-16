@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gnomon Student Workspace — sample-data portfolio preview</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#E4D8C2;color:#1C1B24;font-family:'Public Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#7A1230;text-decoration:none}a:hover{color:#5E0F2C}
+  textarea::placeholder{color:#B4AC9A}
+  button{font:inherit}
+  .gk-action{appearance:none;border:0;background:transparent;margin:0}
+  .gk-assigned-source img{display:block;width:100%;height:auto;max-height:240px;object-fit:contain}
+  .gk-workspace-main{overflow:auto!important}
+  .gk-writing-card{min-height:360px!important}
+  @keyframes saveBlink{0%{opacity:0;transform:translateY(2px)}30%{opacity:1;transform:none}100%{opacity:1}}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+  :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+  @media (max-width:820px){
+    html,body{overflow-x:hidden}
+    .gk-workspace{height:auto!important;min-height:calc(100svh - 56px)!important;overflow:visible!important}
+    .gk-workspace-top{height:auto!important;min-height:60px;padding:10px 16px!important;align-items:flex-start!important;gap:10px;flex-wrap:wrap}
+    .gk-workspace-top>div:last-child{width:100%;overflow-x:auto;padding-bottom:2px}
+    .gk-class-join{width:100%;justify-content:flex-start!important;gap:6px!important}
+    .gk-class-join input{min-height:44px!important;font-size:16px!important}
+    .gk-workspace-top>div:last-child>div:first-child{min-width:max-content;gap:18px!important}
+    .gk-workspace-top>div:last-child>div:nth-child(2),.gk-workspace-top>div:last-child>div:nth-child(3),.gk-workspace-top>div:last-child>div:last-child{display:none!important}
+    .gk-workspace-body{display:block!important;min-height:0!important}
+    .gk-workspace-main{padding:18px 16px 14px!important;overflow:visible!important;min-height:auto!important}
+    .gk-workspace-mode{align-items:flex-start!important;flex-direction:column}
+    .gk-workspace-mode>div:last-child{width:100%;overflow-x:auto}
+    .gk-prompt{align-items:flex-start!important;flex-direction:column;padding:14px 16px!important}
+    .gk-prompt>div:last-child{align-self:flex-start}
+    .gk-assigned-source>div:first-child{align-items:flex-start!important;flex-direction:column}
+    .gk-assigned-source img{max-height:none}
+    .gk-writing-card{min-height:55svh!important;overflow:visible!important}
+    .gk-writing-card textarea{min-height:45svh;font-size:16px!important;padding:20px 18px!important}
+    .gk-section-tabs{overflow-x:auto;scrollbar-width:thin}
+    .gk-writing-foot{position:sticky;bottom:0;z-index:4;align-items:stretch!important;flex-direction:column;padding:12px 14px calc(12px + env(safe-area-inset-bottom))!important}
+    .gk-writing-foot>div{justify-content:space-between;flex-wrap:wrap}
+    .gk-writing-foot .gk-action{width:100%;min-height:44px;justify-content:center}
+    .gk-workspace-rail{border-left:0!important;border-top:1px solid rgba(28,25,34,.13);padding:18px 16px calc(22px + env(safe-area-inset-bottom))!important;overflow:visible!important}
+    .gk-workspace-foot{padding:10px 16px!important;gap:8px;flex-wrap:wrap}
+    .gk-action,.gk-section-button{min-height:44px}
+    .gk-touch{display:inline-flex;align-items:center;min-height:44px}
+  }
+</style>
+</helmet>
+
+<div class="gk-workspace" onKeyDown="{{ onKeyboardActivate }}" style="--ac:#7A1230;--acDeep:#5E0F2C;--acBright:#8A1538;--gold:#B08D4C;--goldL:#E3C88B;--goldD:#80632C;--ink:#1C1B24;--released:#3F6B4A;height:calc(100vh - 56px);overflow:hidden;display:flex;flex-direction:column;background:#F2ECE1;position:relative">
+
+  <svg aria-hidden="true" width="360" height="360" viewBox="0 0 360 360" style="position:fixed;right:-70px;bottom:-90px;z-index:0;opacity:0.05;pointer-events:none">
+    <circle cx="180" cy="180" r="150" fill="none" stroke="#7A1230" stroke-width="1"></circle>
+    <circle cx="180" cy="180" r="120" fill="none" stroke="#7A1230" stroke-width="1" stroke-dasharray="2 8"></circle>
+    <!-- s174: same dead Sigilla monogram as the Teacher Desk, same replacement — the product's own
+         gnomon standing in the dial rings. Kept byte-identical to the Desk so the two surfaces do
+         not drift apart on a detail nobody would think to check. -->
+    <g transform="translate(11,-7) scale(1.8)" fill="none" stroke="#7A1230" stroke-width="9" stroke-linecap="round">
+      <line x1="30" y1="150" x2="158" y2="150"></line>
+      <path d="M70 150 L78 58 L86 150 Z" fill="#7A1230" stroke="none"></path>
+      <line x1="78" y1="150" x2="138" y2="78"></line>
+      <circle cx="138" cy="78" r="12" fill="#7A1230" stroke="none"></circle>
+    </g>
+  </svg>
+
+  <!-- TOP BAR -->
+  <div class="gk-workspace-top" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:0 26px;height:60px;background:#FFFDF9;border-bottom:1px solid rgba(28,25,34,0.14)">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="display:flex;align-items:center;gap:9px;font-size:13px">
+        <span style="color:#696571">{{ workspaceClassLabel }}</span>
+        <span style="color:#BCB4A6">/</span>
+        <span style="color:#1C1B24;font-weight:600">Your workspace</span>
+        <sc-if value="{{ runtimeBadgeShow }}" hint-placeholder-val="{{ true }}"><span style="font-size:8.5px;font-weight:700;letter-spacing:0.1em;color:#80632C;background:rgba(227,200,139,0.32);padding:2px 7px;border-radius:6px;margin-left:2px">{{ runtimeBadge }}</span></sc-if>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px">
+      <div class="gk-class-join" style="display:flex;align-items:center;gap:6px;flex:none">
+        <label for="gk-class-code" style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#696571">JOIN CLASS</label>
+        <input id="gk-class-code" aria-label="Join code" maxlength="8" value="{{ joinCode }}" onInput="{{ onJoinCode }}" placeholder="CODE" style="width:92px;min-height:44px;border:1px solid rgba(28,25,34,.18);border-radius:6px;padding:0 9px;background:#FFFDF9;color:#1C1B24;font:500 11px 'IBM Plex Mono';letter-spacing:.08em;text-transform:uppercase">
+        <button type="button" class="gk-action" onClick="{{ onJoinClass }}" disabled="{{ joinPending }}" aria-disabled="{{ joinPending }}" style="min-width:44px;min-height:44px;padding:0 11px;border-radius:6px;background:#7A1230;color:#FFFDF9;font-size:10px;font-weight:700;cursor:pointer">{{ joinLabel }}</button>
+      </div>
+      <div style="display:flex;gap:22px;font-size:10px;font-weight:700;letter-spacing:0.16em;color:#6E6659">
+        <span style="color:#7A1230;border-bottom:1.5px solid #7A1230;padding-bottom:3px">WRITE</span><sc-if value="{{ secondaryNavAvailable }}" hint-placeholder-val="{{ true }}"><span>PRACTICE</span><span>RESULTS</span><span>PATH</span></sc-if>
+      </div>
+      <div style="width:1px;height:22px;background:rgba(28,25,34,0.12)"></div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:11px;font-weight:600;color:#5A5648;background:#EFE9DC;padding:6px 12px;border-radius:13px">{{ sessionCountLabel }}</span>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ joinStatusShow }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position:relative;z-index:2;margin:0;padding:7px 26px;background:rgba(63,107,74,.1);color:#35593E;font-size:11px;font-weight:600">{{ joinStatus }}</div>
+  </sc-if>
+  <sc-if value="{{ joinErrorShow }}" hint-placeholder-val="{{ false }}">
+    <div role="alert" style="position:relative;z-index:2;margin:0;padding:7px 26px;background:rgba(122,18,48,.08);color:#7A1230;font-size:11px;font-weight:600">{{ joinError }}</div>
+  </sc-if>
+
+  <sc-if value="{{ assignmentInbox }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:2;flex:1;padding:28px 30px 36px;overflow:auto">
+      <div style="max-width:980px;margin:0 auto">
+        <p style="margin:0;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7A1230">Assigned writing</p>
+        <h1 style="margin:7px 0 0;font-family:'Newsreader',serif;font-size:32px;line-height:1.2;font-weight:500;color:#1C1B24">Your writing assignments</h1>
+        <p style="margin:8px 0 0;font-family:'Newsreader',serif;font-size:16px;line-height:1.55;color:#5A5648">Choose a test to enter its writing room.</p>
+        <sc-if value="{{ invalidSelection }}" hint-placeholder-val="{{ false }}"><div role="alert" style="margin-top:18px;border-left:3px solid #7A1230;background:#FFFDF9;padding:12px 15px;font-size:12px;line-height:1.6;color:#6B1831">That writing room is not in your assignments. Choose one below.</div></sc-if>
+        <sc-if value="{{ assignmentsUnavailable }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:18px;border:1px solid rgba(122,18,48,.24);background:#FFFDF9;padding:16px;font-size:13px;line-height:1.6;color:#6B1831"><span>Assignments are unavailable. Nothing was opened or changed.</span><button type="button" class="gk-action" onClick="{{ onRetryAssignments }}" style="min-height:44px;padding:0 16px;border:1px solid #7A1230;border-radius:6px;background:#FFFDF9;color:#7A1230;font-size:11px;font-weight:700;cursor:pointer">Try again</button></div></sc-if>
+        <sc-if value="{{ assignmentEmpty }}" hint-placeholder-val="{{ false }}"><div style="margin-top:18px;border:1px solid rgba(28,25,34,.12);background:#FFFDF9;padding:20px;font-family:'Newsreader',serif;font-size:16px;line-height:1.6;color:#5A5648">No writing has been assigned yet. Your teacher's next task will appear here.</div></sc-if>
+        <sc-if value="{{ assignmentRowsShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:12px;margin-top:20px">
+            <sc-for list="{{ assignmentRows }}" as="row" hint-placeholder-count="2">
+              <article style="display:flex;align-items:center;justify-content:space-between;gap:18px;border:1px solid rgba(28,25,34,.13);background:#FFFDF9;padding:17px 18px">
+                <div style="min-width:0">
+                  <div style="font-family:'Newsreader',serif;font-size:19px;line-height:1.35;color:#1C1B24">{{ row.testName }}</div>
+                  <div style="margin-top:5px;font-size:11px;line-height:1.5;color:#696571">{{ row.classLabel }} · {{ row.kindLabel }} · {{ row.dueLabel }}</div>
+                  <div style="margin-top:7px;font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:{{ row.statusColor }}">{{ row.statusLabel }}</div>
+                </div>
+                <sc-if value="{{ row.canOpen }}" hint-placeholder-val="{{ true }}"><a href="{{ row.href }}" class="gk-action" data-walkthrough="student-assignment" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid #7A1230;border-radius:6px;color:#7A1230;font-size:11px;font-weight:700;white-space:nowrap">{{ row.actionLabel }}</a></sc-if>
+                <sc-if value="{{ row.cannotOpen }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:600;color:#8B8574">Unavailable</span></sc-if>
+              </article>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ roomSelected }}" hint-placeholder-val="{{ true }}">
+  <!-- BODY -->
+  <div class="gk-workspace-body" style="position:relative;z-index:2;flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 384px;align-items:stretch">
+
+    <!-- LEFT — the draft -->
+    <div class="gk-workspace-main" style="padding:22px 30px 20px;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden">
+
+      <!-- mode header -->
+      <div class="gk-workspace-mode" style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+        <div>
+          <div style="font-size:9.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5A5648">{{ modeKicker }}</div>
+          <div style="font-family:'Newsreader',serif;font-size:27px;letter-spacing:-0.015em;color:#1C1B24;margin-top:5px">{{ modeTitle }}</div>
+        </div>
+        <div style="display:flex;gap:3px;background:#E4D8C2;border-radius:8px;padding:3px;flex:none">
+          <sc-if value="{{ sealedTabAvailable }}" hint-placeholder-val="{{ true }}"><button type="button" class="gk-action" onClick="{{ goSealed }}" style="{{ tabSealedStyle }}">{{ sealedTabLabel }}</button></sc-if>
+          <button type="button" class="gk-action" onClick="{{ goWriting }}" style="{{ tabWritingStyle }}">{{ writingTabLabel }}</button>
+        </div>
+      </div>
+
+      <!-- prompt strip -->
+      <div class="gk-prompt" style="display:flex;align-items:center;justify-content:space-between;gap:18px;background:#FFFDF9;border:1px solid rgba(28,25,34,0.1);border-radius:11px;padding:13px 18px;margin-top:16px">
+        <div style="font-family:'Newsreader',serif;font-style:italic;font-size:15px;line-height:1.5;color:#3A3641">&ldquo;{{ promptText }}&rdquo;</div>
+        <div style="display:flex;align-items:center;gap:7px;flex:none">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#5A5648;background:#EBE4D8;padding:5px 10px;border-radius:11px">{{ promptMeta }}</span>
+        </div>
+      </div>
+
+      <sc-if value="{{ sourceAvailable }}" hint-placeholder-val="">
+        <figure class="gk-assigned-source" aria-label="Assigned source visual" data-source-sha256="{{ sourceSha256 }}" data-source-receipt-sha256="{{ sourceReceiptSha256 }}" style="margin:14px 0 0;background:#FFFDF9;border:1px solid rgba(28,25,34,.12);border-radius:12px;padding:14px 16px 13px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px">
+            <div>
+              <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5A5648">Assigned source visual</div>
+              <div style="font-family:'Newsreader',serif;font-size:15px;color:#2A2732;margin-top:3px">Study this before you write.</div>
+            </div>
+            <span style="flex:none;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3F6B4A;background:rgba(63,107,74,.12);padding:4px 9px;border-radius:9px">Teacher-assigned · verified</span>
+          </div>
+          <img data-dc-attr-src="{{ sourceUrl }}" alt="{{ sourceAlt }}" decoding="async">
+          <figcaption style="font-size:10.5px;line-height:1.5;color:#696571;margin-top:9px">This exact visual stays with this section of your assignment.</figcaption>
+        </figure>
+      </sc-if>
+      <sc-if value="{{ sourceUnavailable }}" hint-placeholder-val="">
+        <div role="alert" style="margin-top:14px;border:1px solid rgba(122,18,48,.28);background:rgba(122,18,48,.05);border-radius:11px;padding:13px 16px;font-size:12px;line-height:1.6;color:#6B1831">The assigned visual is unavailable because its accessibility description is missing. Ask your teacher before starting this section.</div>
+      </sc-if>
+
+      <!-- SEALED VIEW -->
+      <sc-if value="{{ isSealed }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0">
+          <div style="flex:1;background:#FFFEFB;border:1px solid rgba(28,25,34,0.1);border-radius:14px;padding:26px 34px 20px;margin-top:14px;box-shadow:0 18px 44px -32px rgba(28,27,36,0.4);position:relative;min-height:0;overflow:auto">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;margin-bottom:6px;border-bottom:1px solid #F0EADA">
+              <span style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5A5648">Your Draft 3 &middot; released statement</span>
+              <span style="font-family:'Public Sans',sans-serif;font-size:10px;color:#696571">{{ sealedMeta }}</span>
+            </div>
+            <p style="margin:0;font-family:'Newsreader',serif;font-size:16.5px;line-height:1.95;color:#26242E;font-weight:300;white-space:pre-wrap"><sc-for list="{{ essaySpans }}" as="sp" hint-placeholder-count="9"><sc-if value="{{ sp.mark }}" hint-placeholder-val=""><span class="gk-touch" onMouseEnter="{{ sp.onEnter }}" onMouseLeave="{{ sp.onLeave }}" onClick="{{ sp.onClick }}" onFocus="{{ sp.onFocus }}" onBlur="{{ sp.onBlur }}" onKeyDown="{{ sp.onKeyDown }}" tabindex="0" role="button" aria-label="{{ sp.ariaLabel }}" style="{{ sp.style }}">{{ sp.text }}<sup style="{{ sp.supStyle }}">{{ sp.sup }}</sup></span></sc-if><sc-if value="{{ sp.plain }}" hint-placeholder-val="{{ true }}"><span>{{ sp.text }}</span></sc-if></sc-for></p>
+          </div>
+
+          <!-- receipt strip (trust-stack L1) -->
+          <div style="{{ receiptStyle }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div style="display:flex;align-items:center;gap:9px">
+                <span style="{{ rcTagStyle }}">{{ rcTag }}</span>
+                <span style="font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:{{ rcCritColor }}">{{ rcCrit }}</span>
+              </div>
+              <span style="font-size:9.5px;color:#5A5648">{{ rcHint }}</span>
+            </div>
+            <div style="font-family:'Newsreader',serif;font-style:italic;font-size:15px;line-height:1.55;color:#3A3641;margin-top:9px">{{ rcQuote }}</div>
+            <div style="font-size:12.5px;line-height:1.6;color:#5A5648;margin-top:7px">{{ rcImpact }}</div>
+            <sc-if value="{{ rcAnchorShow }}" hint-placeholder-val=""><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:#B08D4C;margin-top:9px;line-height:1.5;word-break:break-word">{{ rcAnchor }}</div></sc-if>
+          </div>
+
+          <!-- practice cards -->
+          <sc-if value="{{ practiceAvailable }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:12px;margin-top:14px">
+            <div style="flex:1;background:#FFFDF9;border:1px solid rgba(28,25,34,0.1);border-radius:11px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px"><div><div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5A5648">Drill queued</div><div style="font-size:12.5px;font-weight:600;color:#3A3844;margin-top:4px">Linking devices &mdash; set 2</div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7A1230;white-space:nowrap">15 MIN &rarr;</span></div>
+            <div style="flex:1;background:#FFFDF9;border:1px solid rgba(28,25,34,0.1);border-radius:11px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px"><div><div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5A5648">Mock booked</div><div style="font-size:12.5px;font-weight:600;color:#3A3844;margin-top:4px">Full Writing paper &mdash; Friday</div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7A1230;white-space:nowrap">09:00 &rarr;</span></div>
+          </div></sc-if>
+        </div>
+      </sc-if>
+
+      <!-- WRITING VIEW -->
+      <sc-if value="{{ isWriting }}" hint-placeholder-val="">
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0">
+          <div class="gk-writing-card" style="flex:1;background:#FFFEFB;border:1px solid rgba(28,25,34,0.1);border-radius:14px;margin-top:14px;box-shadow:0 18px 44px -32px rgba(28,27,36,0.4);display:flex;flex-direction:column;min-height:0;overflow:hidden">
+            <sc-if value="{{ hasSections }}" hint-placeholder-val="">
+              <div class="gk-section-tabs" aria-label="Writing sections" style="display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid #F0EADA;background:#FCFAF4">
+                <sc-for list="{{ sectionTabs }}" as="st" hint-placeholder-count="2">
+                  <button type="button" class="gk-section-button" onClick="{{ st.onSelect }}" aria-current="{{ st.current }}" style="{{ st.style }}">{{ st.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ startRequired }}" hint-placeholder-val="">
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:30px 34px;max-width:62ch">
+                <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#80632C">Writing room ready</div>
+                <div style="font-family:'Newsreader',serif;font-size:22px;line-height:1.35;color:#1C1B24;margin-top:8px">Your timer starts only when you enter this sitting.</div>
+                <div style="font-size:12.5px;line-height:1.6;color:#5A5648;margin-top:8px">The deadline, prompt and section order come from the assigned exam. Nothing is guessed on this page.</div>
+                <button type="button" class="gk-action" data-walkthrough="student-start" onClick="{{ onStart }}" disabled="{{ startDisabled }}" aria-disabled="{{ startDisabled }}" style="margin-top:18px;min-height:44px;padding:0 18px;border-radius:8px;background:#7A1230;color:#FFFDF9;font-size:12.5px;font-weight:600;cursor:pointer">{{ startLabel }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ runtimeUnavailable }}" hint-placeholder-val="">
+              <div role="status" style="flex:1;padding:30px 34px;background:rgba(122,18,48,.035)">
+                <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7A1230">Writing room unavailable</div>
+                <div style="font-family:'Newsreader',serif;font-size:18px;line-height:1.5;color:#3A3641;margin-top:8px">{{ runtimeError }}</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ runtimeReady }}" hint-placeholder-val="{{ true }}">
+              <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+                <textarea data-walkthrough="student-response" onInput="{{ onDraftInput }}" onKeyDown="{{ onDraftKeyDown }}" onPaste="{{ onDraftPaste }}" value="{{ draftValue }}" readOnly="{{ draftReadOnly }}" aria-label="Response for section {{ sectionSeq }}" placeholder="Write your response here&hellip; your teacher sees it only after you submit." style="flex:1;width:100%;border:0;resize:none;background:transparent;padding:26px 34px;font-family:'Newsreader',serif;font-size:16.5px;line-height:1.95;color:#26242E;font-weight:300"></textarea>
+              </sc-if>
+            </sc-if>
+            <sc-if value="{{ submitted }}" hint-placeholder-val="">
+              <div style="flex:1;padding:26px 34px;overflow:auto;position:relative">
+                <div style="position:absolute;top:14px;right:18px;display:flex;align-items:center;gap:6px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#80632C;background:rgba(227,200,139,0.28);padding:4px 9px;border-radius:9px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#80632C" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Locked</div>
+                <p style="margin:0;font-family:'Newsreader',serif;font-size:16.5px;line-height:1.95;color:#4A4750;font-weight:300;white-space:pre-wrap">{{ draftShow }}</p>
+              </div>
+            </sc-if>
+            <div class="gk-writing-foot" style="display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid #F0EADA;padding:13px 20px;background:#FCFAF4">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;color:{{ wcColor }};background:{{ wcBg }};padding:5px 11px;border-radius:12px">{{ wcLabel }}</span>
+                <span style="font-family:'Public Sans',sans-serif;font-size:10.5px;color:#5A5648;display:inline-flex;align-items:center;gap:6px"><span style="{{ saveDotStyle }}"></span>{{ saveLabel }}</span>
+                <span role="timer" aria-label="Time remaining" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#7A1230">{{ timerLabel }}</span>
+              </div>
+              <button type="button" class="gk-action" data-walkthrough="student-submit" onClick="{{ onSubmit }}" disabled="{{ submitNativeDisabled }}" aria-disabled="{{ submitDisabled }}" style="{{ submitStyle }}">{{ submitLabel }}</button>
+            </div>
+          </div>
+          <div role="status" aria-live="polite" style="font-size:10.5px;color:{{ runtimeStatusColor }};padding:8px 4px 0">{{ runtimeStatus }}</div>
+          <sc-if value="{{ consentRequired }}" hint-placeholder-val=""><div style="margin-top:8px;padding:11px 13px;border:1px solid rgba(176,141,76,.45);background:rgba(227,200,139,.15);border-radius:8px;font-size:12px;line-height:1.55;color:#5A5648">Service consent is required before final lock. <a class="gk-touch" href="{{ consentHref }}" style="font-weight:600;text-decoration:underline;text-underline-offset:3px">Review consent</a></div></sc-if>
+          <sc-if value="{{ showEndpoints }}" hint-placeholder-val=""><div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#5A5648;padding:8px 4px 0">POST /api/v1/sittings/{id}/autosave &middot; POST /api/v1/sittings/{id}/submit &rarr; locks the sitting</div></sc-if>
+          <div style="margin-top:{{ writingGap }};font-size:12px;line-height:1.6;color:#5A5648;max-width:640px">An unfinished draft stays private. Submitting locks it for processing and teacher review; no band appears before a teacher release.</div>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- RIGHT RAIL -->
+    <div class="gk-workspace-rail" style="background:#E4D8C2;border-left:1px solid rgba(28,25,34,0.13);padding:20px 20px 22px;display:flex;flex-direction:column;gap:14px;overflow:auto;min-height:0">
+
+      <!-- SEALED: released assessment card -->
+      <sc-if value="{{ isSealed }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ scoreReleased }}" hint-placeholder-val="{{ true }}">
+        <div style="background:#FFFDF9;border:1px solid rgba(28,25,34,0.11);border-radius:12px;padding:16px 17px 17px;box-shadow:0 2px 10px -6px rgba(28,27,36,0.3)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div style="width:24px;height:24px;flex:none;display:grid;place-items:center"><svg viewBox="0 0 200 200" width="22" height="22" aria-label="released assessment"><line x1="30" y1="150" x2="158" y2="150" stroke="#7A1230" stroke-width="10" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="#7A1230"></path><line x1="78" y1="150" x2="138" y2="78" stroke="#B08D4C" stroke-width="10" stroke-linecap="round"></line><circle cx="138" cy="78" r="13" fill="#B08D4C"></circle></svg></div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5A5648">{{ publicationLabel }}</div>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#3F6B4A;background:rgba(63,107,74,0.13);padding:3px 9px;border-radius:9px">{{ publicationBadge }} &#9670;</span>
+          </div>
+          <div style="font-family:'Newsreader',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#5A5648;margin-top:8px">{{ publicationAuthorityLine }}</div>
+          <sc-if value="{{ showEndpoints }}" hint-placeholder-val=""><div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#B08D4C;margin-top:6px">GET /api/v1/reports/0441/card &middot; immutable</div></sc-if>
+
+          <div style="margin-top:12px">
+            <sc-for list="{{ card }}" as="cr" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid rgba(28,25,34,0.08)">
+                <div style="min-width:0">
+                  <div style="font-size:11.5px;font-weight:600;color:#2A2732">{{ cr.label }}</div>
+                  <div style="font-size:10.5px;color:{{ cr.ciColor }};margin-top:2px">{{ cr.ci }}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:9px;flex:none">
+                  <span style="{{ cr.sourceStyle }}">{{ cr.sourceTag }}</span>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:19px;font-weight:600;color:{{ cr.bandColor }};min-width:36px;text-align:right">{{ cr.bandShow }}</div>
+                </div>
+              </div>
+            </sc-for>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0 3px;margin-top:4px;border-top:1.5px solid rgba(28,25,34,0.16)">
+              <div>
+                <div style="font-size:11.5px;font-weight:700;color:#1C1B24">Overall band</div>
+                <div style="font-size:10.5px;color:#5A5648;margin-top:2px">{{ overallCi }}</div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:27px;font-weight:600;color:#7A1230;line-height:1">{{ overall }}</div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- abstained-notice (trust-stack L3) -->
+        <div style="{{ noticeStyle }}">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ noticeIconColor }}" stroke-width="2" stroke-linecap="round"><path d="M12 3l9 16H3z"></path><path d="M12 10v4"></path><circle cx="12" cy="17" r="0.6" fill="{{ noticeIconColor }}"></circle></svg>
+            <span style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:{{ noticeIconColor }}">{{ noticeTitle }}</span>
+          </div>
+          <div style="font-size:12.5px;line-height:1.65;color:#4A4750;margin-top:8px">{{ noticeBody }}</div>
+        </div>
+
+        <!-- released feedback -->
+        <div style="background:#FFFDF9;border:1px solid rgba(28,25,34,0.11);border-radius:12px;padding:15px 17px">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#80632C">{{ marginNoteSource }}</div>
+          <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.65;color:#3A3844;margin-top:7px">{{ marginNote }}</div>
+        </div>
+      </sc-if>
+
+      <!-- WRITING: honest waiting panel -->
+      <sc-if value="{{ isWriting }}" hint-placeholder-val="">
+        <div style="background:#FFFDF9;border:1px solid rgba(28,25,34,0.11);border-radius:12px;padding:16px 17px">
+          <div style="display:flex;align-items:center;gap:9px">
+            <div style="width:24px;height:24px;flex:none;display:grid;place-items:center"><svg viewBox="0 0 200 200" width="22" height="22" aria-label="assessment processing"><line x1="30" y1="150" x2="158" y2="150" stroke="#7A1230" stroke-width="10" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="#7A1230"></path><line x1="78" y1="150" x2="138" y2="78" stroke="#B08D4C" stroke-width="10" stroke-linecap="round"></line><circle cx="138" cy="78" r="13" fill="#B08D4C"></circle></svg></div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5A5648">{{ waitTitle }}</div>
+          </div>
+          <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.65;color:#3A3844;margin-top:9px">{{ waitBody }}</div>
+          <sc-if value="{{ hasReportLink }}" hint-placeholder-val="{{ true }}"><a href="{{ reportHref }}" data-walkthrough="student-report" style="display:inline-flex;align-items:center;min-height:44px;gap:6px;margin-top:8px;font-size:11.5px;font-weight:600;color:#7A1230">{{ reportLinkLabel }} &rarr;</a></sc-if>
+        </div>
+      </sc-if>
+
+      <!-- YOUR PATH (both modes) -->
+      <sc-if value="{{ pathAvailable }}" hint-placeholder-val="{{ true }}"><div style="background:#FFFDF9;border:1px solid rgba(28,25,34,0.11);border-radius:12px;padding:15px 17px 17px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5A5648">Your path</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#5A5648">band 6.0 &rarr; 7.5</span>
+        </div>
+        <div style="position:relative;height:98px;margin-top:14px">
+          <div style="position:absolute;left:0;top:76px;width:66px;border-top:1.5px solid #D5CCB6"></div>
+          <div style="position:absolute;left:66px;top:54px;width:1px;height:22px;background:#DDD4BF"></div>
+          <div style="position:absolute;left:66px;top:54px;width:66px;border-top:1.5px solid #D5CCB6"></div>
+          <div style="position:absolute;left:132px;top:32px;width:1px;height:22px;background:#DDD4BF"></div>
+          <div style="position:absolute;left:132px;top:32px;width:66px;border-top:1.5px solid #B08D4C"></div>
+          <div style="position:absolute;left:198px;top:10px;width:1px;height:22px;background:#E3C88B"></div>
+          <div style="position:absolute;left:198px;top:10px;width:82px;border-top:1.5px dashed #C9A45C"></div>
+          <div style="position:absolute;left:8px;top:58px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A5648">6.0</div>
+          <div style="position:absolute;left:76px;top:36px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8B8574">6.5</div>
+          <div style="position:absolute;left:140px;top:13px;font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;color:#4A4750">7.0</div>
+          <div style="position:absolute;left:206px;top:-11px;font-family:'IBM Plex Mono',monospace;font-size:17px;color:#A8823C">7.5</div>
+          <div style="position:absolute;left:{{ dotX }};top:{{ dotY }};width:10px;height:10px;border-radius:50%;background:#7A1230;box-shadow:0 0 0 3px rgba(122,18,48,0.16);transition:left .7s,top .7s"></div>
+          <div style="position:absolute;left:196px;top:80px;font-size:8px;font-weight:700;letter-spacing:0.12em;color:#A8823C">TARGET &middot; ALDRIDGE MSC</div>
+        </div>
+        <div style="font-family:'Newsreader',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#5A5648;margin-top:10px">{{ pathNote }}</div>
+      </div></sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- FOOT -->
+  <div class="gk-workspace-foot" style="position:relative;z-index:2;display:flex;justify-content:space-between;padding:9px 26px;background:#E4D8C2;border-top:1px solid rgba(28,25,34,0.12)">
+    <span style="font-size:8.5px;font-weight:700;letter-spacing:0.14em;color:#5A5648">YOU AND YOUR TEACHER SEE THE SAME RELEASED STATEMENT &mdash; ONE SPINE</span>
+    <sc-if value="{{ complianceClaimsAvailable }}" hint-placeholder-val="{{ true }}"><span style="font-size:8.5px;font-weight:700;letter-spacing:0.14em;color:#5A5648">FERPA-aligned &middot; WCAG 2.2 AA target &middot; SOC 2 in progress</span></sc-if>
+  </div>
+</div>
+
+
+<x-import component-from-global-scope="gnomon-nav" from="./gnomon-nav.js" hint-size="0,0"></x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}, &quot;showEndpoints&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Demo&quot;, &quot;label&quot;: &quot;Show real API endpoints&quot;}, &quot;abstentionCase&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Coherence held back&quot;, &quot;All four scored&quot;], &quot;default&quot;: &quot;Coherence held back&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Demo&quot;, &quot;label&quot;: &quot;Released card state&quot;}}">
+class Component extends DCLogic {
+  state = { mode: 'sealed', hover: null, pin: null, draft: '', savedAt: '\u2014', submitted: false, arm: false, justSaved: false, sectionSeq: 1, joinCode: '', joinPending: false, joinStatus: '', joinError: '' };
+
+  KEY = 'gnomon-student-draft4';
+  seedDraft = 'Working from home has quickly become common for many kinds of job. In this essay I will discuss whether this change is good for everyone, or only for some people.';
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  //  DATA-SEAM CONTRACT  (read by gnomon-wire.js)
+  //  The wire layer FILLS the named member with the named shape and TOUCHES NOTHING ELSE.
+  //  No feed → apply the row's `noFeed` rule (render our own pending/empty pattern; never
+  //  invent UI, never fabricate a figure — S1 real-or-nothing). Demo values above stay as
+  //  the offline/preview default; the wire overwrites them at runtime.
+  static dataContract = {
+    reads: {
+      assignments: { member: 'this.assignments', endpoint: 'GET /api/v1/students/{student_id}/assignments', ready: true },
+      sittingState: { member: 'this.sittingState', endpoint: 'GET /api/v1/sittings/{sitting_id}/state', ready: true },
+      exam: { member: 'this.exam', endpoint: 'GET /api/v1/exams/{exam_id}', ready: true, role: 'Canonical section order, item ids and server-owned durations.' },
+      bankItems: { member: 'this.bankItems', endpoint: 'GET /api/v1/bank/items/{item_id}', ready: true, role: 'Exact prompt text and source visual for each assigned section.' },
+      sectionSource: { member: 'renderVals().sourceUrl', endpoint: 'GET /api/v1/sittings/{sitting_id}/sections/{section_seq}/source', ready: true, role: 'Exact teacher-reviewed image bytes for the active section; accessibility text is display-only.' },
+      serviceConsent: { member: 'this.serviceConsent', endpoint: 'GET /api/v1/consent/{student_id}/status', ready: true, ld1: 'Unknown or absent means not granted; final lock stays unavailable.' },
+      releasedReport: { member: 'this.releasedReport', endpoint: 'GET /api/v1/reports/{submission_id}', ready: true, ld1: 'publication_kind=feedback_only omits every score surface and renders only teacher-approved teaching units; assessment_result criteria[].band remains server-authored and is never recomputed client-side.' }
+    },
+    writes: {
+      joinClass: 'POST /api/v1/classes/join {code} — server result is either immediate membership or a pending named-human approval request.',
+      autosave: 'POST /api/v1/sittings/{sitting_id}/autosave — NOTE: the frame’s own demo footer currently prints PUT; the real verb is POST, fix the label when wiring.',
+      submit: 'POST /api/v1/sittings/{sitting_id}/submit',
+      startSitting: 'POST /api/v1/sittings/{sitting_id}/start — prerequisite before the first autosave is legal.',
+      telemetry: 'POST /api/v1/sittings/{sitting_id}/telemetry {events:[{kind,at?,detail?}]} — timing/count evidence only; never key or clipboard content.'
+    },
+    notReady: {},
+    nonGoals: {
+      drillQueue: 'PARKED(OPTIONAL_BREADTH): remedies are staff-owned; live mode sets practiceAvailable=false. Admit a learner queue only after a self-scoped route and pilot demand.',
+      targetPath: 'PARKED(NO_DOMAIN_OWNER): no target-band/program schema exists; live mode sets pathAvailable=false rather than inventing a trajectory.',
+      sessionsCounter: 'PARKED(STAFF_AUTHORITY): /inclass/* remains staff-only; live mode renders "Session history — ask your teacher" without exposing a learner history route or fabricated count.',
+      revisionTimeline: 'PARKED(STAFF_AUTHORITY): the existing timeline route is staff-only; live mode does not expose it to the learner.'
+    }
+  };
+
+  componentDidMount() {
+    try {
+      const raw = localStorage.getItem(this.KEY);
+      if (raw) { const d = JSON.parse(raw); this.setState({ draft: d.text != null ? d.text : this.seedDraft, savedAt: d.savedAt || '\u2014', submitted: !!d.submitted }); }
+      else { this.setState({ draft: this.seedDraft }); }
+    } catch (e) { this.setState({ draft: this.seedDraft }); }
+  }
+  componentWillUnmount() { clearTimeout(this._sv); clearTimeout(this._blink); }
+
+  persist(next) {
+    const p = { text: next.draft, savedAt: next.savedAt, submitted: next.submitted };
+    try { localStorage.setItem(this.KEY, JSON.stringify(p)); } catch (e) {}
+  }
+  now() { try { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch (e) { return '\u2014'; } }
+
+  goSealed = () => this.setState({ mode: 'sealed', arm: false });
+  goWriting = () => this.setState({ mode: 'writing' });
+  onKeyboardActivate = (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const target = event.target;
+    if (!target || target.tagName !== 'BUTTON' || target.disabled) return;
+    event.preventDefault();
+    target.click();
+  };
+  onJoinCode = (e) => this.setState({ joinCode: String(e.target.value || '').toUpperCase(), joinStatus: '', joinError: '' });
+  onJoinClass = () => {};
+
+  onDraftInput = (e) => {
+    const text = e.target.value;
+    this.setState({ draft: text, justSaved: false });
+    clearTimeout(this._sv);
+    this._sv = setTimeout(() => {
+      const savedAt = this.now();
+      this.setState({ savedAt, justSaved: true });
+      this.persist({ draft: text, savedAt, submitted: false });
+      clearTimeout(this._blink);
+      this._blink = setTimeout(() => this.setState({ justSaved: false }), 1400);
+    }, 650);
+  };
+
+  onSubmit = () => {
+    if (this.state.submitted) return;
+    if (!this.state.arm) { this.setState({ arm: true }); return; }
+    const savedAt = this.now();
+    this.setState({ submitted: true, arm: false, savedAt });
+    this.persist({ draft: this.state.draft, savedAt, submitted: true });
+  };
+
+  fmt(n) { if (n == null) return '\u2014'; return (Math.round(n * 2) / 2).toFixed(1); }
+  markStyle(active, kind) {
+    const base = 'border-radius:2px;padding:0 2px;cursor:pointer;transition:background .3s,border-color .3s;';
+    if (kind === 'held') return base + 'border-bottom:2px dashed ' + (active ? '#80632C' : 'rgba(176,141,76,0.65)') + ';background:' + (active ? 'rgba(176,141,76,0.2)' : 'transparent');
+    return base + 'border-bottom:2px solid ' + (active ? '#8A1538' : 'rgba(138,21,56,0.42)') + ';background:' + (active ? 'rgba(227,200,139,0.55)' : 'transparent');
+  }
+
+  segs() {
+    return [
+      { t: 't', x: 'In recent decades, the boundary between home and the workplace has grown increasingly porous. However, ' },
+      { t: 'm', id: 'm1', key: 'TR', kind: 'receipt', sup: '\u2460', x: 'the assumption that flexibility benefits every employee deserves closer scrutiny', prefix: 'However, ', suffix: '. Remote', impact: 'A clear counter-position, stated early \u2014 this is what holds your Task Response at 7.' },
+      { t: 't', x: '. Remote arrangements can concentrate opportunity among those who already possess ' },
+      { t: 'm', id: 'm2', key: 'LR', kind: 'receipt', sup: '\u2461', x: 'quiet rooms and reliable connections', prefix: 'possess ', suffix: ', while others', impact: 'Precise, concrete lexis instead of vague filler \u2014 Lexical Resource is your strongest criterion at 7.5.' },
+      { t: 't', x: ', while others are left to work in cramped, interrupted spaces where concentration is a daily negotiation. For a graduate sharing one room with three siblings, the office was not a burden but an escape. ' },
+      { t: 'm', id: 'm3', key: 'GRA', kind: 'receipt', sup: '\u2462', x: 'Organisations that measure output rather than presence report both higher retention and a broader talent pool', prefix: 'escape. ', suffix: ', because they', impact: 'A controlled complex sentence \u2014 subordination handled cleanly. Grammatical range holds at 7.' },
+      { t: 't', x: ', because they recruit for what a person can do rather than where they can afford to sit. Yet the transition asks managers to abandon ' },
+      { t: 'm', id: 'm4', key: 'CC', kind: 'held', sup: '\u2463', x: 'the theatre of supervision', prefix: 'abandon ', suffix: ' in favour', impact: 'The system abstained here rather than invent a band. The register slips from formal to casual and the linking leans on a single connective. Your teacher completed the released criterion record.' },
+      { t: 't', x: ' in favour of something harder to perform and easier to measure. This is not an argument against remote work; it is an argument for honesty about its conditions. A policy that permits flexibility while ignoring the inequality of home environments simply relocates the advantage of the already-advantaged. If institutions are serious, they will invest in the conditions that make flexible work fair \u2014 subsidised connectivity, shared quiet space, and managers trained to judge results rather than hours.' }
+    ];
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isSealed = s.mode === 'sealed', isWriting = s.mode === 'writing';
+    const held = (this.props.abstentionCase || 'Coherence held back') === 'Coherence held back';
+    const showEndpoints = !!this.props.showEndpoints;
+    const critColor = { TA: '#7A1230', TR: '#7A1230', CC: '#80632C', LR: '#35593E', GRA: '#7A1230' };
+    const critName = { TA: 'Task Achievement', TR: 'Task Response', CC: 'Coherence & Cohesion', LR: 'Lexical Resource', GRA: 'Grammatical Range & Accuracy' };
+
+    // ESSAY SPANS + receipt tether
+    const active = s.pin || s.hover;
+    const segs = this.segs();
+    const marks = segs.filter(g => g.t === 'm');
+    const essaySpans = segs.map(g => {
+      if (g.t === 't') return { plain: true, mark: false, text: g.x };
+      const on = (active === g.id);
+      const enter = () => this.setState({ hover: g.id });
+      const leave = () => this.setState({ hover: null });
+      const toggle = () => this.setState(st => ({ pin: st.pin === g.id ? null : g.id }));
+      return {
+        plain: false, mark: true, text: g.x, sup: g.sup,
+        style: this.markStyle(on, g.kind),
+        supStyle: 'font-family:Public Sans,sans-serif;font-weight:700;font-size:10px;vertical-align:super;margin-left:1px;transition:opacity .3s;color:' + (g.kind === 'held' ? '#80632C' : '#7A1230') + ';opacity:' + (on ? 1 : 0.5),
+        onEnter: enter, onLeave: leave, onClick: toggle,
+        onFocus: enter, onBlur: leave,
+        onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } },
+        ariaLabel: (critName[g.key] || g.key) + ' note: ' + g.x
+      };
+    });
+    const am = marks.find(m => m.id === active);
+    let receipt;
+    if (am) {
+      receipt = {
+        rcTag: am.kind === 'held' ? 'Held for review' : 'Receipt \u2014 machine draft',
+        rcTagStyle: 'font-size:8.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:9px;' + (am.kind === 'held' ? 'color:#80632C;background:rgba(227,200,139,0.34)' : 'color:#7A1230;background:rgba(122,18,48,0.1)'),
+        rcCrit: critName[am.key], rcCritColor: critColor[am.key],
+        rcHint: s.pin ? 'pinned \u2014 tap again to release' : 'hover or tap to pin',
+        rcQuote: '\u201c' + am.x + '\u201d',
+        rcImpact: am.impact,
+        rcAnchorShow: showEndpoints,
+        rcAnchor: 'TextQuoteSelector \u00b7 \u2026' + am.prefix + '[' + am.x + ']' + am.suffix + '\u2026 \u00b7 survives \u00b11-word edits',
+        active: true
+      };
+    } else {
+      receipt = { rcTag: 'Release receipts', rcTagStyle: 'font-size:8.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:9px;color:#5A5648;background:rgba(28,25,34,0.05)', rcCrit: '4 marked', rcCritColor: '#5A5648', rcHint: 'no claim without its receipt', rcQuote: 'Every band above traces to your exact words.', rcImpact: 'Tap a highlighted phrase to see the response evidence bound to that released criterion. The receipt proves the link, not score validity.', rcAnchorShow: false, rcAnchor: '', active: false };
+    }
+    const receiptStyle = 'margin-top:13px;padding:14px 17px;border-radius:11px;border:1px solid ' + (receipt.active ? 'rgba(176,141,76,0.5)' : 'rgba(28,25,34,0.1)') + ';background:' + (receipt.active ? 'rgba(227,200,139,0.13)' : '#FFFDF9') + ';transition:background .3s,border-color .3s;min-height:96px';
+
+    // SEALED CARD — fixed order TR, CC, LR, GRA (server-rendered, never re-derived)
+    const rawCard = [
+      { key: 'TR', band: 7.0, ci: 'Teacher-released receipt', source: 'release' },
+      held ? { key: 'CC', band: 6.5, ci: 'Teacher completed this criterion \u00b7 released receipt', source: 'teacher' }
+           : { key: 'CC', band: 7.0, ci: 'Teacher-released receipt', source: 'release' },
+      { key: 'LR', band: 7.5, ci: 'Teacher-released receipt', source: 'release' },
+      { key: 'GRA', band: 7.0, ci: 'Teacher-released receipt', source: 'release' }
+    ];
+    const card = rawCard.map(c => ({
+      label: critName[c.key], ci: c.ci, ciColor: c.source === 'teacher' ? '#7A1230' : '#5A5648',
+      bandShow: this.fmt(c.band), bandColor: '#1C1B24',
+      sourceTag: c.source === 'teacher' ? 'Teacher-marked' : 'Countersigned',
+      sourceStyle: 'font-size:8px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:8px;white-space:nowrap;' + (c.source === 'teacher' ? 'color:#7A1230;background:rgba(122,18,48,0.1)' : 'color:#80632C;background:rgba(227,200,139,0.3)')
+    }));
+    const overallNum = null;
+
+    // ABSTAINED-NOTICE
+    const notice = held
+      ? { title: 'What the system left to your teacher', body: 'The system abstained on Coherence & Cohesion rather than invent a band. Your teacher, L. Nguyen, completed the criterion and countersigned the released record at 6.5.', icon: '#80632C', bg: 'rgba(227,200,139,0.16)', bd: 'rgba(176,141,76,0.45)' }
+      : { title: 'Nothing held back', body: 'All four released criteria were countersigned. The sealed report remains the source for each result.', icon: '#35593E', bg: 'rgba(94,125,99,0.1)', bd: 'rgba(94,125,99,0.32)' };
+    const noticeStyle = 'border:1px solid ' + notice.bd + ';background:' + notice.bg + ';border-radius:12px;padding:14px 16px';
+
+    const marginNote = held
+      ? 'Preview feedback draft: vary how your sentences join and hold one register. Your teacher decides what is released.'
+      : 'Preview feedback draft: keep the precise lexis and tighten the links between paragraphs. Your teacher decides what is released.';
+
+    // WRITING mode
+    const wc = s.draft.trim() ? s.draft.trim().split(/\s+/).length : 0;
+    const wOK = wc >= 250;
+    const wcLabel = wc + ' / 250 words';
+    const wcColor = wOK ? '#3F6B4A' : '#A0561E';
+    const wcBg = wOK ? 'rgba(63,107,74,0.12)' : 'rgba(160,86,30,0.1)';
+    const saveLabel = s.submitted ? ('Submitted ' + s.savedAt) : (s.justSaved ? ('Autosaved ' + s.savedAt) : (s.savedAt === '\u2014' ? 'Not saved yet' : ('Autosaved ' + s.savedAt)));
+    const saveDotStyle = 'width:6px;height:6px;border-radius:50%;background:' + (s.submitted ? '#80632C' : (s.savedAt === '\u2014' ? '#C9C2B4' : '#3F6B4A')) + (s.justSaved ? ';animation:saveBlink .5s ease' : '');
+    const submitLabel = s.submitted ? 'Submitted \u25c6 \u00b7 awaiting review' : (s.arm ? 'Tap again to submit & lock' : 'Submit for review');
+    const submitStyle = 'appearance:none;border:0;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:8px;font-size:12.5px;font-weight:600;white-space:nowrap;transition:filter .15s;' +
+      (s.submitted ? 'background:#A39E8E;color:#FBEFE9;cursor:default'
+        : s.arm ? 'background:linear-gradient(180deg,#B0451F,#8A3417);color:#FBEFE9;cursor:pointer'
+        : 'background:linear-gradient(180deg,#8A1538,#5E0F2C);color:#FBEFE9;cursor:pointer;box-shadow:0 1px 2px rgba(94,15,44,0.3)');
+
+    // PATH dot: released sits at 7.0 node; writing keeps last released 7.0
+    const dotX = '135px', dotY = '27px';
+    const pathNote = isWriting
+      ? 'You\u2019re mid-Draft 4. Submit it and you\u2019ll see where it lands \u2014 once your teacher countersigns, not before.'
+      : 'Draft 3 released at 7.0 \u2014 half a band from your Aldridge MSc target, with one linking drill queued.';
+
+    return {
+      isSealed, isWriting, showEndpoints, runtimeBadgeShow: true, runtimeBadge: 'DEMO',
+      assignmentInbox: false, roomSelected: true, assignmentRows: [], assignmentRowsShow: false,
+      assignmentEmpty: false, assignmentsUnavailable: false, invalidSelection: false,
+      feedbackOnly: false, scoreReleased: true,
+      publicationLabel: 'Released statement · countersigned', publicationBadge: 'Released',
+      publicationAuthorityLine: 'Exactly what your teacher countersigned — server-rendered, not recalculated here.',
+      workspaceClassLabel: 'IELTS Evening 7A', sessionCountLabel: '12 sessions this term',
+      sealedTabAvailable: true, sealedTabLabel: 'Draft 3 · released', writingTabLabel: 'Draft 4 · writing',
+      practiceAvailable: true, pathAvailable: true, complianceClaimsAvailable: true, secondaryNavAvailable: true,
+      joinCode: s.joinCode, joinPending: !!s.joinPending, joinLabel: s.joinPending ? 'Joining\u2026' : 'Join',
+      joinStatus: s.joinStatus, joinStatusShow: !!s.joinStatus,
+      joinError: s.joinError, joinErrorShow: !!s.joinError,
+      onJoinCode: this.onJoinCode, onJoinClass: this.onJoinClass,
+      onKeyboardActivate: this.onKeyboardActivate,
+      promptText: 'Some people believe that remote work benefits everyone. To what extent do you agree or disagree?',
+      promptMeta: 'TASK 2 · 40 MIN',
+      modeKicker: isSealed ? 'Released assessment' : 'In progress',
+      modeTitle: isSealed ? 'Your Draft 3, teacher released' : 'Draft 4 \u2014 keep writing',
+      goSealed: this.goSealed, goWriting: this.goWriting,
+      tabSealedStyle: 'padding:6px 13px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s;' + (isSealed ? 'background:#FFFDF9;color:#7A1230;box-shadow:0 1px 3px rgba(28,25,34,0.15)' : 'color:#5A5648'),
+      tabWritingStyle: 'padding:6px 13px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s;' + (isWriting ? 'background:#FFFDF9;color:#7A1230;box-shadow:0 1px 3px rgba(28,25,34,0.15)' : 'color:#5A5648'),
+      sealedMeta: 'submitted 09:41 \u00b7 ' + (this.segs().filter(g => g.t !== 'x').map(g => g.x).join(' ').trim().split(/\s+/).length) + ' words \u00b7 locked',
+      essaySpans, receiptStyle, ...receipt,
+      card, overall: this.fmt(overallNum), overallCi: 'Overall band not issued.',
+      noticeStyle, noticeTitle: notice.title, noticeBody: notice.body, noticeIconColor: notice.icon,
+      marginNote, marginNoteSource: 'Released feedback',
+      // writing
+      runtimeReady: true, startRequired: false, runtimeUnavailable: false, runtimeError: '',
+      runtimeStatus: 'Preview draft · local only', runtimeStatusColor: '#5A5648',
+      hasSections: false, sectionTabs: [], sectionSeq: s.sectionSeq,
+      notSubmitted: !s.submitted, submitted: s.submitted, draftSeed: s.draft, draftValue: s.draft, draftShow: s.draft,
+      onDraftInput: this.onDraftInput, onDraftPaste: () => {}, onStart: () => {}, onSubmit: this.onSubmit,
+      wcLabel, wcColor, wcBg, saveLabel, saveDotStyle, submitLabel, submitStyle,
+      submitNativeDisabled: !!s.submitted,
+      timerLabel: '40:00', consentRequired: false, consentHref: 'Gnomon Consent Desk.dc.html',
+      writingGap: showEndpoints ? '10px' : '14px',
+      waitTitle: s.submitted ? 'Awaiting teacher review' : 'Submit for teacher review',
+      waitBody: s.submitted
+        ? 'Your Draft 4 is locked for processing and teacher review. A result appears only after a teacher release.'
+        : 'No band appears before a teacher release. Machine processing is not a second human mark.',
+      hasReportLink: true, reportHref: 'Gnomon Student Report.dc.html', reportLinkLabel: 'Open your countersigned report',
+      // path
+      dotX, dotY, pathNote
+    };
+  }
+}
+
+</script>
+</body>
+</html>
