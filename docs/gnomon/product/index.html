@@ -20,6 +20,7 @@ button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inher
 <main class="viewer" aria-label="Gnomon product viewer">
   <header class="toolbar">
     <nav class="pages" role="tablist" aria-label="Product page">
+      <button type="button" role="tab" data-page="landing" aria-selected="false">Landing</button>
       <button type="button" role="tab" data-page="portal" aria-selected="false">Portal</button>
       <button type="button" role="tab" data-page="teacher" aria-selected="true">Teacher desk</button>
       <button type="button" role="tab" data-page="workspace" aria-selected="false">Student workspace</button>
@@ -42,6 +43,7 @@ button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inher
 </main>
 <script>
 const pages={
+  landing:{label:'Landing',image:'landing_hero',file:'../index.html'},
   portal:{label:'Portal',image:'portal',file:'Gnomon Portal.dc.html'},
   teacher:{label:'Teacher desk',image:'teacher_desk',file:'Gnomon Teacher Desk.dc.html'},
   workspace:{label:'Student workspace',image:'student_workspace',file:'Gnomon Student Workspace.dc.html'},
@@ -72,7 +74,7 @@ function render(){
   document.querySelector('#image-link').href=image.src;
   document.querySelector('#image-link').hidden=interactive;frame.hidden=!interactive;
   stage.classList.toggle('screens',!interactive);
-  if(interactive){const src=encodeURIComponent(page.file);if(frame.getAttribute('src')!==src)frame.src=src;frame.title='Gnomon '+page.label+' interface preview';}
+  if(interactive){const src=encodeURI(page.file);if(frame.getAttribute('src')!==src)frame.src=src;frame.title='Gnomon '+page.label+' interface preview';}
   else frame.removeAttribute('src');
   fitInterface();
   document.querySelector('#expand').href='?screen='+selected+'&mode='+mode;
@@ -96,7 +98,7 @@ frame.addEventListener('load',()=>{
     const file=decodeURIComponent(url.pathname.split('/').pop());
     const target=Object.entries(pages).find(([,page])=>page.file===file)?.[0]||({'/teacher':'teacher','/teacher/workbench':'workbench','/student':'workspace'})[url.pathname];
     if(target){event.preventDefault();selected=target;render();}
-    else if(url.origin===location.origin){event.preventDefault();notice.textContent='This view is outside the five-page portfolio preview. Use the page tabs to continue exploring.';}
+    else if(url.origin===location.origin){event.preventDefault();notice.textContent='This view is outside the portfolio preview. Use the page tabs to continue exploring.';}
   });
 });
 render();
