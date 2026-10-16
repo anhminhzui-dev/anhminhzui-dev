@@ -96,6 +96,32 @@ def main() -> int:
     for m in FORBIDDEN:
         if m in text:
             failures.append(f"CV carries forbidden text: {m}")
+
+    # The approved AI/VFX pair shares one public metadata record.
+    documents = json.loads(VERSION_FILE.read_text(encoding="utf-8")).get("documents", []) if VERSION_FILE.is_file() else []
+    if documents:
+        names = {item.get("filename") for item in documents}
+        if names != {CV_NAME, "Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf"}:
+            failures.append("registered AI/VFX document pair is incomplete")
+        for item in documents:
+            name = item.get("filename", "")
+            if Path(name).name != name or not name:
+                failures.append("invalid document filename")
+                continue
+            for prefix in (ROOT, ROOT / "site" / "public", ROOT / "docs"):
+                path = prefix / name
+                if not path.is_file():
+                    failures.append(f"missing registered CV copy: {path}")
+                elif sha256(path) != item.get("sha256") or path.stat().st_size != item.get("bytes"):
+                    failures.append(f"registered CV identity differs: {path}")
+            path = ROOT / name
+            if path.is_file():
+                body = cv_text(path)
+                if "NDA" not in body:
+                    failures.append(f"NDA qualifier missing: {name}")
+                if "kpq2A7kPG-8" in body:
+                    failures.append(f"restricted video must stay private: {name}")
+
     page = PAGE.read_text(encoding="utf-8", errors="replace") if PAGE.is_file() else ""
     for m in REQUIRED_ON_PAGE:
         if m not in page:
@@ -109,3 +135,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
