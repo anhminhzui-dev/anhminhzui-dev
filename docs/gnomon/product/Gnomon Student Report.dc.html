@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gnomon Student Report — sample-data portfolio preview</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8" />
+  <title>Feedback and result — Gnomon Kanon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    html,body{margin:0;padding:0;background:#E4D8C2;color:#1C1B24;font-family:'Public Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+    a{color:#7A1230;text-decoration:none}a:hover{color:#5E0F2C}
+    .gk-report-cta:active{transform:translateY(1px);filter:brightness(.94)}
+    button,textarea{font:inherit}
+    button{appearance:none}
+    :focus-visible{outline:2px solid #7A1230;outline-offset:2px}
+    @keyframes gkRay{from{stroke-dashoffset:150}to{stroke-dashoffset:0}}
+    @keyframes gkNode{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+    .gk-body{grid-template-areas:"script action" "script feedback";align-items:start}
+    .gk-report-action{grid-area:action;scroll-margin-top:16px}
+    .gk-script{grid-area:script}
+    .gk-report-feedback{grid-area:feedback}
+    .gk-feedback-card{scroll-margin-top:16px}
+    .gk-report-start{min-height:44px;box-sizing:border-box}
+    /* The top shell already owns this action; the duplicate fixed launcher obscures long reports. */
+    gnomon-nav #gk-nav-btn{display:none!important}
+    /* The phone order is the decision order: status and plan, source text, then detail. */
+    @media (max-width:820px){
+      html,body{overflow-x:hidden}
+      .gk-report-outer{padding:12px 12px calc(28px + env(safe-area-inset-bottom))!important}
+      .gk-report-head,.gk-report-identity,.gk-report-held,.gk-report-sign{padding-left:18px!important;padding-right:18px!important}
+      .gk-report-name{font-size:36px!important}
+      .gk-report-rule{margin-left:18px!important;margin-right:18px!important}
+      .gk-report-meta{grid-template-columns:1fr!important;padding:0 18px!important}
+      .gk-report-meta>div{border-left:0!important;padding-left:0!important;border-top:1px solid rgba(28,25,34,.1)}
+      .gk-report-score{display:block!important}
+      .gk-report-score>div{min-width:0!important;border-right:0!important;padding:24px 18px!important}
+      .gk-report-score>div+div{border-top:1px solid rgba(28,25,34,.14)}
+      .gk-body{grid-template-columns:minmax(0,1fr) !important;grid-template-areas:"action" "script" "feedback"}
+      .gk-report-action{padding:22px 16px 18px!important}
+      .gk-script{padding:22px 18px 26px!important;border-right:none !important;border-bottom:1px solid rgba(28,25,34,.16)}
+      .gk-report-feedback{padding:0 16px 28px!important}
+      .gk-feedback-action{min-height:44px}
+      .gk-report-cta{min-height:44px;box-sizing:border-box}
+      .gk-report-plan-link{display:inline-flex;align-items:center;min-height:44px}
+      .gk-challenge-scrim{align-items:flex-end!important;padding:0!important}
+      .gk-challenge-dialog{width:100%!important;max-width:none!important;max-height:88svh!important;border-radius:14px 14px 0 0!important;padding:20px 18px calc(20px + env(safe-area-inset-bottom))!important;border-bottom:0!important}
+      .gk-challenge-actions{position:sticky;bottom:calc(-20px - env(safe-area-inset-bottom));background:#FFFDF9;padding:12px 0 calc(20px + env(safe-area-inset-bottom));margin-top:14px}
+    }
+    @media print{
+      body{background:#FFFFFF}
+      .gk-sheet{box-shadow:none !important;border:none !important;max-width:none !important}
+      .gk-noprint{display:none !important}
+      .gk-mark{background:#F4E4C1 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    }
+  </style>
+</helmet>
+
+<div class="gk-report-outer" style="min-height:100vh;background:#E4D8C2;padding:28px 28px 56px">
+  <sc-if value="{{ reportAvailable }}" hint-placeholder-val="{{ true }}">
+  <div class="gk-sheet" style="max-width:1000px;margin:0 auto;background:#FDFCF9;border:1px solid rgba(28,25,34,.14)">
+
+    <div class="gk-report-head" style="display:flex;align-items:center;gap:11px;padding:24px 34px 0">
+      <svg viewBox="0 0 200 200" width="26" height="26" role="img" aria-label="Gnomon Kanon" style="flex:none">
+        <line x1="30" y1="150" x2="158" y2="150" stroke="#7A1230" stroke-width="9" stroke-linecap="round"></line>
+        <path d="M70 150 L78 58 L86 150 Z" fill="#7A1230"></path>
+        <line x1="78" y1="150" x2="138" y2="78" stroke="#B08D4C" stroke-width="9" stroke-linecap="round" stroke-dasharray="150" style="animation:gkRay .9s cubic-bezier(.2,.7,.3,1) forwards"></line>
+        <circle cx="138" cy="78" r="12" fill="#B08D4C" style="animation:gkNode .45s .75s cubic-bezier(.2,.7,.3,1) both"></circle>
+      </svg>
+      <span style="font-family:'Newsreader',serif;font-size:14px;color:#1C1B24">Gnomon&nbsp;Kanon</span>
+      <span style="flex:1;height:1px;background:rgba(28,25,34,.2)"></span>
+      <span style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#7A1230;white-space:nowrap">{{ documentLabel }}</span>
+    </div>
+
+    <!-- KB-D9: the recipient is the SUBJECT of a credential, not a field value in it. -->
+    <div class="gk-report-identity" style="padding:22px 34px 24px">
+      <div style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#7A1230">This is to record that</div>
+      <div class="gk-report-name" style="font-family:'Newsreader',serif;font-weight:500;font-size:46px;line-height:1.06;letter-spacing:-.015em;color:#1C1B24;margin-top:11px">{{ candidate }}</div>
+      <div style="font-family:'Newsreader',serif;font-size:17px;line-height:1.55;color:#3A3641;margin-top:11px;max-width:56ch">{{ subjectLine }}</div>
+      <a class="gk-report-start" data-walkthrough="student-report-start" href="#gk-next-draft" style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:10px;border-top:1px solid rgba(122,18,48,.24);font-family:'Public Sans',sans-serif;font-size:10px;line-height:1.5;color:#7A1230">
+        <strong style="letter-spacing:.12em;text-transform:uppercase">{{ authorityStatus }}</strong>
+        <span>{{ feedbackStart }}</span><span aria-hidden="true">↓</span>
+      </a>
+    </div>
+
+    <div class="gk-report-rule" style="height:2px;background:#1C1B24;margin:0 34px"></div>
+
+    <sc-if value="{{ feedbackOnly }}" hint-placeholder-val="">
+      <section aria-label="Score-free formative feedback notice" style="margin:22px 34px 4px;padding:16px 18px;border:1px solid rgba(63,107,74,.34);border-left:4px solid #3F6B4A;background:rgba(63,107,74,.08)">
+        <div style="font-family:'Newsreader',serif;font-weight:600;font-size:21px;line-height:1.25;color:#1C1B24">{{ noticeTitle }}</div>
+        <div style="font-family:'Newsreader',serif;font-size:15px;line-height:1.65;color:#3A3641;margin-top:7px;max-width:70ch">{{ noticeBody }}</div>
+      </section>
+    </sc-if>
+
+    <div class="gk-report-meta" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));padding:0 34px">
+      <sc-for list="{{ meta }}" as="m" hint-placeholder-count="4">
+        <div style="{{ m.cellStyle }}">
+          <div style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#7A1230">{{ m.k }}</div>
+          <div style="{{ m.vStyle }}">{{ m.v }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ scoreReleased }}" hint-placeholder-val="{{ true }}">
+    <div class="gk-report-score" style="display:flex;align-items:stretch;border-top:1px solid rgba(28,25,34,.16);flex-wrap:wrap">
+      <div style="padding:28px 34px 26px;min-width:230px;border-right:1px solid rgba(28,25,34,.14)">
+        <div style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#7A1230">Overall band</div>
+        <div class="gk-report-band" data-gk-overall="{{ bandHasOverall }}" style="{{ bandStyle }}">{{ band }}</div>
+        <div style="font-family:'Newsreader',serif;font-size:14.5px;line-height:1.6;color:#3A3641;margin-top:15px;max-width:25ch">{{ bandNote }}</div>
+      </div>
+      <div style="flex:1;min-width:340px;padding:30px 40px 34px">
+        <div style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#7A1230">The four marks it is made of</div>
+        <div style="margin-top:26px">
+          <sc-for list="{{ profile }}" as="p" hint-placeholder-count="4">
+            <div style="{{ p.groupStyle }}">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:10px">
+                <sc-if value="{{ p.hasReceipt }}" hint-placeholder-val="true">
+                  <a href="{{ p.receiptHref }}" onClick="{{ p.onOpenReceipt }}" style="display:flex;align-items:flex-end;gap:8px;text-decoration:none;color:inherit;min-width:0">
+                    <span style="font-family:'Newsreader',serif;font-size:18px;color:#1C1B24">{{ p.label }}</span>
+                    <span style="font-family:'Public Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7A1230;white-space:nowrap">See evidence</span>
+                  </a>
+                </sc-if>
+                <sc-if value="{{ p.noReceipt }}" hint-placeholder-val="">
+                  <span style="font-family:'Newsreader',serif;font-size:18px;color:#1C1B24">{{ p.label }}</span>
+                </sc-if>
+                <span style="{{ p.valStyle }}">{{ p.val }}</span>
+              </div>
+              <div style="position:relative;height:1px;background:rgba(28,25,34,.16)">
+                <span style="{{ p.barStyle }}"></span>
+                <span style="{{ p.meanStyle }}"></span>
+              </div>
+            </div>
+          </sc-for>
+          <div style="position:relative;height:14px;margin-top:16px">
+            <span style="position:absolute;left:0;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#5F5B69">4.0</span>
+            <span style="{{ meanLabelStyle }}">{{ meanLabel }}</span>
+            <span style="position:absolute;right:0;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#5F5B69">9.0</span>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.6;color:#5F5B69;margin-top:20px;max-width:58ch">{{ profileNote }}</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ scoreReleased }}" hint-placeholder-val="{{ true }}">
+    <sc-if value="{{ hasHeld }}" hint-placeholder-val="">
+      <div class="gk-report-held" style="padding:22px 34px 24px;border-top:1px solid rgba(28,25,34,.16)">
+        <div style="font-family:'Newsreader',serif;font-weight:500;font-size:19px;line-height:1.3;color:#1C1B24">{{ heldTitle }}</div>
+        <div style="font-family:'Newsreader',serif;font-size:15px;line-height:1.7;color:#3A3641;margin-top:8px;max-width:66ch">{{ heldLine }}</div>
+      </div>
+    </sc-if>
+    </sc-if>
+
+    <div class="gk-body" style="display:grid;grid-template-columns:minmax(0,1fr) 384px;border-top:1px solid rgba(28,25,34,.16)">
+      <section id="gk-next-draft" class="gk-report-action" data-walkthrough="student-report-plan" aria-labelledby="gk-next-draft-title" style="padding:26px 26px 18px;background:#F2ECE1">
+        <div style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#7A1230">{{ nextSectionEyebrow }}</div>
+        <h2 id="gk-next-draft-title" style="font-family:'Newsreader',serif;font-weight:500;font-size:24px;line-height:1.2;color:#1C1B24;margin:7px 0 0">{{ nextSectionTitle }}</h2>
+        <div style="font-family:'Newsreader',serif;font-style:italic;font-size:13px;line-height:1.55;color:#5A5648;margin-top:7px">{{ fbLede }}</div>
+        <section aria-label="Next draft plan" style="margin-top:14px;padding:13px 14px;border:1px solid rgba(122,18,48,.28);background:#FFFDF9">
+          <div style="font-family:'Public Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#7A1230">{{ nextPlanLabel }}</div>
+          <div style="font-family:'Newsreader',serif;font-size:13px;line-height:1.5;color:#3A3641;margin-top:5px">{{ nextDraftSummary }}</div>
+          <sc-if value="{{ hasNextDraftPlan }}" hint-placeholder-val="">
+            <ol style="margin:8px 0 0;padding-left:19px">
+              <sc-for list="{{ nextDraftPlan }}" as="step" hint-placeholder-count="3">
+                <li style="padding:7px 0;font-family:'Newsreader',serif;font-size:13px;line-height:1.45;color:#1C1B24"><span style="color:#7A1230">“{{ step.quote }}”</span><br><span style="color:#5A5648">{{ step.diagnosis }}</span><br><a class="gk-report-plan-link" href="{{ step.href }}" onClick="{{ step.onOpen }}" style="color:#1C1B24;text-decoration-color:rgba(122,18,48,.45);text-decoration-line:underline;text-underline-offset:2px"><strong>{{ step.move }}</strong></a><sc-if value="{{ step.check }}" hint-placeholder-val=""><br><span style="font-size:12px;color:#5A5648">{{ step.check }}</span></sc-if></li>
+              </sc-for>
+            </ol>
+            <sc-if value="{{ sharedPlanCheck }}" hint-placeholder-val=""><div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(28,25,34,.12);font-family:'Newsreader',serif;font-size:12px;line-height:1.45;color:#5A5648"><strong style="color:#1C1B24">Final check:</strong> {{ sharedPlanCheck }}</div></sc-if>
+          </sc-if>
+        </section>
+      </section>
+
+      <div class="gk-script" style="padding:26px 34px 30px;min-width:0;border-right:1px solid rgba(28,25,34,.14)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(28,25,34,.16);flex-wrap:wrap">
+          <span style="font-family:'Newsreader',serif;font-weight:500;font-size:19px;color:#1C1B24">What you wrote</span>
+          <span style="font-family:'Public Sans',sans-serif;font-size:10px;color:#5F5B69">{{ essayMeta }}</span>
+        </div>
+        <div class="gk-essay-text" style="font-family:'Newsreader',serif;font-size:16.5px;line-height:1.9;color:#1C1B24;margin-top:17px;max-width:68ch;white-space:pre-wrap"><sc-for list="{{ essay }}" as="sg" hint-placeholder-count="6"><span style="{{ sg.style }}" class="{{ sg.cls }}">{{ sg.text }}</span></sc-for></div>
+      </div>
+
+      <div id="gk-feedback-details" class="gk-report-feedback" style="padding:0 26px 30px;background:#F2ECE1;display:flex;flex-direction:column">
+        <sc-if value="{{ teacherNote }}" hint-placeholder-val="">
+          <section aria-label="Teacher's overall feedback" style="margin-top:16px;padding:14px 0 15px;border-top:1px solid rgba(28,25,34,.16);border-bottom:1px solid rgba(28,25,34,.16)">
+            <div style="font-family:'Public Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5F5B69">Teacher's overall feedback</div>
+            <div style="font-family:'Newsreader',serif;font-size:15px;line-height:1.68;color:#1C1B24;margin-top:7px">{{ teacherNote }}</div>
+          </section>
+        </sc-if>
+        <sc-if value="{{ hasTeacherEvidence }}" hint-placeholder-val="">
+          <section aria-label="Teacher-approved exact evidence" data-walkthrough="student-report-evidence" style="margin-top:16px;padding:14px 0 15px;border-bottom:1px solid rgba(28,25,34,.16)">
+            <div style="font-family:'Public Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5F5B69">Teacher-approved exact evidence</div>
+            <sc-for list="{{ teacherEvidence }}" as="ev" hint-placeholder-count="2">
+              <article style="margin-top:13px;padding-left:12px;border-left:2px solid #B08D4C">
+                <div style="font-family:'Public Sans',sans-serif;font-size:9.5px;color:#5F5B69">{{ ev.crit }} · {{ ev.ref }}</div>
+                <blockquote style="font-family:'Newsreader',serif;font-size:14px;line-height:1.55;color:#2A2732;margin:6px 0 0">&ldquo;{{ ev.quote }}&rdquo;</blockquote>
+                <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.6;color:#1C1B24;margin-top:6px">{{ ev.text }}</div>
+              </article>
+            </sc-for>
+          </section>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;margin-top:18px">
+          <sc-for list="{{ cards }}" as="mv" hint-placeholder-count="3">
+            <article id="{{ mv.anchorId }}" class="gk-feedback-card" onMouseEnter="{{ mv.onHover }}" onMouseLeave="{{ mv.onLeave }}" style="{{ mv.cardStyle }}">
+              <button type="button" onClick="{{ mv.onPin }}" aria-expanded="{{ mv.pinned }}" style="display:block;width:100%;padding:0;border:0;background:transparent;text-align:left;color:inherit;cursor:pointer">
+                <div style="display:flex;align-items:baseline;gap:9px">
+                  <span style="{{ mv.roleStyle }}">{{ mv.role }}</span>
+                  <span style="font-family:'Public Sans',sans-serif;font-size:10px;color:#5F5B69;margin-left:auto">{{ mv.crit }}</span>
+                </div>
+                <div style="font-family:'Newsreader',serif;font-size:15px;line-height:1.65;color:#1C1B24;margin-top:8px">{{ mv.text }}</div>
+                <div style="display:flex;align-items:baseline;gap:9px;margin-top:10px;flex-wrap:wrap">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7A1230">{{ mv.ref }}</span>
+                  <span style="font-size:10.5px;color:#5F5B69">{{ mv.hint }}</span>
+                </div>
+              </button>
+              <sc-if value="{{ mv.open }}" hint-placeholder-val="">
+                <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(28,25,34,.16)">
+                  <sc-for list="{{ mv.beneath }}" as="b" hint-placeholder-count="3">
+                    <div style="display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;align-items:baseline;padding:6px 0">
+                      <span style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#7A1230">{{ b.k }}</span>
+                      <span style="{{ b.vStyle }}">{{ b.v }}</span>
+                    </div>
+                  </sc-for>
+                  <button type="button" class="gk-feedback-action" data-gk-challenge-for="{{ mv.claimId }}" onClick="{{ mv.onChallenge }}" disabled="{{ mv.challengeNativeDisabled }}" aria-disabled="{{ mv.challengeDisabled }}" style="{{ mv.challengeStyle }}">{{ mv.challengeLabel }}</button>
+                  <sc-if value="{{ mv.feedbackUseRequired }}" hint-placeholder-val="">
+                    <section aria-label="Try this repair before revealing the approved version" style="margin-top:13px;padding:13px;border:1px solid rgba(176,141,76,.45);background:#FFFDF9">
+                      <div style="font-family:'Public Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6E5214">Try it before reveal</div>
+                      <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.6;color:#1C1B24;margin-top:6px">{{ mv.feedbackUsePrompt }}</div>
+                      <label for="{{ mv.feedbackUseRevisionId }}" style="display:block;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5F5B69;margin-top:12px">Your repaired version</label>
+                      <textarea id="{{ mv.feedbackUseRevisionId }}" value="{{ mv.feedbackUseRevision }}" onInput="{{ mv.onFeedbackUseRevision }}" style="width:100%;min-height:76px;margin-top:6px;padding:9px 10px;border:1px solid rgba(28,25,34,.2);border-radius:6px;background:#FFFDF9;color:#1C1B24;font-family:'Newsreader',serif;font-size:15px;line-height:1.5;resize:vertical"></textarea>
+                      <label for="{{ mv.feedbackUseRuleId }}" style="display:block;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5F5B69;margin-top:10px">The rule in your own words</label>
+                      <textarea id="{{ mv.feedbackUseRuleId }}" value="{{ mv.feedbackUseRule }}" onInput="{{ mv.onFeedbackUseRule }}" style="width:100%;min-height:68px;margin-top:6px;padding:9px 10px;border:1px solid rgba(28,25,34,.2);border-radius:6px;background:#FFFDF9;color:#1C1B24;font-family:'Newsreader',serif;font-size:15px;line-height:1.5;resize:vertical"></textarea>
+                      <button type="button" onClick="{{ mv.onFeedbackUse }}" disabled="{{ mv.feedbackUseNativeDisabled }}" aria-disabled="{{ mv.feedbackUseDisabled }}" style="{{ mv.feedbackUseStyle }}">{{ mv.feedbackUseLabel }}</button>
+                      <div role="status" aria-live="polite" style="font-size:10.5px;line-height:1.5;color:{{ mv.feedbackUseStatusColor }};margin-top:7px">{{ mv.feedbackUseStatusLine }}</div>
+                    </section>
+                  </sc-if>
+                </div>
+              </sc-if>
+            </article>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hasCorrections }}" hint-placeholder-val="">
+          <details aria-label="Correction history" style="margin-top:20px;padding-top:15px;border-top:1px solid rgba(28,25,34,.16)">
+            <summary style="cursor:pointer;font-family:'Public Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#7A1230">Correction history · {{ correctionCount }}</summary>
+            <sc-for list="{{ corrections }}" as="correction" hint-placeholder-count="1">
+              <article style="margin-top:10px;padding:12px 13px;border-left:3px solid #B08D4C;background:#FFFDF9">
+                <div style="font-family:'Public Sans',sans-serif;font-size:9.5px;color:#5F5B69">{{ correction.criterion }} · {{ correction.decision }} · {{ correction.actor }} · {{ correction.when }}</div>
+                <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.6;color:#1C1B24;margin-top:6px">{{ correction.rationale }}</div>
+                <sc-if value="{{ correction.replacement }}" hint-placeholder-val="">
+                  <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.6;color:#3F6B4A;margin-top:7px"><strong>Replacement:</strong> {{ correction.replacement }}</div>
+                </sc-if>
+                <div style="font-family:'Public Sans',sans-serif;font-size:9px;line-height:1.5;color:#6E6659;margin-top:7px">Original feedback preserved. This correction is part of the same released record.</div>
+              </article>
+            </sc-for>
+          </details>
+        </sc-if>
+        <div class="gk-noprint" style="margin-top:auto;padding-top:24px;display:flex;gap:9px;flex-wrap:wrap">
+          <a class="gk-report-cta" href="Gnomon Student Workspace.dc.html" style="display:inline-flex;align-items:center;padding:10px 17px;border-radius:4px;background:#7A1230;color:#FDFCF9;font-size:12px;font-weight:600;box-shadow:0 8px 18px -12px rgba(122,18,48,.9)">Return to your workspace</a>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ challengeOpen }}" hint-placeholder-val="">
+      <div class="gk-challenge-scrim gk-noprint" style="position:fixed;inset:0;z-index:30;background:rgba(28,25,34,.48);display:flex;align-items:center;justify-content:center;padding:24px">
+        <section ref="{{ challengeDialogRef }}" class="gk-challenge-dialog" role="dialog" aria-modal="true" aria-labelledby="gk-challenge-title" style="width:min(620px,100%);max-height:86vh;overflow:auto;background:#FFFDF9;border:1px solid rgba(28,25,34,.2);border-radius:12px;padding:22px 24px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+            <div>
+              <div style="font-size:8.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#7A1230">Ask your teacher</div>
+              <h2 id="gk-challenge-title" style="font-family:'Newsreader',serif;font-size:26px;font-weight:500;line-height:1.2;margin:7px 0 0;color:#1C1B24">Question this feedback</h2>
+            </div>
+            <button type="button" onClick="{{ closeChallenge }}" aria-label="Close challenge" style="width:44px;height:44px;border:1px solid rgba(28,25,34,.18);border-radius:6px;background:#FFFDF9;color:#5F5B69;font-size:22px;cursor:pointer">&times;</button>
+          </div>
+          <div style="margin-top:18px;padding:14px 16px;border-left:3px solid #B08D4C;background:#F7F1E6">
+            <div style="font-family:'Public Sans',sans-serif;font-size:9.5px;color:#7A1230">{{ challengeCriterion }}</div>
+            <blockquote style="font-family:'Newsreader',serif;font-size:15px;line-height:1.6;color:#2A2732;margin:8px 0 0">&ldquo;{{ challengeQuote }}&rdquo;</blockquote>
+          </div>
+          <sc-if value="{{ challengeExisting }}" hint-placeholder-val="">
+            <section aria-label="Existing challenge record" style="margin-top:16px;padding:14px 16px;border:1px solid rgba(28,25,34,.16);background:#F7F1E6">
+              <div style="font-family:'Public Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7A1230">Review with your teacher · {{ challengeExistingState }}</div>
+              <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.6;color:#1C1B24;margin-top:8px">{{ challengeExistingQuestion }}</div>
+              <sc-if value="{{ challengeExistingCounter }}" hint-placeholder-val=""><div style="font-family:'Newsreader',serif;font-size:13px;line-height:1.6;color:#5A5648;margin-top:7px"><strong>Counter-evidence:</strong> {{ challengeExistingCounter }}</div></sc-if>
+              <sc-if value="{{ challengeResolved }}" hint-placeholder-val="">
+                <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(28,25,34,.14)">
+                  <div style="font-family:'Public Sans',sans-serif;font-size:9.5px;color:#5F5B69">{{ challengeResolutionActor }} · {{ challengeResolutionAt }}</div>
+                  <div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.6;color:#1C1B24;margin-top:6px">{{ challengeResolutionRationale }}</div>
+                  <sc-if value="{{ challengeReplacement }}" hint-placeholder-val=""><div style="font-family:'Newsreader',serif;font-size:14px;line-height:1.6;color:#3F6B4A;margin-top:7px"><strong>Replacement:</strong> {{ challengeReplacement }}</div></sc-if>
+                  <div style="font-family:'Public Sans',sans-serif;font-size:9px;line-height:1.5;color:#6E6659;margin-top:7px">Teacher correction recorded.</div>
+                  <div style="font-family:'Public Sans',sans-serif;font-size:9px;color:#6E6659;margin-top:7px">The original released feedback remains unchanged.</div>
+                </div>
+              </sc-if>
+            </section>
+          </sc-if>
+          <sc-if value="{{ challengeCanCreate }}" hint-placeholder-val="">
+            <fieldset style="border:0;padding:0;margin:16px 0 0">
+              <legend style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5F5B69">What do you need from your teacher?</legend>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px">
+                <button type="button" onClick="{{ chooseExplain }}" aria-pressed="{{ explainPressed }}" style="{{ explainStyle }}">Explain this evidence</button>
+                <button type="button" onClick="{{ chooseReread }}" aria-pressed="{{ rereadPressed }}" style="{{ rereadStyle }}">Re-read this claim</button>
+              </div>
+            </fieldset>
+            <label for="gk-challenge-question" style="display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5F5B69;margin-top:16px">What should the teacher reconsider?</label>
+            <textarea id="gk-challenge-question" ref="{{ challengeQuestionRef }}" value="{{ challengeQuestion }}" onInput="{{ onChallengeQuestion }}" placeholder="Name the exact judgment and why the quoted evidence may not support it." style="width:100%;min-height:104px;margin-top:7px;padding:11px 12px;border:1px solid rgba(28,25,34,.2);border-radius:7px;background:#FFFDF9;color:#1C1B24;font-family:'Newsreader',serif;font-size:16px;line-height:1.55;resize:vertical"></textarea>
+            <label for="gk-counter-evidence" style="display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5F5B69;margin-top:14px">Counter-evidence (optional)</label>
+            <textarea id="gk-counter-evidence" value="{{ challengeCounter }}" onInput="{{ onChallengeCounter }}" placeholder="Point to another exact phrase or descriptor the reviewer should weigh." style="width:100%;min-height:72px;margin-top:7px;padding:11px 12px;border:1px solid rgba(28,25,34,.2);border-radius:7px;background:#FFFDF9;color:#1C1B24;font-family:'Newsreader',serif;font-size:16px;line-height:1.55;resize:vertical"></textarea>
+          </sc-if>
+          <div role="status" aria-live="polite" style="font-size:11.5px;line-height:1.55;color:{{ challengeStatusColor }};margin-top:12px">{{ challengeStatusLine }}</div>
+          <div class="gk-challenge-actions" style="display:flex;justify-content:flex-end;gap:9px;margin-top:16px">
+            <button type="button" onClick="{{ closeChallenge }}" style="min-height:44px;padding:0 16px;border:1px solid rgba(28,25,34,.2);border-radius:6px;background:#FFFDF9;color:#3A3641;font-size:12px;font-weight:600;cursor:pointer">Close</button>
+            <sc-if value="{{ challengeCanCreate }}" hint-placeholder-val=""><button type="button" onClick="{{ submitChallenge }}" disabled="{{ challengeSubmitNativeDisabled }}" aria-disabled="{{ challengeSubmitDisabled }}" style="{{ challengeSubmitStyle }}">{{ challengeSubmitLabel }}</button></sc-if>
+          </div>
+        </section>
+      </div>
+    </sc-if>
+
+    <div class="gk-report-sign" style="display:flex;align-items:flex-start;gap:13px;padding:22px 34px 26px;border-top:2px solid #1C1B24;flex-wrap:wrap">
+      <svg viewBox="0 0 200 200" width="28" height="28" role="img" aria-label="countersigned" style="flex:none;margin-top:2px">
+        <line x1="30" y1="150" x2="158" y2="150" stroke="#7A1230" stroke-width="9" stroke-linecap="round"></line>
+        <path d="M70 150 L78 58 L86 150 Z" fill="#7A1230"></path>
+        <line x1="78" y1="150" x2="138" y2="78" stroke="#B08D4C" stroke-width="9" stroke-linecap="round"></line>
+        <circle cx="138" cy="78" r="12" fill="#B08D4C"></circle>
+      </svg>
+      <div style="flex:1;min-width:240px">
+        <div style="font-family:'Newsreader',serif;font-size:15px;line-height:1.55;color:#1C1B24">{{ signedLine }}</div>
+        <div style="font-family:'Newsreader',serif;font-style:italic;font-size:13px;line-height:1.6;color:#5A5648;margin-top:6px;max-width:62ch">A correction would appear as a new dated line. Nothing here is edited after the fact.</div>
+      </div>
+      <button type="button" class="gk-noprint gk-report-cta" onClick="{{ onPrint }}" style="display:inline-flex;align-items:center;padding:9px 16px;border-radius:4px;border:1px solid #7A1230;background:transparent;color:#7A1230;font-size:12px;font-weight:600;cursor:pointer;flex:none">Print or save as PDF</button>
+    </div>
+
+  </div>
+  </sc-if>
+  <sc-if value="{{ reportUnavailable }}" hint-placeholder-val="">
+    <section class="gk-sheet" role="status" aria-live="polite" style="max-width:720px;margin:72px auto 0;background:#FDFCF9;border:1px solid rgba(28,25,34,.14);box-shadow:0 20px 48px -34px rgba(28,25,34,.5);padding:38px 40px">
+      <div style="font-family:'Public Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#7A1230">Statement of result</div>
+      <h1 style="font-family:'Newsreader',serif;font-size:34px;font-weight:500;line-height:1.15;margin:14px 0 0;color:#1C1B24">No released statement is available.</h1>
+      <p style="font-family:'Newsreader',serif;font-size:16px;line-height:1.7;color:#3A3641;margin:12px 0 0">{{ unavailableReason }}</p>
+      <a class="gk-report-cta" href="Gnomon Student Workspace.dc.html" style="display:inline-flex;align-items:center;min-height:44px;margin-top:24px;padding:0 17px;border-radius:4px;background:#7A1230;color:#FDFCF9;font-size:12px;font-weight:600">Return to your workspace</a>
+    </section>
+  </sc-if>
+  <x-import component-from-global-scope="gnomon-nav" from="./gnomon-nav.js" hint-size="0,0"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1120,&quot;height&quot;:1080}}">
+class Component extends DCLogic {
+  state = { hover: null, pinned: null, challengeCard: null, challengeOutcome: '', challengeQuestion: '', challengeCounter: '', challengeStatus: 'idle', challengeResult: null, feedbackUseRevision: '', feedbackUseRule: '', feedbackUseStatus: 'idle' };
+
+  // ── DATA-SEAM CONTRACT (gnomon-wire.js) — fill the named members, touch nothing else.
+  static dataContract = {
+    reads: {
+      report: {
+        member: 'this.seed (→ props.report)',
+        role: 'The immutable learner publication for one submission: either score-free formative feedback or a countersigned assessment result.',
+        endpoint: 'GET /api/v1/reports/{submission_id} (reportJson) → StudentReportEnvelope',
+        ready: true,
+        shape: '{ report:{ publication_kind?, score_released?, notice?, feedback?, criteria? }, packet:{ publication_kind, score_released, publication_payload_sha256 }, essay_text, annotation:{ comment, teacher_bands? } }',
+        ld1: 'band is SERVER-AUTHORED and read-locked. ' +
+             'D-031 — THE MOAT HAS TWO AUDIENCES. A student surface carries RECEIPTS and ABSTENTION only. ' +
+             'CALIBRATION (agreement, error rate, any interval) and the LEDGER as a verifiable service are the INSTITUTION’s honesty and must NEVER render here: ' +
+             'a learner cannot act on an error rate, and publishing one turns their result into a hedge. ' +
+             'The confidence flag stays server-side and decides only what is HELD.',
+        noFeed: 'No envelope → the "not yet signed off" state. Never fabricate a band, a criterion or a card.'
+      },
+      cards: {
+        member: 'this.seed.cards (→ props.cards)',
+        role: 'Feedback the teacher APPROVED, in send order. The Teacher Desk composer’s own vocabulary.',
+        endpoint: 'GET /api/v1/feedback-cards/{submission_id} — approved only',
+        ready: true,
+        shape: '[{ id, role:"Keep|Next step|Stretch", crit, text, quote, prefix?, suffix?, ref, polarity }]',
+        ld1: 'A student sees ONLY approved cards. A rejected or pending card must never reach this surface.',
+        noFeed: 'No approved cards → say so plainly; never show an engine draft to a student.'
+      },
+      countersign: {
+        member: 'this.seed.{teacher,issued,reference} (→ props.countersign)',
+        role: 'Who published this immutable learner packet, when, and the reference it is filed under.',
+        endpoint: 'GET /api/v1/ledger/rows?submission_id={id} (latest release row)',
+        ready: true,
+        shape: '{ released_by, released_at, reference }',
+        ld1: 'Rendered as a FACT about the result. No lookup field, no resolve action, no verification service — that surface belongs to the institution.',
+        noFeed: 'No row → not released; render the "not yet" state.'
+      },
+      packetRef: {
+        member: 'this.seed.packetRef',
+        role: 'Immutable packet identity required before a challenge can be admitted.',
+        endpoint: 'GET /api/v1/reports/{submission_id} → packet_ref',
+        ready: true,
+        shape: '{ report_id, release_event_id, receipt_id, binding_hash }',
+        noFeed: 'Missing any member → Question unavailable. Never bind a challenge to "latest".'
+      },
+      challenges: {
+        member: 'this.seed.challenges',
+        role: 'This learner’s claim-bound challenge history for the displayed packet.',
+        endpoint: 'GET /api/v1/reports/{submission_id}/challenges',
+        ready: true,
+        shape: '[{ challenge_id, card_id, target:{claim_id,card_id,card_sha256,selector}, state:"open|in_review|upheld|revised|withdrawn", version, assigned_to_name?, created_at, resolution?, correction? }]',
+        noFeed: '404 or unavailable route → the receipt remains readable and the action says unavailable; never create a local case.'
+      }
+    },
+    writes: {
+      challenge: 'POST /api/v1/reports/{submission_id}/challenges {packet_ref,target:{criterion,claim_id,card_id,card_sha256,selector:{exact,start,end}},desired_outcome:"explain|reread",question,counter_evidence?}. The response is the only source of challenge_id/state/version.',
+      feedbackUse: 'POST /api/v1/reports/{submission_id}/feedback-use seals one exact-card repair attempt and rule restatement; only a matching server receipt permits a report reload that reveals the approved worked repair.'
+    },
+    notReady: {},
+    implementedSemantics: {
+      evidenceModel: 'PROVEN(CANONICAL_WIRE): srCards scans every criteria[key].evidence[] item for the approved exact quote, preserves polarity, and emits one anchored learner card for every approved feedback card; it never truncates to evidence[0].',
+      scoreCard: 'PROVEN(CANONICAL_FRAME): this served statement renders only server-envelope criterion marks and the released overall; a null overall remains visibly absent and no client average or iframe fallback is invented.',
+      feedbackOnly: 'PROVEN(CANONICAL_FRAME): publication_kind=feedback_only renders the server-authored no-score notice and approved teaching units, while omitting every score/profile section.'
+    },
+    nonGoals: {
+      progression: 'PARKED(WORKSPACE_OWNER): history across sittings belongs on Student Workspace; a single immutable statement must not imply a trend.',
+      verification: 'PARKED(INSTITUTION_OWNER): packet verification is an institution/staff responsibility, never a learner lookup or authority action.'
+    }
+  };
+
+  seed = {
+    reportAvailable: true, // Portfolio-only: original authored sample fixture, not a released learner result.
+    publicationKind: 'assessment_result', scoreReleased: true, notice: null,
+    candidate: 'An Bui', centre: 'Hanoi IELTS Academy',
+    reference: 'GK-0431-A7F2', issued: '12 July 2026',
+    exam: 'IELTS Writing · Task 2',
+    teacher: 'Ms. L. Nguyen',
+    band: '6.5',
+    teacherNote: '',
+    teacherEvidence: [],
+    packetRef: null,
+    challengeAvailable: false,
+    challenges: [],
+    essayText: 'Remote work has become common, and many firms now let staff choose where they sit. There are three reasons which I will explain them below in my essay. The first is cost. Offices are expensive, and a company that needs fewer desks spends less. Second, peoples who live far can working more easy, which saves hours every week that were spent travelling. Although the evidence is mixed, the direction of travel seems settled.',
+    // Labels + order are CRITERION_DISPLAY from src/surfaces/student/logic.ts, verbatim.
+    criteria: [
+      { key: 'TR', label: 'Task Response', band: 7.0 },
+      { key: 'CC', label: 'Coherence', band: 6.0 },
+      { key: 'LR', label: 'Lexical', band: null },
+      { key: 'GRA', label: 'Grammar', band: 7.0 },
+    ],
+    cards: [
+      // KB-D6 — "the crackle in the paint". observed/feature/provenance come from the envelope's
+      // evidence[] and were previously discarded. A reader who wants to go one level below the
+      // note can; the willingness to be inspected past the claim IS the claim.
+      { role: 'Keep', crit: 'Task Response', ref: '¶1, l.1–3',
+        text: 'Your opening states the position straight away and answers both parts of the prompt. That is what Task Response rewards — protect it in the rewrite.',
+        observed: 'A position is stated in the first sentence, and both parts of the prompt are addressed before the first body paragraph.',
+        feature: 'position_clarity · prompt_coverage',
+        provenance: 'Engine s3.2, agreed by Ms. L. Nguyen',
+        quote: 'Remote work has become common, and many firms now let staff choose where they sit.', suffix: ' There are three' },
+      { role: 'Next step', crit: 'Coherence', ref: '¶2, l.4–6',
+        text: 'You announce three reasons but never separate them, so the reader has to do the sorting. Give each one its own sentence and signal where it starts.',
+        observed: 'Three reasons are announced in one sentence with no discourse marker separating them, and no paragraph break follows.',
+        feature: 'discourse_marker_density · paragraph_boundary',
+        provenance: 'Engine s3.2, agreed by Ms. L. Nguyen',
+        quote: 'There are three reasons which I will explain them below in my essay.', prefix: 'where they sit. ' },
+      { role: 'Stretch', crit: 'Grammar', ref: '¶4, l.1–2',
+        text: 'This concession-then-claim structure is working well. Try it once more in the body — it is the move that lifts Grammar into the sevens.',
+        observed: 'A subordinate concessive clause precedes the main claim, with correct comma placement and no agreement error.',
+        feature: 'subordination_range',
+        provenance: 'Written by Ms. L. Nguyen',
+        quote: 'Although the evidence is mixed, the direction of travel seems settled.', prefix: 'travelling. ' },
+    ],
+  };
+
+  // Port of src/components/textquote.ts — W3C TextQuoteSelector.
+  affixScore(t, a, end) { if (!a) return 0; let n = 0; while (n < a.length && n < t.length) { const x = end ? t[t.length-1-n] : t[n], y = end ? a[a.length-1-n] : a[n]; if (x !== y) break; n++; } return n; }
+  locate(e, s) { if (!s.exact) return null; let b = null, bs = -1, f = e.indexOf(s.exact); while (f !== -1) { const sc = this.affixScore(e.slice(0,f), s.prefix||'', true) + this.affixScore(e.slice(f+s.exact.length), s.suffix||'', false); if (sc > bs) { bs = sc; b = { start: f, end: f + s.exact.length }; } f = e.indexOf(s.exact, f+1); } return b; }
+
+  setHover = (k) => () => { if (this.state.hover !== k) this.setState({ hover: k }); };
+  clearHover = () => { if (this.state.hover !== null) this.setState({ hover: null }); };
+  pin = (k) => () => this.setState(s => ({ pinned: s.pinned === k ? null : k, feedbackUseRevision: '', feedbackUseRule: '', feedbackUseStatus: 'idle' }));
+  doPrint = () => { if (typeof window !== 'undefined') window.print(); };
+  challengeQuestionRef = (el) => { this._challengeQuestionEl = el; };
+  challengeDialogRef = (el) => { this._challengeDialogEl = el; };
+  onChallengeKey = (e) => {
+    if (this.state.challengeCard == null) return;
+    if (e.key === 'Escape') { e.preventDefault(); this.closeChallenge(); return; }
+    if (e.key !== 'Tab' || !this._challengeDialogEl) return;
+    const nodes = Array.from(this._challengeDialogEl.querySelectorAll('button:not([aria-disabled="true"]),textarea,input,select,a[href],[tabindex]:not([tabindex="-1"])'));
+    if (!nodes.length) return;
+    const first = nodes[0], last = nodes[nodes.length - 1];
+    if (!this._challengeDialogEl.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+  componentWillUnmount() { if (typeof document !== 'undefined') document.removeEventListener('keydown', this.onChallengeKey); }
+  openChallenge = (k) => () => {
+    if (!this.seed.challengeAvailable) return;
+    const card = this.seed.cards[k] || {};
+    this._challengeReturnClaimId = card.claimId || card.cardId || null;
+    this._challengeReturn = (typeof document !== 'undefined') ? document.activeElement : null;
+    this.setState({ challengeCard: k, challengeOutcome: '', challengeQuestion: '', challengeCounter: '', challengeStatus: 'idle', challengeResult: null });
+    if (typeof document !== 'undefined') document.addEventListener('keydown', this.onChallengeKey);
+    setTimeout(() => {
+      const target = this._challengeQuestionEl || (this._challengeDialogEl && this._challengeDialogEl.querySelector('button,textarea,input,select,a[href],[tabindex]:not([tabindex="-1"])'));
+      if (target) target.focus();
+    }, 40);
+  };
+  closeChallenge = () => {
+    if (typeof document !== 'undefined') document.removeEventListener('keydown', this.onChallengeKey);
+    this.setState({ challengeCard: null, challengeStatus: 'idle' }, () => {
+      const current = (typeof document !== 'undefined' && this._challengeReturnClaimId)
+        ? Array.from(document.querySelectorAll('[data-gk-challenge-for]')).find(el => el.getAttribute('data-gk-challenge-for') === this._challengeReturnClaimId)
+        : null;
+      const target = current || this._challengeReturn;
+      if (target && target.focus) target.focus({ preventScroll: true });
+    });
+  };
+  onChallengeQuestion = (e) => this.setState({ challengeQuestion: e.target.value, challengeStatus: 'idle' });
+  onChallengeCounter = (e) => this.setState({ challengeCounter: e.target.value, challengeStatus: 'idle' });
+  chooseChallengeOutcome = (value) => () => this.setState({ challengeOutcome: value, challengeStatus: 'idle' });
+  onFeedbackUseRevision = (e) => this.setState({ feedbackUseRevision: e.target.value, feedbackUseStatus: 'idle' });
+  onFeedbackUseRule = (e) => this.setState({ feedbackUseRule: e.target.value, feedbackUseStatus: 'idle' });
+  submitFeedbackUse = (index) => () => {
+    const card = this.seed.cards[index];
+    const revision = (this.state.feedbackUseRevision || '').trim();
+    const rule = (this.state.feedbackUseRule || '').trim();
+    if (!card || !card.preAttemptProjectionSha256 || !revision || rule.length < 12 || typeof this.feedbackUseSubmit !== 'function') {
+      this.setState({ feedbackUseStatus: 'invalid' });
+      return;
+    }
+    this.setState({ feedbackUseStatus: 'submitting' });
+    Promise.resolve(this.feedbackUseSubmit(card, revision, rule)).then(() => {
+      this.setState({ feedbackUseStatus: 'submitted' });
+      if (typeof window !== 'undefined' && window.location && typeof window.location.reload === 'function') window.location.reload();
+    }).catch((error) => {
+      if (error && error.status === 409) {
+        this.setState({ feedbackUseStatus: 'already_sealed' });
+        if (typeof window !== 'undefined' && window.location && typeof window.location.reload === 'function') window.location.reload();
+        return;
+      }
+      this.setState({ feedbackUseStatus: 'error' });
+    });
+  };
+  submitChallenge = () => {
+    const i = this.state.challengeCard;
+    const card = i == null ? null : this.seed.cards[i];
+    const question = (this.state.challengeQuestion || '').trim();
+    if (!card || !this.seed.challengeAvailable || !this.state.challengeOutcome || question.length < 12 || typeof this.challengeSubmit !== 'function') {
+      this.setState({ challengeStatus: 'unavailable' });
+      return;
+    }
+    this.setState({ challengeStatus: 'submitting' });
+    Promise.resolve(this.challengeSubmit(card, this.state.challengeOutcome, question, (this.state.challengeCounter || '').trim()))
+      .then((row) => this.setState({ challengeStatus: 'submitted', challengeResult: row || null }))
+      .catch(() => this.setState({ challengeStatus: 'error' }));
+  };
+
+  renderVals() {
+    const d = this.seed;
+    const active = this.state.pinned || this.state.hover;
+    const LO = 4, HI = 9;
+    const feedbackOnly = d.publicationKind === 'feedback_only' || d.scoreReleased === false;
+    const scoreReleased = !feedbackOnly;
+    const criteriaRows = Array.isArray(d.criteria) ? d.criteria : [];
+    const marked = criteriaRows.filter(c => c.band !== null);
+    const held = criteriaRows.filter(c => c.band === null);
+    // The upright rule marks THE COUNTERSIGNED BAND — not a separately computed arithmetic mean.
+    // A raw mean of the marked criteria (6.667) disagrees with the released band (6.5), and a
+    // statement whose argument is that every number is checkable cannot print two averages.
+    // The band is server-authored and is the figure the document stands behind.
+    const hasOverall = d.band !== null && Number.isFinite(Number(d.band));
+    const mean = hasOverall ? Number(d.band) : null;
+    const meanPct = hasOverall ? ((mean - LO) / (HI - LO)) * 100 : 0;
+
+    // KB-D4 — presence comes from scale, space and weight, not from more ink.
+    // The mark SITS ON a hairline rather than filling a track: the track was container,
+    // the rule is structure, and dropping it RAISED data-ink. A held mark reads as ABSENT —
+    // a short stub that stops, never a full bar that skims as maximum.
+    // s203 finding #2 cure (r2, canon-cleared): link each criterion mark to its teacher-approved evidence card.
+    // Matched by the human-readable label (`crit`) -- the field both the static design seed and the live wire
+    // agree on; the short code (`ref`) means two different things between the two shapes.
+    const cardIndexByCriterion = {};
+    (d.cards || []).forEach((card, index) => {
+      if (card && card.crit && cardIndexByCriterion[card.crit] === undefined) cardIndexByCriterion[card.crit] = index;
+    });
+    const profile = criteriaRows.map((c, i) => {
+      const isHeld = c.band === null;
+      const pct = isHeld ? 0 : ((c.band - LO) / (HI - LO)) * 100;
+      const above = hasOverall && !isHeld && c.band > mean;
+      return {
+        label: c.label + (c.authority === 'human' ? ' · teacher mark' : ''),
+        val: isHeld ? 'with your teacher' : c.band.toFixed(1),
+        groupStyle: i ? 'padding-top:30px' : '',
+        barStyle: isHeld
+          ? 'position:absolute;left:0;top:0;height:1px;width:7%;background:#B08D4C'
+          : 'position:absolute;left:0;top:-1px;height:3px;width:' + pct.toFixed(1) + '%;background:' + (above ? '#7A1230' : 'rgba(122,18,48,.55)'),
+        // ONE meaning per visual variable: a vertical hairline crossing the axis is the band rule,
+        // on every row including the held one. The 33px gold segment already reads as stopped, so
+        // the stub carries no end-cap — an identical tick meaning two things is a coding lie.
+        meanStyle: hasOverall
+          ? 'position:absolute;left:' + meanPct.toFixed(1) + '%;top:-8px;height:17px;width:1px;background:rgba(28,25,34,.4)'
+          : 'display:none',
+        valStyle: isHeld
+          ? "font-family:'Newsreader',serif;font-style:italic;font-size:15px;color:#6E5214;white-space:nowrap"
+          : "font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:500;line-height:.9;letter-spacing:-.02em;color:#1C1B24",
+        hasReceipt: cardIndexByCriterion[c.label] !== undefined,
+        noReceipt: cardIndexByCriterion[c.label] === undefined,
+        receiptHref: cardIndexByCriterion[c.label] === undefined ? '' : '#gk-claim-c' + cardIndexByCriterion[c.label],
+        onOpenReceipt: cardIndexByCriterion[c.label] === undefined ? (() => {}) : this.pin('c' + cardIndexByCriterion[c.label]),
+      };
+    });
+
+    const text = d.essayText;
+    const found = d.cards.map((m, i) => { const p = this.locate(text, { exact: m.quote, prefix: m.prefix, suffix: m.suffix }); return p ? { key: 'c'+i, start: p.start, end: p.end } : null; }).filter(Boolean).sort((a,b) => a.start - b.start);
+    const plain = 'font-family:inherit;';
+    const rest = 'font-family:inherit;border-bottom:1px dotted rgba(122,18,48,.45);padding-bottom:1px;';
+    const lit = 'font-family:inherit;background:#F4E4C1;border-bottom:1.5px solid #B08D4C;border-radius:2px;padding:0 3px 1px;';
+    const essay = []; let cur = 0;
+    found.forEach(m => {
+      if (m.start < cur) return;
+      if (m.start > cur) essay.push({ text: text.slice(cur, m.start), style: plain, cls: '' });
+      essay.push({ text: text.slice(m.start, m.end), style: active === m.key ? lit : rest, cls: active === m.key ? 'gk-mark' : '' });
+      cur = m.end;
+    });
+    if (cur < text.length) essay.push({ text: text.slice(cur), style: plain, cls: '' });
+
+    const teacherEvidence = (d.teacherEvidence || []).filter(e => e && e.quote && e.text);
+    const cards = d.cards.map((m, i) => {
+      const key = 'c'+i, on = active === key, pin = this.pin(key);
+      const claimId = m.claimId || m.cardId || '';
+      const teacherEvidenceNote = teacherEvidence.find(e => e.quote === m.quote);
+      const materialSource = m.realizationSource === 'TEACHER' ? 'Teacher-written'
+        : m.realizationSource === 'MODEL_PROPOSAL' ? 'Machine-drafted from verified evidence'
+        : m.realizationSource === 'BANK' ? 'Governed evidence and intervention bank' : '';
+      const releaseAuthority = m.provenance ? m.provenance + (d.teacher ? ' · ' + d.teacher : '') : '';
+      const identityReady = !!(d.challengeAvailable && claimId && m.cardId && m.cardSha256 && m.quote &&
+        m.selector && m.selector.exact && Number.isInteger(m.selector.start) && Number.isInteger(m.selector.end) &&
+        m.selector.start >= 0 && m.selector.end > m.selector.start);
+      const existing = identityReady ? (d.challenges || []).find(c => c.claim_id === claimId) : null;
+      const feedbackUseRequired = !!(m.preAttemptProjectionSha256 && !m.after);
+      const feedbackUseAvailable = !!(feedbackUseRequired && d.packetRef && d.packetRef.report_id &&
+        d.packetRef.release_event_id && d.packetRef.receipt_id && d.packetRef.binding_hash &&
+        typeof this.feedbackUseSubmit === 'function');
+      const feedbackUseReady = feedbackUseAvailable && (this.state.feedbackUseRevision || '').trim() &&
+        (this.state.feedbackUseRule || '').trim().length >= 12 &&
+        this.state.feedbackUseStatus !== 'submitting' && this.state.feedbackUseStatus !== 'already_sealed';
+      const feedbackUseStatusLine = this.state.feedbackUseStatus === 'submitting'
+        ? 'Sealing this attempt to the displayed release…'
+        : this.state.feedbackUseStatus === 'submitted'
+        ? 'Attempt sealed. Reloading the exact released card…'
+        : this.state.feedbackUseStatus === 'already_sealed'
+        ? 'A prior attempt is already sealed. Reloading its approved repair…'
+        : this.state.feedbackUseStatus === 'error'
+        ? 'The attempt was not recorded. Your draft is still here; try again.'
+        : this.state.feedbackUseStatus === 'invalid'
+        ? 'Write a repaired version and explain the rule in your own words.'
+        : 'The approved worked repair stays hidden until this exact-card attempt is sealed.';
+      return { role: m.role, crit: m.crit, ref: m.ref, text: m.text, priorityReason: m.priorityReason,
+        anchorId: 'gk-claim-' + key,
+        claimId,
+        pinned: this.state.pinned === key ? 'true' : 'false',
+        // Pinned, not hovered — going deeper is a deliberate act, never something that
+        // happens to a reader moving the mouse across the column.
+        open: this.state.pinned === key,
+        beneath: [
+          { k: 'Teacher note', v: teacherEvidenceNote ? teacherEvidenceNote.text : '', vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Exact evidence', v: m.quote ? ('“' + m.quote + '”') : '', vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Diagnosis', v: m.diagnosis, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Why it matters', v: m.impact || m.criterionConnection, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Repair recipe', v: (m.repairSteps || []).join(' '), vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Before', v: m.before, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#7A1230;flex:1;min-width:0" },
+          { k: 'Worked repair', v: m.after, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#35593E;flex:1;min-width:0" },
+          { k: 'Use it again', v: m.transfer, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Self-check', v: m.check, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Material source', v: materialSource, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+          { k: 'Release authority', v: releaseAuthority, vStyle: "font-family:'Newsreader',serif;font-size:13.5px;line-height:1.6;color:#2A2732;flex:1;min-width:0" },
+        ].filter(b => b.v),
+        hint: this.state.pinned === key ? 'what this is based on, below' : (on ? 'shown in your writing · select to go deeper' : 'see where'),
+        onHover: this.setHover(key), onLeave: this.clearHover, onPin: pin,
+        feedbackUseRequired, feedbackUsePrompt: m.learnerPrompt,
+        feedbackUseRevisionId: 'gk-feedback-use-revision-' + i,
+        feedbackUseRuleId: 'gk-feedback-use-rule-' + i,
+        feedbackUseRevision: this.state.feedbackUseRevision, feedbackUseRule: this.state.feedbackUseRule,
+        onFeedbackUseRevision: this.onFeedbackUseRevision, onFeedbackUseRule: this.onFeedbackUseRule,
+        onFeedbackUse: feedbackUseReady ? this.submitFeedbackUse(i) : (() => {}),
+        feedbackUseDisabled: feedbackUseReady ? 'false' : 'true', feedbackUseNativeDisabled: !feedbackUseReady,
+        feedbackUseLabel: this.state.feedbackUseStatus === 'submitting' ? 'Sealing attempt…'
+          : this.state.feedbackUseStatus === 'already_sealed' ? 'Showing sealed attempt…' : 'Reveal the approved repair',
+        feedbackUseStatusLine,
+        feedbackUseStatusColor: this.state.feedbackUseStatus === 'error' || this.state.feedbackUseStatus === 'invalid' ? '#7A1230' : '#5F5B69',
+        feedbackUseStyle: 'margin-top:11px;min-height:44px;padding:0 13px;border-radius:6px;font-size:11px;font-weight:600;' + (feedbackUseReady ? 'cursor:pointer;border:1px solid #7A1230;background:#7A1230;color:#FFFDF9' : 'cursor:not-allowed;border:1px solid rgba(28,25,34,.12);background:rgba(28,25,34,.03);color:#8A8692'),
+        onChallenge: identityReady ? this.openChallenge(i) : (() => {}),
+        challengeDisabled: identityReady ? 'false' : 'true', challengeNativeDisabled: !identityReady,
+        challengeLabel: existing ? ('View teacher review · ' + existing.state.replace(/_/g, ' ')) : (identityReady ? 'Ask your teacher' : 'Question unavailable'),
+        challengeStyle: 'margin-top:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:600;' + (identityReady ? 'cursor:pointer;border:1px solid rgba(122,18,48,.35);background:#FFFDF9;color:#7A1230' : 'cursor:not-allowed;border:1px solid rgba(28,25,34,.12);background:rgba(28,25,34,.03);color:#8A8692'),
+        roleStyle: "font-family:'Newsreader',serif;font-weight:500;font-size:15.5px;color:" + (on ? '#7A1230' : '#1C1B24'),
+        cardStyle: 'padding:15px 14px;border-top:1px solid rgba(28,25,34,.16);background:' + (on ? '#FDFCF9' : 'transparent') + ';transition:background .18s cubic-bezier(.2,.7,.3,1)' + (i === d.cards.length - 1 ? ';border-bottom:1px solid rgba(28,25,34,.16)' : ''),
+      };
+    });
+
+    const ci = this.state.challengeCard;
+    const challengeCard = ci == null ? null : d.cards[ci];
+    const priorChallenge = challengeCard ? (d.challenges || []).find(c => c.claim_id === (challengeCard.claimId || challengeCard.cardId)) : null;
+    const priorResolution = priorChallenge && priorChallenge.resolution;
+    const priorUnit = priorResolution && priorResolution.replacement_unit;
+    const priorActions = priorChallenge ? (priorChallenge.actions || []) : [];
+    const priorResolvedAction = priorActions.slice().reverse().find(a => String(a.action_type || '').indexOf('resolved_') === 0) || null;
+    const challengeOpen = !!challengeCard;
+    const questionReady = (this.state.challengeQuestion || '').trim().length >= 12;
+    const outcomeReady = this.state.challengeOutcome === 'explain' || this.state.challengeOutcome === 'reread';
+    const challengeBusy = this.state.challengeStatus === 'submitting';
+    const challengeSubmitNativeDisabled = !d.challengeAvailable || !!priorChallenge || !outcomeReady || !questionReady || challengeBusy;
+    const challengeSubmitDisabled = challengeSubmitNativeDisabled ? 'true' : 'false';
+    let challengeStatusLine = priorChallenge ? ('Review with your teacher · ' + priorChallenge.state.replace(/_/g, ' ')) : 'Your question stays attached to this exact feedback and quoted evidence. Your teacher sees the same context.';
+    let challengeStatusColor = '#5F5B69';
+    if (this.state.challengeStatus === 'submitting') challengeStatusLine = 'Sending your question…';
+    if (this.state.challengeStatus === 'submitted') { challengeStatusLine = 'Question sent. Your teacher will review the same feedback and quote.'; challengeStatusColor = '#3F6B4A'; }
+    if (this.state.challengeStatus === 'error') { challengeStatusLine = 'Your question was not sent. Nothing changed; try again or ask your teacher.'; challengeStatusColor = '#7A1230'; }
+    if (this.state.challengeStatus === 'unavailable') { challengeStatusLine = 'Questions are unavailable until this feedback can be verified. Reload before trying again.'; challengeStatusColor = '#7A1230'; }
+    const challengeSubmitStyle = 'min-height:44px;padding:0 18px;border:0;border-radius:6px;font-size:12px;font-weight:600;' + (challengeSubmitDisabled === 'true' ? 'background:#CFC7B9;color:#7A7468;cursor:not-allowed' : 'background:#7A1230;color:#FFFDF9;cursor:pointer');
+
+    const strongest = marked.slice().sort((a,b) => b.band - a.band)[0] || null;
+    const weakest = marked.slice().sort((a,b) => a.band - b.band)[0] || null;
+    const cardCount = d.cards.length;
+    const synthesis = d.synthesis || {};
+    const strengthRows = synthesis.strengths || [];
+    const planRows = synthesis.next_draft_plan || [];
+    const seenPlanCards = new Set();
+    const planCandidates = planRows.map((step, planIndex) => {
+      const cardIndex = d.cards.findIndex(card => card.cardId === step.card_id);
+      const card = cardIndex < 0 ? null : d.cards[cardIndex];
+      const selector = (card && card.selector) || {};
+      const anatomyReady = !!(card && card.cardId && card.claimId === card.cardId && card.cardSha256 &&
+        card.quote && card.crit && card.diagnosis && (card.impact || card.criterionConnection) &&
+        card.check && card.provenance && ['BANK', 'MODEL_PROPOSAL', 'TEACHER'].includes(card.realizationSource) &&
+        selector.exact === card.quote && Number.isInteger(selector.start) && Number.isInteger(selector.end) &&
+        selector.start >= 0 && selector.end > selector.start && text.slice(selector.start, selector.end) === card.quote);
+      const rowReady = anatomyReady && planRows.length <= 3 && step.rank === planIndex + 1 &&
+        String(step.move || '').trim() && String(step.check || '').trim() && !seenPlanCards.has(step.card_id);
+      if (!rowReady) return null;
+      seenPlanCards.add(step.card_id);
+      return { rank: step.rank, quote: card.quote, diagnosis: card.diagnosis,
+        move: step.move, check: step.check, href: '#gk-claim-c' + cardIndex,
+        onOpen: this.pin('c' + cardIndex) };
+    });
+    const planContractReady = planCandidates.length === planRows.length && planCandidates.every(Boolean);
+    const nextDraftPlan = planContractReady ? planCandidates : [];
+    const strengthOnly = strengthRows.length > 0 && planRows.length === 0 && nextDraftPlan.length === 0;
+    const sharedPlanCheck = nextDraftPlan.length > 1 && nextDraftPlan.every(step => step.check === nextDraftPlan[0].check) ? nextDraftPlan[0].check : '';
+    if (sharedPlanCheck) nextDraftPlan.forEach(step => { step.check = ''; });
+    const teacherNote = String(d.teacherNote || '').trim();
+    const standaloneTeacherEvidence = teacherEvidence.filter(e =>
+      !d.cards.some(card => card && card.quote === e.quote));
+    const notice = d.notice || {};
+    const fbLede = strengthOnly
+      ? 'Your teacher confirmed these grounded strengths. No correction or score was invented.'
+      : feedbackOnly
+      ? (notice.body || 'Your teacher approved this feedback to help with your next draft. It is not an IELTS band, grade, or assessment result.')
+      : cardCount
+      ? cardCount + ' teacher-approved feedback ' + (cardCount === 1 ? 'item was' : 'items were') + ' released with this statement.' + (teacherNote ? ' Your teacher also released an overall note.' : '')
+      : (teacherNote ? 'Your teacher released an overall note with this statement.' : 'No teacher-approved feedback was released with this statement.');
+    const caseTime = value => {
+      const parsed = new Date(value || '');
+      return Number.isNaN(parsed.getTime()) ? 'time unavailable' : parsed.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+    };
+    const corrections = (d.challenges || []).filter(c => c.resolution).map(c => {
+      const resolution = c.resolution || {}, unit = resolution.replacement_unit || {};
+      const action = (c.actions || []).slice().reverse().find(a => String(a.action_type || '').indexOf('resolved_') === 0) || {};
+      const replacement = [unit.warrant_display, unit.move_text, unit.check_text].filter(Boolean).join(' ');
+      return { criterion: (c.target || {}).criterion || 'Feedback',
+        decision: String(resolution.decision || c.state || '').replace(/_/g, ' '), rationale: resolution.rationale || '',
+        replacement, actor: action.actor_name || c.assigned_to_name || 'Your teacher', when: caseTime(action.created_at || c.updated_at) };
+    });
+
+    return {
+      reportAvailable: d.reportAvailable !== false,
+      reportUnavailable: d.reportAvailable === false,
+      unavailableReason: d.unavailableReason || 'Your teacher has not countersigned and released a statement yet. No mark or feedback has been invented in its place.',
+      feedbackOnly, scoreReleased,
+      documentLabel: feedbackOnly ? 'Formative feedback' : 'Statement of result',
+      noticeTitle: notice.title || 'Formative feedback — no score released.',
+      noticeBody: notice.body || 'Your teacher approved this feedback to help with your next draft. It is not an IELTS band, grade, or assessment result.',
+      reference: d.reference, issued: d.issued, band: hasOverall ? d.band : 'Not issued',
+      bandHasOverall: hasOverall ? 'true' : 'false',
+      bandStyle: hasOverall
+        ? "font-family:'IBM Plex Mono',monospace;font-size:88px;font-weight:500;line-height:.82;letter-spacing:-.03em;color:#1C1B24;margin-top:10px"
+        : "font-family:'Newsreader',serif;font-size:22px;font-weight:500;line-height:1.2;color:#7A1230;margin-top:10px",
+      candidate: d.candidate,
+      // KB-D9 — the document's subject stated as a sentence the name completes.
+      subjectLine: feedbackOnly
+        ? 'received named-teacher feedback on ' + d.exam + ' at ' + d.centre + '. No score or assessment result was released.'
+        : 'sat ' + d.exam + ' at ' + d.centre + ', and this countersigned result was released.',
+      authorityStatus: feedbackOnly ? 'Formative feedback · no score released' : (hasOverall ? 'Released · countersigned · overall ' + d.band : 'Released · countersigned · overall not issued'),
+      feedbackStart: planRows.length && !planContractReady ? 'Next-draft plan unavailable' : (nextDraftPlan.length ? nextDraftPlan.length + ' next-draft ' + (nextDraftPlan.length === 1 ? 'priority' : 'priorities') : 'No next-draft plan issued'),
+      // The candidate has left this row: they are the subject above, not a field within it.
+      meta: [
+        { k: 'Centre', v: d.centre, mono: false },
+        { k: 'Sitting', v: d.exam, mono: false },
+        { k: 'Countersigned by', v: d.teacher, mono: false },
+        { k: 'Reference', v: d.reference, mono: true },
+        { k: 'Issued', v: d.issued, mono: false },
+      ].map((m, i) => ({
+        k: m.k, v: m.v,
+        vStyle: (m.mono
+          ? "font-family:'IBM Plex Mono',monospace;font-size:13.5px"
+          : "font-family:'Newsreader',serif;font-size:15px") + ';line-height:1.45;color:#1C1B24;margin-top:6px',
+        cellStyle: 'padding:16px 0 17px' + (i ? ';border-left:1px solid rgba(28,25,34,.1);padding-left:20px' : ''),
+      })),
+      bandNote: hasOverall
+        ? 'Overall issued from the admitted marks on this statement.'
+        : 'The signed criterion marks remain separate; no hidden average was invented.',
+      profile,
+      meanLabel: hasOverall ? ('your band ' + d.band) : 'no overall issued',
+      // The label is positioned at the rule it names, not centred by flex distribution.
+      meanLabelStyle: hasOverall
+        ? 'position:absolute;left:' + meanPct.toFixed(1) + "%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:10px;color:#5F5B69;white-space:nowrap"
+        : "position:absolute;left:50%;transform:translateX(-50%);font-family:'Newsreader',serif;font-size:12px;color:#7A1230;white-space:nowrap",
+      profileNote: strongest && weakest
+        ? (strongest.band === weakest.band
+          ? (marked.length === 1 ? 'The issued criterion mark is ' : 'All ' + marked.length + ' issued criterion marks are tied at ') + strongest.band.toFixed(1) + '.' + (hasOverall ? ' The upright rule is the issued overall band.' : ' No arithmetic overall was invented.')
+          : strongest.label + ' is your strongest at ' + strongest.band.toFixed(1) + '; ' + weakest.label + ' is lowest at ' + weakest.band.toFixed(1) + '.' + (hasOverall ? ' The upright rule is the issued overall band.' : ' No arithmetic overall was invented.'))
+        : 'Not enough criterion marks were issued for a profile. No arithmetic overall was invented.',
+      hasHeld: scoreReleased && held.length > 0,
+      heldTitle: held.length === 1 ? held[0].label + ' is still with your teacher.' : held.length + ' marks are still with your teacher.',
+      heldLine: held.length === 1
+        ? 'This mark was held for human review. You will see it here once your teacher decides — nothing else about this statement changes.'
+        : 'These marks were held for human review. You will see them here once your teacher decides.',
+      essay, cards, teacherNote, hasTeacherEvidence: standaloneTeacherEvidence.length > 0,
+      teacherEvidence: standaloneTeacherEvidence, fbLede,
+      hasNextDraftPlan: nextDraftPlan.length > 0, nextDraftPlan, sharedPlanCheck,
+      nextSectionEyebrow: nextDraftPlan.length ? 'Start here' : (strengthOnly ? 'Keep this' : 'Plan status'),
+      nextSectionTitle: nextDraftPlan.length ? 'What to do next' : (strengthOnly ? 'Strengths to keep' : 'No next-draft plan issued'),
+      nextPlanLabel: nextDraftPlan.length ? 'Your next draft, in order' : (strengthOnly ? 'Teacher-confirmed strengths' : 'Practice plan status'),
+      nextDraftSummary: planRows.length && !planContractReady
+        ? 'This released plan is incomplete. Ask your teacher before changing the draft.'
+        : nextDraftPlan.length
+        ? 'Complete these teacher-approved moves in order. Each opens its evidence below.'
+        : strengthOnly
+        ? 'Keep these response-bound strengths in your next draft. No correction was invented.'
+        : 'No release-ready practice plan was included; ask your teacher before changing the draft.',
+      hasCorrections: corrections.length > 0, correctionCount: corrections.length, corrections,
+      essayMeta: standaloneTeacherEvidence.length
+        ? standaloneTeacherEvidence.length + ' approved exact evidence ' + (standaloneTeacherEvidence.length === 1 ? 'note' : 'notes')
+        : found.length + ' of ' + d.cards.length + ' approved feedback quotes tethered',
+      signedLine: (feedbackOnly ? 'Published as formative feedback by ' : 'Countersigned by ') + d.teacher + ' on ' + d.issued + ' · filed as ' + d.reference,
+      onPrint: this.doPrint,
+      onPrintKey: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.doPrint(); } },
+      challengeOpen, closeChallenge: this.closeChallenge, challengeQuestionRef: this.challengeQuestionRef, challengeDialogRef: this.challengeDialogRef,
+      challengeCriterion: challengeCard ? challengeCard.crit : '',
+      challengeQuote: challengeCard ? (challengeCard.quote || '') : '',
+      challengeExisting: !!priorChallenge, challengeCanCreate: !priorChallenge,
+      challengeExistingState: priorChallenge ? String(priorChallenge.state || '').replace(/_/g, ' ') : '',
+      challengeExistingQuestion: priorChallenge ? priorChallenge.question : '',
+      challengeExistingCounter: priorChallenge ? (priorChallenge.counter_evidence || '') : '',
+      challengeResolved: !!priorResolution,
+      challengeResolutionActor: priorResolvedAction ? priorResolvedAction.actor_name : '',
+      challengeResolutionAt: priorResolvedAction ? caseTime(priorResolvedAction.created_at) : '',
+      challengeResolutionRationale: priorResolution ? priorResolution.rationale : '',
+      challengeReplacement: priorUnit ? [priorUnit.warrant_display, priorUnit.move_text, priorUnit.check_text].filter(Boolean).join(' ') : '',
+      challengeQuestion: this.state.challengeQuestion, challengeCounter: this.state.challengeCounter,
+      chooseExplain: this.chooseChallengeOutcome('explain'), chooseReread: this.chooseChallengeOutcome('reread'),
+      explainPressed: this.state.challengeOutcome === 'explain' ? 'true' : 'false',
+      rereadPressed: this.state.challengeOutcome === 'reread' ? 'true' : 'false',
+      explainStyle: 'min-height:44px;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;' + (this.state.challengeOutcome === 'explain' ? 'border:1px solid #7A1230;background:rgba(122,18,48,.08);color:#7A1230' : 'border:1px solid rgba(28,25,34,.18);background:#FFFDF9;color:#5F5B69'),
+      rereadStyle: 'min-height:44px;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;' + (this.state.challengeOutcome === 'reread' ? 'border:1px solid #7A1230;background:rgba(122,18,48,.08);color:#7A1230' : 'border:1px solid rgba(28,25,34,.18);background:#FFFDF9;color:#5F5B69'),
+      onChallengeQuestion: this.onChallengeQuestion, onChallengeCounter: this.onChallengeCounter,
+      challengeStatusLine, challengeStatusColor, challengeSubmitDisabled, challengeSubmitNativeDisabled,
+      challengeSubmitLabel: priorChallenge ? 'Question already sent' : (challengeBusy ? 'Sending…' : (this.state.challengeStatus === 'submitted' ? 'Question sent' : 'Send question')),
+      challengeSubmitStyle, submitChallenge: (challengeSubmitDisabled === 'true') ? (() => {}) : this.submitChallenge,
+    };
+  }
+}
+</script>
+</body>
+</html>

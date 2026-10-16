@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gnomon Portal — sample-data portfolio preview</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ac:#7A1230; --ac-deep:#5E0F2C; --ac-bright:#8A1538; --gold:#B08D4C; --gold-lt:#E3C88B; --ink:#1C1B24; --ivory:#FAF7F0; --ivory-hi:#FDFCF9; --paper:#EBE6DB; --green:#35593E; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); font-family:'Public Sans',system-ui,sans-serif; color:var(--ink); }
+  a { color:var(--ac); text-decoration:none; }
+  a:hover { color:var(--ac-deep); }
+  .lbl { font-family:'Public Sans',sans-serif; text-transform:uppercase; letter-spacing:.18em; font-size:10px; font-weight:700; }
+  .mono { font-family:'IBM Plex Mono',monospace; }
+  @keyframes gkRise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;background:radial-gradient(120% 90% at 50% -10%, #F1ECE1 0%, var(--paper) 60%);">
+
+  <!-- top brand bar -->
+  <a href="Gnomon The Through-Line v3.dc.html" style="position:fixed;top:24px;left:32px;display:flex;align-items:center;gap:11px;z-index:5">
+    <svg viewBox="0 0 200 200" style="width:26px;height:26px;flex:none" aria-label="Gnomon Kanon — the cast"><line x1="30" y1="150" x2="158" y2="150" stroke="#7A1230" stroke-width="9" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="#7A1230"></path><line x1="78" y1="150" x2="138" y2="78" stroke="#B08D4C" stroke-width="9" stroke-linecap="round"></line><circle cx="138" cy="78" r="11" fill="#B08D4C"></circle></svg>
+    <span style="font-family:'Newsreader',serif;font-size:19px;font-weight:500;color:#1C1B24">Gnomon&nbsp;Kanon</span>
+  </a>
+  <a href="Gnomon The Through-Line v3.dc.html" class="lbl" style="position:fixed;top:29px;right:32px;color:rgba(28,27,36,.63);z-index:5">← Back to site</a>
+
+  <!-- the gate card -->
+  <div style="width:100%;max-width:1000px;display:grid;grid-template-columns:0.92fr 1.08fr;background:var(--ivory-hi);border:1px solid rgba(28,27,36,.1);box-shadow:0 40px 90px -40px rgba(28,27,36,.42),0 4px 14px -8px rgba(28,27,36,.2);overflow:hidden;animation:gkRise .6s ease both">
+
+    <!-- LEFT · the idea, on the dark ground -->
+    <div style="position:relative;background:linear-gradient(160deg,#2A0E1C 0%,#1C1B24 100%);color:#F3E6EA;padding:44px 40px 38px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden">
+      <!-- reading-field ruled texture -->
+      <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(180deg, rgba(227,200,139,.05) 0 1px, transparent 1px 26px);pointer-events:none"></div>
+      <div style="position:relative">
+        <div class="lbl" style="color:var(--gold);margin-bottom:24px">The gate</div>
+        <svg viewBox="0 0 200 200" width="44" height="44" style="display:block;margin-bottom:26px"><line x1="30" y1="150" x2="158" y2="150" stroke="#ECE3D7" stroke-width="11" stroke-linecap="round"></line><path d="M70 150 L78 58 L86 150 Z" fill="#ECE3D7"></path><line x1="78" y1="150" x2="138" y2="78" stroke="#E3C88B" stroke-width="11" stroke-linecap="round"></line><circle cx="138" cy="78" r="13" fill="#E3C88B"></circle></svg>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:33px;line-height:1.1;margin:0 0 16px;letter-spacing:-.01em">One door.<br>Your room opens behind it.</h1>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:#D6C4CB;max-width:340px">Everyone at your institution signs in here — student, teacher, director, admin. We read who you are, then open only your room. No one sees another's.</p>
+      </div>
+      <div style="position:relative;margin-top:32px;padding-top:18px;border-top:1px solid rgba(227,200,139,.18)">
+        <div class="lbl mono" style="color:#C79A7E;font-size:9.5px;letter-spacing:.14em;margin-bottom:7px">Signed-in institution</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--gold-lt)"></span>
+          <span style="font-family:'Newsreader',serif;font-size:16px;color:#F3E6EA">{{ institutionName }}</span>
+          <span class="mono" style="font-size:9px;letter-spacing:.1em;color:#9C7C86;border:1px solid rgba(156,124,134,.5);padding:2px 6px;border-radius:2px">DEMO</span>
+        </div>
+        <div class="mono" style="font-size:10.5px;color:#9C7C86;margin-top:9px;line-height:1.5">one sign-in reaches only this school's record · access scoped by role (RBAC)</div>
+      </div>
+    </div>
+
+    <!-- RIGHT · the sign-in + demo doors -->
+    <div style="padding:44px 44px 38px">
+      <sc-if value="{{ isSignin }}" hint-placeholder-val="{{ true }}">
+      <div class="lbl" style="color:var(--ac);margin-bottom:20px">Sign in</div>
+
+      <!-- Email — the production posture (SSO dropped from the gate per M1 until a backend ships) -->
+      <label for="gk-portal-email" class="lbl" style="display:block;color:rgba(28,27,36,.63);font-size:9.5px;margin-bottom:7px">Institution email</label>
+      <input id="gk-portal-email" type="email" placeholder="you@school.edu" value="{{ email }}" onInput="{{ onEmail }}" onKeyDown="{{ onKey }}" style="width:100%;height:44px;padding:0 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);background:var(--ivory);border:1px solid rgba(28,27,36,.16);border-radius:2px" />
+      <label for="gk-portal-password" class="lbl" style="display:block;color:rgba(28,27,36,.63);font-size:9.5px;margin:12px 0 7px">Password</label>
+      <input id="gk-portal-password" type="password" placeholder="••••••••" value="{{ password }}" onInput="{{ onPassword }}" onKeyDown="{{ onKey }}" style="width:100%;height:44px;padding:0 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);background:var(--ivory);border:1px solid {{ pwBorder }};border-radius:2px" />
+      <sc-if value="{{ authError }}" hint-placeholder-val="">
+        <div style="margin-top:9px;display:flex;align-items:center;gap:7px;font-family:'Public Sans',sans-serif;font-size:11.5px;color:var(--ac)"><span style="width:5px;height:5px;border-radius:50%;background:var(--ac);flex:none"></span>{{ authErrorMsg }}</div>
+      </sc-if>
+      <button onClick="{{ onContinue }}" style="width:100%;height:46px;margin-top:14px;background:linear-gradient(180deg,var(--ac-bright),var(--ac-deep));color:#FBEFE9;border:none;border-radius:2px;font-family:'Public Sans',sans-serif;font-weight:600;font-size:14px;letter-spacing:.02em;cursor:pointer">Sign in →</button>
+      <button onClick="{{ toInvite }}" style="width:100%;margin-top:12px;background:none;border:none;font-family:'Public Sans',sans-serif;font-size:12px;color:var(--ac);cursor:pointer;text-align:center">Have an invitation link? Redeem it →</button>
+      </sc-if>
+
+      <!-- Invite-accept redeem state (census #2 / T14): token → set password → role home -->
+      <sc-if value="{{ isInvite }}" hint-placeholder-val="">
+      <sc-if value="{{ accepted }}" hint-placeholder-val="">
+        <div class="lbl" style="color:var(--green);margin-bottom:12px">Welcome</div>
+        <h2 style="font-family:'Newsreader',serif;font-weight:500;font-size:24px;line-height:1.15;margin:0 0 10px">Your password is set, {{ inviteFirst }}.</h2>
+        <p style="font-size:13.5px;line-height:1.6;color:#43404b;margin:0 0 6px">Opening your <strong>{{ inviteRole }}</strong> room at {{ inviteInst }}.</p>
+        <p class="mono" style="font-size:10.5px;color:#8A857B;margin:16px 0 0">POST /auth/invite-accept → session → role home</p>
+      </sc-if>
+      <sc-if value="{{ redeeming }}" hint-placeholder-val="{{ true }}">
+        <div class="lbl" style="color:var(--ac);margin-bottom:8px">Accept your invitation</div>
+        <p style="font-size:12.5px;line-height:1.55;color:#5a5763;margin:0 0 18px">You've been invited to <strong>{{ inviteInst }}</strong> as <strong>{{ inviteRole }}</strong>. Set a password to finish — the link already verified your email.</p>
+        <label for="gk-invite-email" class="lbl" style="display:block;color:rgba(28,27,36,.63);font-size:9.5px;margin-bottom:7px">Your email</label>
+        <input id="gk-invite-email" type="email" value="{{ inviteEmail }}" readonly="{{ true }}" style="width:100%;height:44px;padding:0 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:rgba(28,27,36,.7);background:#F2ECE1;border:1px solid rgba(28,27,36,.13);border-radius:2px" />
+        <label for="gk-invite-password" class="lbl" style="display:block;color:rgba(28,27,36,.63);font-size:9.5px;margin:12px 0 7px">Choose a password</label>
+        <input id="gk-invite-password" type="password" placeholder="at least 8 characters" value="{{ pw1 }}" onInput="{{ onPw1 }}" onKeyDown="{{ onInviteKey }}" style="width:100%;height:44px;padding:0 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);background:var(--ivory);border:1px solid rgba(28,27,36,.16);border-radius:2px" />
+        <label for="gk-invite-password-confirm" class="lbl" style="display:block;color:rgba(28,27,36,.63);font-size:9.5px;margin:12px 0 7px">Confirm password</label>
+        <input id="gk-invite-password-confirm" type="password" placeholder="repeat it" value="{{ pw2 }}" onInput="{{ onPw2 }}" onKeyDown="{{ onInviteKey }}" style="width:100%;height:44px;padding:0 14px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);background:var(--ivory);border:1px solid {{ pw2Border }};border-radius:2px" />
+        <sc-if value="{{ inviteError }}" hint-placeholder-val="">
+          <div style="margin-top:9px;display:flex;align-items:center;gap:7px;font-family:'Public Sans',sans-serif;font-size:11.5px;color:var(--ac)"><span style="width:5px;height:5px;border-radius:50%;background:var(--ac);flex:none"></span>{{ inviteErrorMsg }}</div>
+        </sc-if>
+        <button onClick="{{ onAccept }}" style="width:100%;height:46px;margin-top:14px;background:linear-gradient(180deg,var(--ac-bright),var(--ac-deep));color:#FBEFE9;border:none;border-radius:2px;font-family:'Public Sans',sans-serif;font-weight:600;font-size:14px;letter-spacing:.02em;cursor:pointer">Set password &amp; enter →</button>
+        <button onClick="{{ toSignin }}" style="width:100%;margin-top:12px;background:none;border:none;font-family:'Public Sans',sans-serif;font-size:12px;color:var(--ac);cursor:pointer;text-align:center">← Already have an account? Sign in</button>
+      </sc-if>
+      </sc-if>
+
+      <!-- the demo doors — view-as -->
+      <div style="margin-top:26px;padding-top:20px;border-top:1px solid rgba(28,27,36,.1)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px">
+          <span class="lbl" style="color:rgba(28,27,36,.63)">Open a room</span>
+          <span class="lbl" style="color:var(--gold);font-size:9px">Demo · view as</span>
+        </div>
+        <p class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin:0 0 14px;line-height:1.5">In production the gate resolves your one role automatically. Here, step into any room to see it.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <a data-demo-role="student" href="Gnomon Student Workspace.dc.html" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--gold);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Student</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Learner</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">Study room — desk, practice &amp; results</div>
+          </a>
+          <a data-demo-role="teacher" href="Gnomon Teacher Desk.dc.html" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--ac);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Teacher</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Staff</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">Workbench — mark &amp; countersign</div>
+          </a>
+          <a data-demo-role="director" href="Gnomon Director Console.dc.html" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--ac);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Director</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Admin</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">Console — students, classes &amp; staff</div>
+          </a>
+          <a data-demo-role="admin" href="Gnomon Admin Console.dc.html" style="display:block;padding:14px 15px;background:var(--ivory);border:1px solid rgba(28,27,36,.13);border-left:3px solid var(--ac);border-radius:2px;transition:background .15s" onmouseover="this.style.background='#F3EEE2'" onmouseout="this.style.background='#FAF7F0'">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-family:'Newsreader',serif;font-size:18px;color:var(--ink)">Admin</span><span class="lbl" style="color:rgba(28,27,36,.63);font-size:8.5px">Ops</span></div>
+            <div class="mono" style="font-size:10.5px;color:rgba(28,27,36,.63);margin-top:3px">Provisioning — seats · roster · billing</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <x-import component-from-global-scope="gnomon-nav" from="./gnomon-nav.js" hint-size="0,0"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { email: '', password: '', authError: false, authErrorMsg: '', mode: 'signin', pw1: '', pw2: '', inviteError: false, inviteErrorMsg: '', accepted: false };
+  onEmail = (e) => this.setState({ email: e.target.value, authError: false });
+  onPassword = (e) => this.setState({ password: e.target.value, authError: false });
+  onKey = (e) => { if (e.key === 'Enter') this.onContinue(); };
+  onContinue = () => {
+    // Real sign-in is performed by the wire (POST /auth/login → resolve role → route to room),
+    // which reads state.email + state.password and sets state.authError on a 401. Offline/demo
+    // default: no fake session — the demo doors below stand in for a resolved role.
+  };
+  // — invite-accept (T14) — the wire reads ?invite=<token>, sets mode:'invite' + fills this.invite
+  toInvite = () => this.setState({ mode: 'invite', inviteError: false });
+  toSignin = () => this.setState({ mode: 'signin' });
+  onPw1 = (e) => this.setState({ pw1: e.target.value, inviteError: false });
+  onPw2 = (e) => this.setState({ pw2: e.target.value, inviteError: false });
+  onInviteKey = (e) => { if (e.key === 'Enter') this.onAccept(); };
+  onAccept = () => {
+    const { pw1, pw2 } = this.state;
+    if (pw1.length < 8) return this.setState({ inviteError: true, inviteErrorMsg: 'Use at least 8 characters.' });
+    if (pw1 !== pw2) return this.setState({ inviteError: true, inviteErrorMsg: 'The two passwords don\u2019t match.' });
+    // Valid — the wire performs POST /auth/invite-accept {token, password} → session → role home.
+    // Offline/demo default: show the success state; NEVER fabricate a real session.
+    this.setState({ accepted: true, inviteError: false });
+  };
+  // DATA-SEAM CONTRACT (gnomon-wire.js) — fill the named members, touch nothing else.
+  static dataContract = {
+    reads: {
+      tenant: { member: 'this.tenant = {name}', endpoint: 'GET /auth/me or the POST /auth/login response',
+        role: 'shit-list #7: institution_name is session-derived (app/auth.py), never a hardcoded literal — '
+          + 'mirrors the live PortalFrame.tsx binding.',
+        noFeed: 'No auth backend → renderVals() falls back to the generic "Your institution" fixture, never a real tenant name.' },
+    },
+    writes: {
+      login: { member: 'onContinue (reads state.email, state.password)', endpoint: 'POST /auth/login {email,password}',
+        role: 'Authenticate → resolve the one role → route to its room.',
+        onError: 'set state.authError=true + state.authErrorMsg; the field lights, no room opens.',
+        noFeed: 'No auth backend → the Demo doors stand in; NEVER fabricate a session.' },
+      inviteAccept: { member: 'onAccept (reads this.invite.token, state.pw1)', endpoint: 'POST /auth/invite-accept {token,password}',
+        role: 'Redeem an admin invite: verified email (from token) + chosen password → session → role home.',
+        prefill: 'wire reads ?invite=<token>, sets state.mode="invite" and fills this.invite={email,institution,role,token,first}.',
+        onError: 'server verdicts (expired/used/weak-password/breach-screen) → state.inviteError + inviteErrorMsg, surfaced verbatim.',
+        noFeed: 'No backend → local validation only + the success state; NEVER fabricate a real session.' },
+    },
+    notReady: {},
+  };
+  renderVals() {
+    const inv = this.invite || { email: 'invited@school.edu', institution: 'Your institution', role: 'Teacher', first: 'there' };
+    const tenant = this.tenant || { name: 'Your institution' };
+    return {
+      institutionName: tenant.name,
+      email: this.state.email,
+      password: this.state.password,
+      onEmail: this.onEmail,
+      onPassword: this.onPassword,
+      onKey: this.onKey,
+      onContinue: this.onContinue,
+      authError: this.state.authError,
+      authErrorMsg: this.state.authErrorMsg || 'Email or password not recognised.',
+      pwBorder: this.state.authError ? 'var(--ac)' : 'rgba(28,27,36,.16)',
+      isSignin: this.state.mode === 'signin',
+      isInvite: this.state.mode === 'invite',
+      redeeming: this.state.mode === 'invite' && !this.state.accepted,
+      accepted: this.state.accepted,
+      toInvite: this.toInvite, toSignin: this.toSignin,
+      onPw1: this.onPw1, onPw2: this.onPw2, onInviteKey: this.onInviteKey, onAccept: this.onAccept,
+      pw1: this.state.pw1, pw2: this.state.pw2,
+      pw2Border: this.state.inviteError ? 'var(--ac)' : 'rgba(28,27,36,.16)',
+      inviteError: this.state.inviteError, inviteErrorMsg: this.state.inviteErrorMsg,
+      inviteEmail: inv.email, inviteInst: inv.institution, inviteRole: inv.role, inviteFirst: inv.first,
+    };
+  }
+}
+</script>
+</body>
+</html>
