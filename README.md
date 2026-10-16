@@ -2,10 +2,10 @@
 
 **AI engineer, evaluation, agents and retrieval. Three years of VFX production before that.** Ho Chi Minh City, remote worldwide.
 
-[Portfolio](https://anhminhzui-dev.github.io/anhminhzui-dev/) · [One-page CV](https://anhminhzui-dev.github.io/anhminhzui-dev/Vo_Ba_Hoang_Minh_CV.pdf) · [Technical report, Zenodo](https://doi.org/10.5281/zenodo.22675789) · [Engineering write-up](writeups/2026-09-07-destructive-git-refusal-gate.md)
+[Portfolio](https://anhminhzui-dev.github.io/anhminhzui-dev/) · [AI engineering CV](https://anhminhzui-dev.github.io/anhminhzui-dev/Vo_Ba_Hoang_Minh_CV.pdf) · [Applied AI & VFX CV](https://anhminhzui-dev.github.io/anhminhzui-dev/Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf) · [Technical report, Zenodo](https://doi.org/10.5281/zenodo.22675789) · [Engineering write-up](writeups/2026-09-07-destructive-git-refusal-gate.md)
 
 ## What I build
-Founder of Gnomon, a writing-assessment product delivered to teachers and clients. The model never emits a grade: it produces evidence grounded in source spans, a deterministic scorer maps facts to the result, and an abstain layer refuses on thin evidence. Under it: 101,175 records screened through 44 data-quality checks, a fail-closed evaluation harness (2,232 criterion units, 1,866 admitted, 366 refused), QLoRA fine-tuning of a 27B open-weight model, and a two-provider coding-agent fleet run under policy-as-code guardrails.
+Solo founder of Gnomon, a writing-assessment product delivered to teachers and clients. The model never emits a grade: it produces evidence grounded in source spans, a deterministic scorer maps facts to the result, and an abstain layer refuses on thin evidence. Under it: 101,175 records screened through 44 data-quality checks, a fail-closed evaluation harness (2,232 criterion units, 1,866 admitted, 366 refused), QLoRA fine-tuning of a 27B open-weight model, and a two-provider coding-agent fleet run under policy-as-code guardrails.
 
 ## Public evaluation tools
 | Repository | What it checks | Evidence |
@@ -22,7 +22,7 @@ Open pull request to EleutherAI's lm-evaluation-harness: [#4115](https://github.
 [uh-huh](https://github.com/anhminhzui-dev/uh-huh) voice-agent hackathon entry (lablab.ai) · [arc-whest](https://github.com/anhminhzui-dev/arc-whest) scored submission, ARC White-Box Estimation (AIcrowd) · Kaggle Playground S6E9, public score 0.94151 · [opencv-entry](https://github.com/anhminhzui-dev/opencv-entry) registered.
 
 ## Before AI
-Applied AI Operations for VFX production at OTSU Labs with Sparta VFX (2025); Applied AI Operations Lead on FPT's Unreal Engine short "Fragments of the Deep" (2024–2025); Applied AI Operations at Dihaan Media (2023). Frame-by-frame judgment to a studio standard, on deadline, is where the evaluation habit comes from.
+Lead 3D Generalist at OTSU Labs, collaborating with Sparta VFX and Sparx supervisors (2025); Creative Lead / Lead Character Artist on FPT's Unreal Engine short "Fragments of the Deep" (2024–2025); 3D Artist at Dihaan Media (2023). Frame-by-frame judgment to a studio standard, on deadline, is where the evaluation habit comes from.
 
 ## Contact
 minhhoang250803@gmail.com · [LinkedIn](https://www.linkedin.com/in/minh-v%C3%B5-b%C3%A1-ho%C3%A0ng-287942366/)
