@@ -9,10 +9,9 @@
 button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid #ac431d;outline-offset:3px}
 .viewer{height:100%;display:flex;flex-direction:column}.toolbar{flex:none;background:#f8f6f1;border-bottom:1px solid #dedbd4;padding:11px 14px 10px}
 .pages{display:flex;flex-wrap:wrap;gap:3px 15px}.pages button{border:0;border-bottom:2px solid transparent;background:none;padding:5px 0;font-size:12px;white-space:nowrap;color:#66625b}.pages button[aria-selected=true]{color:#252422;border-bottom-color:#ac431d}
-.tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}.modes{display:inline-flex;padding:2px;border:1px solid #dedbd4;border-radius:4px}.modes button{border:0;border-radius:2px;background:none;padding:4px 10px;font-size:11px;color:#66625b}.modes button[aria-pressed=true]{background:#fff;color:#252422;box-shadow:0 1px 3px #25242215}
-.expand{font-size:11px;color:#514c43;text-decoration:none;border-bottom:1px solid #b6b0a5;white-space:nowrap}.stage{position:relative;flex:1;min-height:0;overflow:auto;background:#fff}.stage>a{display:block}.stage img{display:block;width:100%;height:auto}.stage iframe{position:absolute;inset:0;transform-origin:top left;display:block;width:100%;height:100%;border:0;background:#faf7f0}.stage [hidden]{display:none}
-.stage.screens{overflow:hidden}.stage.screens>a{height:100%;display:flex;align-items:center;justify-content:center}.stage.screens img{width:100%;height:100%;object-fit:contain}
-.notice{flex:none;margin:0;padding:7px 14px;border-top:1px solid #dedbd4;color:#706b62;font-size:10px;background:#f8f6f1}.mode-note{margin-left:5px}body.standalone .viewer{height:100svh}body.standalone .stage.screens{display:grid;place-items:start center}body.standalone .stage.screens>a{width:min(100%,1440px)}
+.tools{display:flex;justify-content:flex-end;margin-top:10px}
+.expand{font-size:11px;color:#514c43;text-decoration:none;border-bottom:1px solid #b6b0a5;white-space:nowrap}.stage{position:relative;flex:1;min-height:0;overflow:auto;background:#fff}.stage iframe{position:absolute;inset:0;transform-origin:top left;display:block;width:100%;height:100%;border:0;background:#faf7f0}
+.notice{flex:none;margin:0;padding:7px 14px;border-top:1px solid #dedbd4;color:#706b62;font-size:10px;background:#f8f6f1}body.standalone .viewer{height:100svh}
 @media(max-width:420px){.toolbar{padding:9px 10px}.pages{gap:2px 13px}.pages button{font-size:11px}.notice{padding:7px 10px;font-size:10px}}
 </style>
 </head>
@@ -28,38 +27,31 @@ button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inher
       <button type="button" role="tab" data-page="workbench" aria-selected="false">Workbench</button>
     </nav>
     <div class="tools">
-      <div class="modes" role="group" aria-label="Preview type">
-        <button type="button" data-mode="screens" aria-pressed="true">Screens</button>
-        <button type="button" data-mode="interactive" aria-pressed="false">Explore UI</button>
-      </div>
-      <a class="expand" id="expand" href="?screen=teacher&amp;mode=screens" target="_blank" rel="noopener">Open full view ↗</a>
+      <a class="expand" id="expand" href="?screen=teacher" target="_blank" rel="noopener">Open full view ↗</a>
     </div>
   </header>
-  <section class="stage screens" aria-label="Selected product page">
-    <a id="image-link" href="../../assets/gnomon/teacher_desk.webp" target="_blank" rel="noopener"><img id="screen-image" src="../../assets/gnomon/teacher_desk.webp" width="2880" height="1800" alt="Gnomon teacher desk product screen"></a>
-    <iframe id="product-frame" title="Gnomon Teacher desk interface preview" sandbox="allow-scripts allow-same-origin" hidden></iframe>
+  <section class="stage" aria-label="Selected product page">
+    <iframe id="product-frame" title="Gnomon Teacher desk interface preview" sandbox="allow-scripts allow-same-origin"></iframe>
   </section>
-  <p class="notice" id="notice" role="status">Product screens · Demo identities and sample data.</p>
+  <p class="notice" id="notice" role="status">Original interface prototype · Sample data. Backend actions are unavailable.</p>
 </main>
 <script>
 const pages={
-  landing:{label:'Landing',image:'landing_hero',file:'../index.html'},
-  portal:{label:'Portal',image:'portal',file:'Gnomon Portal.dc.html'},
-  teacher:{label:'Teacher desk',image:'teacher_desk',file:'Gnomon Teacher Desk.dc.html'},
-  workspace:{label:'Student workspace',image:'student_workspace',file:'Gnomon Student Workspace.dc.html'},
-  report:{label:'Student report',image:'student_report',file:'Gnomon Student Report.dc.html'},
-  workbench:{label:'Workbench',image:'workbench',file:'Gnomon Workbench v2.dc.html'}
+  landing:{label:'Landing',file:'../index.html'},
+  portal:{label:'Portal',file:'Gnomon Portal.dc.html'},
+  teacher:{label:'Teacher desk',file:'Gnomon Teacher Desk.dc.html'},
+  workspace:{label:'Student workspace',file:'Gnomon Student Workspace.dc.html'},
+  report:{label:'Student report',file:'Gnomon Student Report.dc.html'},
+  workbench:{label:'Workbench',file:'Gnomon Workbench v2.dc.html'}
 };
 const query=new URLSearchParams(location.search);
 let selected=Object.hasOwn(pages,query.get('screen'))?query.get('screen'):'teacher';
-let mode=query.get('mode')==='interactive'?'interactive':'screens';
-const frame=document.querySelector('#product-frame'),image=document.querySelector('#screen-image');
+const frame=document.querySelector('#product-frame');
 const stage=document.querySelector('.stage'),notice=document.querySelector('#notice');
 const standalone=window===window.top;
 if(standalone)document.body.classList.add('standalone');
 // Preserve the authored desktop viewport inside the compact preview.
 function fitInterface(){
-  if(mode!=='interactive')return;
   const scale=standalone?1:stage.clientWidth/1440;
   frame.style.width=standalone?'100%':'1440px';
   frame.style.height=(stage.clientHeight/scale)+'px';
@@ -67,21 +59,14 @@ function fitInterface(){
 }
 new ResizeObserver(fitInterface).observe(stage);
 function render(){
-  const page=pages[selected],interactive=mode==='interactive';
+  const page=pages[selected];
   document.querySelectorAll('[data-page]').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.page===selected)));
-  document.querySelectorAll('[data-mode]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.mode===mode)));
-  image.src='../../assets/gnomon/'+page.image+'.webp';image.alt='Gnomon '+page.label+' product screen';
-  document.querySelector('#image-link').href=image.src;
-  document.querySelector('#image-link').hidden=interactive;frame.hidden=!interactive;
-  stage.classList.toggle('screens',!interactive);
-  if(interactive){const src=encodeURI(page.file);if(frame.getAttribute('src')!==src)frame.src=src;frame.title='Gnomon '+page.label+' interface preview';}
-  else frame.removeAttribute('src');
+  const src=encodeURI(page.file);if(frame.getAttribute('src')!==src)frame.src=src;frame.title='Gnomon '+page.label+' interface preview';
   fitInterface();
-  document.querySelector('#expand').href='?screen='+selected+'&mode='+mode;
-  notice.textContent=interactive?'Original interface prototype · Sample data. Backend actions are unavailable.':'Product screens · Demo identities and sample data.';
+  document.querySelector('#expand').href='?screen='+selected;
+  notice.textContent='Original interface prototype · Sample data. Backend actions are unavailable.';
 }
 document.querySelectorAll('[data-page]').forEach(button=>button.addEventListener('click',()=>{selected=button.dataset.page;render();}));
-document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>{mode=button.dataset.mode;render();}));
 document.querySelector('.pages').addEventListener('keydown',event=>{
   if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
   const tabs=[...document.querySelectorAll('[data-page]')],index=tabs.indexOf(document.activeElement);
