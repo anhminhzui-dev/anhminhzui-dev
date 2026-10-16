@@ -10,7 +10,7 @@ button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inher
 .viewer{height:100%;display:flex;flex-direction:column}.toolbar{flex:none;background:#f8f6f1;border-bottom:1px solid #dedbd4;padding:11px 14px 10px}
 .pages{display:flex;flex-wrap:wrap;gap:3px 15px}.pages button{border:0;border-bottom:2px solid transparent;background:none;padding:5px 0;font-size:12px;white-space:nowrap;color:#66625b}.pages button[aria-selected=true]{color:#252422;border-bottom-color:#ac431d}
 .tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}.modes{display:inline-flex;padding:2px;border:1px solid #dedbd4;border-radius:4px}.modes button{border:0;border-radius:2px;background:none;padding:4px 10px;font-size:11px;color:#66625b}.modes button[aria-pressed=true]{background:#fff;color:#252422;box-shadow:0 1px 3px #25242215}
-.expand{font-size:11px;color:#514c43;text-decoration:none;border-bottom:1px solid #b6b0a5;white-space:nowrap}.stage{position:relative;flex:1;min-height:0;overflow:auto;background:#fff}.stage>a{display:block}.stage img{display:block;width:100%;height:auto}.stage iframe{display:block;width:100%;height:100%;border:0;background:#faf7f0}.stage [hidden]{display:none}
+.expand{font-size:11px;color:#514c43;text-decoration:none;border-bottom:1px solid #b6b0a5;white-space:nowrap}.stage{position:relative;flex:1;min-height:0;overflow:auto;background:#fff}.stage>a{display:block}.stage img{display:block;width:100%;height:auto}.stage iframe{position:absolute;inset:0;transform-origin:top left;display:block;width:100%;height:100%;border:0;background:#faf7f0}.stage [hidden]{display:none}
 .stage.screens{overflow:hidden}.stage.screens>a{height:100%;display:flex;align-items:center;justify-content:center}.stage.screens img{width:100%;height:100%;object-fit:contain}
 .notice{flex:none;margin:0;padding:7px 14px;border-top:1px solid #dedbd4;color:#706b62;font-size:10px;background:#f8f6f1}.mode-note{margin-left:5px}body.standalone .viewer{height:100svh}body.standalone .stage.screens{display:grid;place-items:start center}body.standalone .stage.screens>a{width:min(100%,1440px)}
 @media(max-width:420px){.toolbar{padding:9px 10px}.pages{gap:2px 13px}.pages button{font-size:11px}.notice{padding:7px 10px;font-size:10px}}
@@ -53,7 +53,17 @@ let selected=Object.hasOwn(pages,query.get('screen'))?query.get('screen'):'teach
 let mode=query.get('mode')==='interactive'?'interactive':'screens';
 const frame=document.querySelector('#product-frame'),image=document.querySelector('#screen-image');
 const stage=document.querySelector('.stage'),notice=document.querySelector('#notice');
-if(window===window.top)document.body.classList.add('standalone');
+const standalone=window===window.top;
+if(standalone)document.body.classList.add('standalone');
+// Preserve the authored desktop viewport inside the compact preview.
+function fitInterface(){
+  if(mode!=='interactive')return;
+  const scale=standalone?1:stage.clientWidth/1440;
+  frame.style.width=standalone?'100%':'1440px';
+  frame.style.height=(stage.clientHeight/scale)+'px';
+  frame.style.transform='scale('+scale+')';
+}
+new ResizeObserver(fitInterface).observe(stage);
 function render(){
   const page=pages[selected],interactive=mode==='interactive';
   document.querySelectorAll('[data-page]').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.page===selected)));
@@ -64,6 +74,7 @@ function render(){
   stage.classList.toggle('screens',!interactive);
   if(interactive){const src=encodeURIComponent(page.file);if(frame.getAttribute('src')!==src)frame.src=src;frame.title='Gnomon '+page.label+' interface preview';}
   else frame.removeAttribute('src');
+  fitInterface();
   document.querySelector('#expand').href='?screen='+selected+'&mode='+mode;
   notice.textContent=interactive?'Original interface prototype · Sample data. Backend actions are unavailable.':'Product screens · Demo identities and sample data.';
 }
