@@ -1,19 +1,19 @@
 {
-  "version": "r26",
-  "sha256": "4b9ab9c07d9aaa235dc355b914f426c4dfc87cdd6f0c5d3d84aaa89feb319e4e",
-  "bytes": 8230,
+  "version": "r25",
+  "sha256": "c6d29992e4ddcdcd8e34277a768c8108aae74312a01b8b80ca13aff720373261",
+  "bytes": 8231,
   "built": "2026-10-18T07:55:00+00:00",
   "documents": [
     {
       "filename": "Vo_Ba_Hoang_Minh_CV.pdf",
-      "version": "r26",
+      "version": "r25",
       "label": "AI engineering",
-      "sha256": "4b9ab9c07d9aaa235dc355b914f426c4dfc87cdd6f0c5d3d84aaa89feb319e4e",
-      "bytes": 8230
+      "sha256": "c6d29992e4ddcdcd8e34277a768c8108aae74312a01b8b80ca13aff720373261",
+      "bytes": 8231
     },
     {
       "filename": "Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf",
-      "version": "vfx-ai-r26",
+      "version": "vfx-ai-20261018",
       "label": "Applied AI & VFX / Production Mentor",
       "sha256": "c5f5f4e07ff8ed147cf1285d824ca21c8aa3a40c391577541fbf8d6abc16ea1a",
       "bytes": 5828
