@@ -2,7 +2,7 @@
   "version": "r25",
   "sha256": "c6d29992e4ddcdcd8e34277a768c8108aae74312a01b8b80ca13aff720373261",
   "bytes": 8231,
-  "built": "2026-10-18T08:45:00+00:00",
+  "built": "2026-10-20T03:50:00+00:00",
   "documents": [
     {
       "filename": "Vo_Ba_Hoang_Minh_CV.pdf",
@@ -13,10 +13,10 @@
     },
     {
       "filename": "Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf",
-      "version": "vfx-ai-20261018-teams",
+      "version": "vfx-ai-20261020-cluely",
       "label": "Applied AI & VFX / Production Mentor",
-      "sha256": "7fcbd7284c424b1c96b44eaefc419886e826ee30b8c8c5d1f12b61cc53f958cb",
-      "bytes": 5796
+      "sha256": "b4de1315d3eee1d00309158bd36e62b455be0d3a6e11eea6a8525249298a744f",
+      "bytes": 6090
     }
   ]
 }
