@@ -59,6 +59,26 @@ REQUIRED_ON_PAGE = ["Gnomon", "FPT Software", "FPT Education", "OTSU Labs", "Fra
 FORBIDDEN = ["anhminhzui.dev/", "Co-Authored-By", "field of study"]
 
 
+# r32 is the Founder-directed full-r31 composition with corrected model scope and B200 proof.
+# Earlier versions retain every historical marker above; do not weaken their checks.
+R32_REQUIRED_IN_CV = [
+    "VO BA HOANG MINH", "minhhoang250803@gmail.com", "anhminhzui-dev.github.io",
+    "AI ENGINEER | APPLIED AI, AGENTS & EVALUATION", "Founder & AI Systems Engineer",
+    "Gnomon", "FPT Software", "Lecturer, Applied AI in VFX", "OTSU Labs",
+    "Applied AI Operations, VFX Production", "Fragments of the Deep", "Applied AI Operations Lead",
+    "Dihaan Media", "Contract engagements", "Applied AI & Pipeline Engineering",
+    "SELECTED ENGINEERING PROJECTS", "failclosed-eval", "policy-deck", "relay-gate",
+    "mcp-trajectory-judge", "Hackathon & competition work", "Kaggle",
+    "PUBLICATIONS & OPEN SOURCE", "lm-evaluation-harness", "NVIDIA B200",
+    "completion-weighted Triton loss", "recoverable checkpoints", "tool calling",
+    "policy-as-code", "Sparta VFX", "Sofitel Saigon Plaza", "SKILLS", "EDUCATION",
+    "FPT University | Bachelor's degree."
+]
+
+def required_markers(version):
+    return R32_REQUIRED_IN_CV if version == "r32" else REQUIRED_IN_CV
+
+
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -90,7 +110,8 @@ def main() -> int:
         if meta.get("sha256") != live:
             failures.append(f"cv_version.json sha256 {str(meta.get('sha256'))[:16]} != file {live[:16]}")
     text = cv_text(COPIES[0])
-    for m in REQUIRED_IN_CV:
+    required = required_markers(meta.get("version"))
+    for m in required:
         if " ".join(m.split()) not in text:
             failures.append(f"CV lost required marker: {m}")
     for m in FORBIDDEN:
@@ -129,7 +150,7 @@ def main() -> int:
     if failures:
         print("\n".join("FAIL " + f for f in failures))
         return 1
-    print(f"CV_GATE_OK sha256={live[:16]} version={json.loads(VERSION_FILE.read_text(encoding='utf-8')).get('version')} markers={len(REQUIRED_IN_CV)}")
+    print(f"CV_GATE_OK sha256={live[:16]} version={json.loads(VERSION_FILE.read_text(encoding='utf-8')).get('version')} markers={len(required)}")
     return 0
 
 
