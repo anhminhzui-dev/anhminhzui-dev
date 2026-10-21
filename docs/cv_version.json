@@ -1,22 +1,22 @@
 {
-  "version": "r25",
-  "sha256": "c6d29992e4ddcdcd8e34277a768c8108aae74312a01b8b80ca13aff720373261",
-  "bytes": 8231,
-  "built": "2026-10-20T03:50:00+00:00",
+  "version": "r32",
+  "sha256": "faf9c719e926f4abfc5022613aee0167d9ef6baf1e5f4ac2ffc9a8e7f022b409",
+  "bytes": 8495,
+  "built": "2026-10-21T22:33:59.054629+00:00",
   "documents": [
     {
       "filename": "Vo_Ba_Hoang_Minh_CV.pdf",
-      "version": "r25",
+      "version": "r32",
       "label": "AI engineering",
-      "sha256": "c6d29992e4ddcdcd8e34277a768c8108aae74312a01b8b80ca13aff720373261",
-      "bytes": 8231
+      "sha256": "faf9c719e926f4abfc5022613aee0167d9ef6baf1e5f4ac2ffc9a8e7f022b409",
+      "bytes": 8495
     },
     {
       "filename": "Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf",
-      "version": "vfx-ai-20261020-cluely-v3",
+      "version": "vfx-ai-20261022-founder-b200-v4",
       "label": "Applied AI & VFX / Production Mentor",
-      "sha256": "01753f357c1b8677579ec843fe82b30a3b611cf01e463b18bf167260687c7909",
-      "bytes": 6099
+      "sha256": "167c2a9e8412793bf8ac09140c9e1f626e8b34576f1c9b5600f9283d1ada4130",
+      "bytes": 6117
     }
   ]
 }
