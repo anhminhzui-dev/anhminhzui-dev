@@ -76,7 +76,22 @@ R32_REQUIRED_IN_CV = [
 ]
 
 def required_markers(version):
+    if version == "r33":
+        return [m for m in R32_REQUIRED_IN_CV if m not in {
+            "AI ENGINEER | APPLIED AI, AGENTS & EVALUATION", "tool calling"
+        }] + ["AI ENGINEER | APPLIED AI & FORWARD-DEPLOYED ENGINEERING", "tool-calling", "CV r33", "configured abstention checks"]
     return R32_REQUIRED_IN_CV if version == "r32" else REQUIRED_IN_CV
+
+
+def restricted_sample_links(path: Path) -> list[str]:
+    try:
+        from pypdf import PdfReader
+    except ImportError:  # pragma: no cover
+        from PyPDF2 import PdfReader
+    return [str(uri) for page in PdfReader(str(path)).pages
+            for annotation in page.get("/Annots", [])
+            if (uri := annotation.get_object().get("/A", {}).get("/URI"))
+            and "kpq2A7kPG-8" in str(uri)]
 
 
 def sha256(path: Path) -> str:
@@ -142,6 +157,8 @@ def main() -> int:
                     failures.append(f"NDA qualifier missing: {name}")
                 if "kpq2A7kPG-8" in body:
                     failures.append(f"restricted video must stay private: {name}")
+                if restricted_sample_links(path):
+                    failures.append(f"restricted video hyperlink must stay private: {name}")
 
     page = PAGE.read_text(encoding="utf-8", errors="replace") if PAGE.is_file() else ""
     for m in REQUIRED_ON_PAGE:
