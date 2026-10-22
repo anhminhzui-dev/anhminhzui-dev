@@ -1,22 +1,22 @@
 {
-  "version": "r32",
-  "sha256": "faf9c719e926f4abfc5022613aee0167d9ef6baf1e5f4ac2ffc9a8e7f022b409",
-  "bytes": 8495,
-  "built": "2026-10-21T22:33:59.054629+00:00",
+  "version": "r33",
+  "sha256": "9bcfaa09e29747c15c561b2986a255feccdd9aaa66691844fbdbf36ec04c8a52",
+  "bytes": 8507,
+  "built": "2026-10-22T08:27:41.999192+00:00",
   "documents": [
     {
       "filename": "Vo_Ba_Hoang_Minh_CV.pdf",
-      "version": "r32",
-      "label": "AI engineering",
-      "sha256": "faf9c719e926f4abfc5022613aee0167d9ef6baf1e5f4ac2ffc9a8e7f022b409",
-      "bytes": 8495
+      "version": "r33",
+      "label": "AI engineering / FDE",
+      "sha256": "9bcfaa09e29747c15c561b2986a255feccdd9aaa66691844fbdbf36ec04c8a52",
+      "bytes": 8507
     },
     {
       "filename": "Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf",
-      "version": "vfx-ai-20261022-founder-b200-v4",
-      "label": "Applied AI & VFX / Production Mentor",
-      "sha256": "167c2a9e8412793bf8ac09140c9e1f626e8b34576f1c9b5600f9283d1ada4130",
-      "bytes": 6117
+      "version": "vfx-ai-20261022-otsu-fpt-v5",
+      "label": "Applied AI in VFX / Production and Technical Instruction",
+      "sha256": "ee9b9112452d88dfee7c20232b12a6d7ea42abb0541ad5a990fd567ee102deba",
+      "bytes": 6424
     }
   ]
 }
