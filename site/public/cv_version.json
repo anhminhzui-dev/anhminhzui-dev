@@ -2,7 +2,7 @@
   "version": "r33",
   "sha256": "9bcfaa09e29747c15c561b2986a255feccdd9aaa66691844fbdbf36ec04c8a52",
   "bytes": 8507,
-  "built": "2026-10-22T08:27:41.999192+00:00",
+  "built": "2026-10-22T12:02:51.697078+00:00",
   "documents": [
     {
       "filename": "Vo_Ba_Hoang_Minh_CV.pdf",
@@ -13,10 +13,10 @@
     },
     {
       "filename": "Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf",
-      "version": "vfx-ai-20261022-otsu-fpt-v5",
+      "version": "vfx-ai-20261022-stylized-paintover-v6",
       "label": "Applied AI in VFX / Production and Technical Instruction",
-      "sha256": "ee9b9112452d88dfee7c20232b12a6d7ea42abb0541ad5a990fd567ee102deba",
-      "bytes": 6424
+      "sha256": "2aa403cc97eaa12ea80933ae1bc6c623b1bdaaa61e4af81bed74a9c0dbc38b2c",
+      "bytes": 6495
     }
   ]
 }
