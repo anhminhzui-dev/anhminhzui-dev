@@ -155,10 +155,20 @@ def main() -> int:
                 body = cv_text(path)
                 if "NDA" not in body:
                     failures.append(f"NDA qualifier missing: {name}")
-                if "kpq2A7kPG-8" in body:
-                    failures.append(f"restricted video must stay private: {name}")
-                if restricted_sample_links(path):
-                    failures.append(f"restricted video hyperlink must stay private: {name}")
+                if item.get("version") == "vfx-ai-20261113-project-link-v7":
+                    if name != "Vo_Ba_Hoang_Minh_VFX_AI_Mentor_CV.pdf":
+                        failures.append(f"project-link version belongs to VFX CV: {name}")
+                    if restricted_sample_links(path) != ["https://youtu.be/kpq2A7kPG-8"]:
+                        failures.append(f"latest project hyperlink missing or duplicated: {name}")
+                    for marker in ("View latest project", "Confidential, subject to NDA.",
+                                   "Recruitment review only.", "Do not forward or redistribute."):
+                        if marker not in body:
+                            failures.append(f"project-link notice missing {marker}: {name}")
+                else:
+                    if "kpq2A7kPG-8" in body:
+                        failures.append(f"restricted video must stay private: {name}")
+                    if restricted_sample_links(path):
+                        failures.append(f"restricted video hyperlink must stay private: {name}")
 
     page = PAGE.read_text(encoding="utf-8", errors="replace") if PAGE.is_file() else ""
     for m in REQUIRED_ON_PAGE:
